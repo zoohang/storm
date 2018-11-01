@@ -1,0 +1,74 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+	<ul class="nav nav-tabs">
+		<li><a href="{:url('Category/index')}">分类管理</a></li>
+		<li class="active"><a href="{:url('Category/add')}">添加分类</a></li>
+	</ul>
+	<div class="row margin-top-20">
+		<div class="col-md-2">
+			<div class="list-group">
+				<a class="list-group-item" href="#A" data-toggle="tab">基本属性</a>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<form class="js-ajax-form" action="{:url('Category/addPost')}" method="post">
+				<div class="tab-content">
+					<div class="tab-pane active" id="A">
+						<div class="form-group">
+							<label for="input-parent"><span class="form-required">*</span>上级</label>
+							<div>
+								<select class="form-control" name="parent_id" id="input-parent">
+									<option value="0">作为一级分类</option>
+									{$categories_tree}
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="input-name"><span class="form-required">*</span>分类名称</label>
+							<div>
+								<input type="text" class="form-control" id="input-name" name="name">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="input-name">分类别名</label>
+							<div>
+								<input type="text" class="form-control" id="input-alias" name="alias">
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="input-description">描述</label>
+							<div>
+								<textarea class="form-control" name="description" id="input-description"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="input-description">缩略图</label>
+							<div>
+								<input type="hidden" name="more[thumbnail]" class="form-control"
+									   id="js-thumbnail-input">
+								<div>
+									<a href="javascript:uploadOneImage('图片上传','#js-thumbnail-input');">
+										<img src="__TMPL__/public/assets/images/default-thumbnail.png"
+											 id="js-thumbnail-input-preview"
+											 width="135" style="cursor: pointer"/>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary js-ajax-submit">{:lang('ADD')}</button>
+					<a class="btn btn-default" href="{:url('Category/index')}">{:lang('BACK')}</a>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+</body>
+</html>
