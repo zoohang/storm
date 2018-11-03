@@ -20,6 +20,15 @@ class CategoryModel extends Model
         'more' => 'array',
     ];
 
+    public static $category_type = [
+        0=>'全部',
+        1=>'刷题',
+        2=>'打卡',
+        3=>'在线课堂',
+        4=>'线下课堂',
+        11=>'大学',
+    ];
+
     /**
      * 生成分类 select树形结构
      * @param int $selectId 需要选中的分类 id
@@ -29,11 +38,14 @@ class CategoryModel extends Model
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function categoryTree($selectId = 0, $currentCid = 0)
+    public function categoryTree($selectId = 0, $currentCid = 0, $type=0)
     {
         $where = ['delete_time' => 0];
         if (!empty($currentCid)) {
             $where['id'] = ['neq', $currentCid];
+        }
+        if ($type) {
+            $where['type'] = $type;
         }
         $categories = $this->order("list_order ASC")->where($where)->select()->toArray();
 
@@ -64,12 +76,15 @@ class CategoryModel extends Model
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function CategoryTableTree($currentIds = 0, $tpl = '')
+    public function CategoryTableTree($currentIds = 0, $tpl = '', $type=0)
     {
         $where = ['delete_time' => 0];
 //        if (!empty($currentCid)) {
 //            $where['id'] = ['neq', $currentCid];
 //        }
+        if (!empty($type)) {
+            $where['type'] = $type;
+        }
         $categories = $this->order("list_order ASC")->where($where)->select()->toArray();
 
         $tree       = new Tree();
@@ -87,12 +102,13 @@ class CategoryModel extends Model
             $item['status_text']    = empty($item['status'])?'隐藏':'显示';
             $item['checked']        = in_array($item['id'], $currentIds) ? "checked" : "";
             $item['url']            = cmf_url('portal/List/index', ['id' => $item['id']]);
-            $item['str_action']     = '<a href="' . url("Category/add", ["parent" => $item['id']]) . '">添加子分类</a>  <a href="' . url("Category/edit", ["id" => $item['id']]) . '">' . lang('EDIT') . '</a>  <a class="js-ajax-delete" href="' . url("Category/delete", ["id" => $item['id']]) . '">' . lang('DELETE') . '</a> ';
+            $item['str_action']     = '<a href="' . url("Category/add", ["parent" => $item['id'],"type" => $item['type']]) . '">添加子分类</a>  <a href="' . url("Category/edit", ["id" => $item['id']]) . '">' . lang('EDIT') . '</a>  <a class="js-ajax-delete" href="' . url("Category/delete", ["id" => $item['id']]) . '">' . lang('DELETE') . '</a> ';
             if ($item['status']) {
                 $item['str_action'] .= '<a class="js-ajax-dialog-btn" data-msg="您确定隐藏此分类吗" href="' . url('Category/toggle', ['ids' => $item['id'], 'hide' => 1]) . '">隐藏</a>';
             } else {
                 $item['str_action'] .= '<a class="js-ajax-dialog-btn" data-msg="您确定显示此分类吗" href="' . url('Category/toggle', ['ids' => $item['id'], 'display' => 1]) . '">显示</a>';
             }
+            $item['type']           = self::$category_type[$item['type']];
             array_push($newCategories, $item);
         }
 
@@ -103,7 +119,8 @@ class CategoryModel extends Model
                         <td style='padding-left:20px;'><input type='checkbox' class='js-check' data-yid='js-check-y' data-xid='js-check-x' name='ids[]' value='\$id' data-parent_id='\$parent_id' data-id='\$id'></td>
                         <td><input name='list_orders[\$id]' type='text' size='3' value='\$list_order' class='input-order'></td>
                         <td>\$id</td>
-                        <td>\$spacer <a href='\$url' target='_blank'>\$name</a></td>
+                        <td>\$spacer <mark class='success'>\$name</mark></td>
+                        <td>\$type</td>
                         <td>\$description</td>
                         <td>\$status_text</td>
                         <td>\$str_action</td>

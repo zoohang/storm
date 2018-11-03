@@ -15,6 +15,7 @@ use app\admin\model\RouteModel;
 use cmf\controller\AdminBaseController;
 use think\Db;
 use app\admin\model\ThemeModel;
+use think\Request;
 
 
 class CategoryController extends AdminBaseController
@@ -32,22 +33,32 @@ class CategoryController extends AdminBaseController
      *     'param'  => ''
      * )
      */
+    protected $type;
+    public function _initialize()
+    {
+        parent::_initialize();
+        $category_type = \app\admin\model\CategoryModel::$category_type;
+        $this->type = $this->request->param('type', 0, 'intval');
+        $this->assign('category_type', $category_type);
+        $this->assign('type', $this->type);
+    }
+
     public function index()
     {
-        $content = hook_one('portal_admin_category_index_view');
-
-        if (!empty($content)) {
-            return $content;
-        }
 
         $categoryModel = new CategoryModel();
-        $keyword             = $this->request->param('keyword');
-
+        $keyword = $this->request->param('keyword');
+        $type = $this->request->param('type', 0);
         if (empty($keyword)) {
-            $categoryTree = $categoryModel->CategoryTableTree();
+            $categoryTree = $categoryModel->CategoryTableTree(0, '', $type);
             $this->assign('category_tree', $categoryTree);
         } else {
+            $where_type = [];
+            if ($type){
+                $where_type = ['type'=>$type];
+            }
             $categories = $categoryModel->where('name', 'like', "%{$keyword}%")
+                ->where($where_type)
                 ->where('delete_time', 0)->select();
             $this->assign('categories', $categories);
         }
@@ -72,22 +83,13 @@ class CategoryController extends AdminBaseController
      */
     public function add()
     {
-        $content = hook_one('portal_admin_category_add_view');
-
         if (!empty($content)) {
             return $content;
         }
 
         $parentId            = $this->request->param('parent', 0, 'intval');
         $categoryModel = new CategoryModel();
-        $categoriesTree      = $categoryModel->CategoryTree($parentId);
-
-        $themeModel        = new ThemeModel();
-        $listThemeFiles    = $themeModel->getActionThemeFiles('portal/List/index');
-        $articleThemeFiles = $themeModel->getActionThemeFiles('portal/Article/index');
-
-        $this->assign('list_theme_files', $listThemeFiles);
-        $this->assign('article_theme_files', $articleThemeFiles);
+        $categoriesTree      = $categoryModel->CategoryTree($parentId, 0, $this->type);
         $this->assign('categories_tree', $categoriesTree);
         return $this->fetch();
     }
@@ -142,9 +144,6 @@ class CategoryController extends AdminBaseController
      */
     public function edit()
     {
-
-        $content = hook_one('portal_admin_category_edit_view');
-
         if (!empty($content)) {
             return $content;
         }
@@ -154,19 +153,9 @@ class CategoryController extends AdminBaseController
             $category = CategoryModel::get($id)->toArray();
 
             $categoryModel = new CategoryModel();
-            $categoriesTree      = $categoryModel->CategoryTree($category['parent_id'], $id);
-
-            $themeModel        = new ThemeModel();
-            $listThemeFiles    = $themeModel->getActionThemeFiles('portal/List/index');
-            $articleThemeFiles = $themeModel->getActionThemeFiles('portal/Article/index');
-
-            $routeModel = new RouteModel();
-            $alias      = $routeModel->getUrl('portal/List/index', ['id' => $id]);
-
-            $category['alias'] = $alias;
+            $categoriesTree      = $categoryModel->CategoryTree($category['parent_id'], $id, $category['type']);
             $this->assign($category);
-            $this->assign('list_theme_files', $listThemeFiles);
-            $this->assign('article_theme_files', $articleThemeFiles);
+            dump($category);
             $this->assign('categories_tree', $categoriesTree);
             return $this->fetch();
         } else {
@@ -265,7 +254,7 @@ tpl;
      */
     public function listOrder()
     {
-        parent::listOrders(Db::name('portal_category'));
+        parent::listOrders(Db::name('category'));
         $this->success("排序更新成功！", '');
     }
 
@@ -324,13 +313,13 @@ tpl;
         if (empty($findCategory)) {
             $this->error('分类不存在!');
         }
-//判断此分类有无子分类（不算被删除的子分类）
+        //判断此分类有无子分类（不算被删除的子分类）
         $categoryChildrenCount = $CategoryModel->where(['parent_id' => $id,'delete_time' => 0])->count();
 
         if ($categoryChildrenCount > 0) {
             $this->error('此分类有子类无法删除!');
         }
-
+        //todo 删除查询 根据不同表进行查询数量
         $categoryPostCount = Db::name('portal_category_post')->where('category_id', $id)->count();
 
         if ($categoryPostCount > 0) {
@@ -340,7 +329,7 @@ tpl;
         $data   = [
             'object_id'   => $findCategory['id'],
             'create_time' => time(),
-            'table_name'  => 'portal_category',
+            'table_name'  => 'category',
             'name'        => $findCategory['name']
         ];
         $result = $CategoryModel

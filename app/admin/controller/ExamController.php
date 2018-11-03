@@ -11,6 +11,7 @@
 namespace app\admin\controller;
 
 use cmf\controller\AdminBaseController;
+use app\admin\model\CategoryModel;
 use think\Db;
 
 /**
@@ -28,7 +29,7 @@ use think\Db;
  */
 class ExamController extends AdminBaseController
 {
-
+    public $type=1; //category 表中type=1的分类
     /**
      * 管理员列表
      * @adminMenu(
@@ -97,14 +98,10 @@ class ExamController extends AdminBaseController
      */
     public function add()
     {
-        $content = hook_one('admin_user_add_view');
 
-        if (!empty($content)) {
-            return $content;
-        }
-
-        $roles = Db::name('role')->where(['status' => 1])->order("id DESC")->select();
-        $this->assign("roles", $roles);
+        $CategoryModel = new CategoryModel();
+        $categoryTree = $CategoryModel->categoryTree(0, '', $this->type);
+        $this->assign('category_tree', $categoryTree);
         return $this->fetch();
     }
 

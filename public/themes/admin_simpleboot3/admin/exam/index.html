@@ -4,34 +4,15 @@
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
         <li class="active"><a href="{:url('Category/index')}">分类管理</a></li>
-        <li>
-            <div class="dropdown">
-                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    添加分类
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                    <foreach name="category_type" item="item" key="key" offset="1">
-                    <li><a href="{:url('Category/add', ['type'=>$key])}">{$item}</a></li>
-                    </foreach>
-                </ul>
-            </div>
-        </li>
+        <li><a href="{:url('Category/add')}">添加分类</a></li>
     </ul>
     <form class="well form-inline margin-top-20" method="post" action="{:url('Category/index')}">
         分类名称:
         <input type="text" class="form-control" name="keyword" style="width: 200px;"
                value="{$keyword|default=''}" placeholder="请输入分类名称">
         <input type="submit" class="btn btn-primary" value="搜索"/>
-        <a class="btn btn-danger" href="{:url('Category/index')}">清空</a>&nbsp;&nbsp;
-        分类类型:
-        <select class="form-control" name="type" style="width: 140px;" onchange="javascript:window.location.href='{:url(\'Category/index\')}?type='+this.value">
-        <foreach name="category_type" item="item" key="key">
-            <option value="{$key}" <if condition="isset($type) && $type == $key">selected</if>>{$item}</option>
-        </foreach>
-        </select>
+        <a class="btn btn-danger" href="{:url('Category/index')}">清空</a>
     </form>
-
     <form method="post" class="js-ajax-form" action="{:url('Category/listOrder')}">
         <div class="table-actions">
             <button type="submit" class="btn btn-primary btn-sm js-ajax-submit">{:lang('SORT')}</button>
@@ -53,7 +34,6 @@
                     <th width="50">排序</th>
                     <th width="50">ID</th>
                     <th>分类名称</th>
-                    <th>类型</th>
                     <th>描述</th>
                     <th>状态</th>
                     <th width="200">操作</th>
@@ -70,7 +50,6 @@
                     <th width="50">排序</th>
                     <th width="50">ID</th>
                     <th>分类名称</th>
-                    <th>类型</th>
                     <th>描述</th>
                     <th>状态</th>
                     <th width="200">操作</th>
@@ -87,7 +66,6 @@
                     <th width="50">排序</th>
                     <th width="50">ID</th>
                     <th>分类名称</th>
-                    <th>类型</th>
                     <th>描述</th>
                     <th>状态</th>
                     <th width="200">操作</th>
@@ -107,7 +85,7 @@
                         <td>{$vo.description}</td>
                         <td>{$vo.status?'显示':'隐藏'}</td>
                         <td>
-                            <a href="{:url('Category/add', ['parent' => $vo.id, 'type'=>$vo.type])}">添加子分类</a>
+                            <a href="{:url('Category/add', ['parent' => $vo.id])}">添加子分类</a>
                             <a href="{:url('Category/edit',['id'=>$vo.id])}">编辑</a>
                             <a class="js-ajax-delete" href="{:url('Category/delete',['id'=>$vo.id])}">删除</a>
                             <empty name="vo.status">
@@ -129,7 +107,6 @@
                     <th width="50">排序</th>
                     <th width="50">ID</th>
                     <th>分类名称</th>
-                    <th>类型</th>
                     <th>描述</th>
                     <th>状态</th>
                     <th width="200">操作</th>

@@ -4,16 +4,29 @@
 <div class="wrap js-check-wrap">
 	<ul class="nav nav-tabs">
 		<li><a href="{:url('Category/index')}">分类管理</a></li>
-		<li class="active"><a href="{:url('Category/add')}">添加分类</a></li>
+        <li>
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    添加分类
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <foreach name="category_type" item="item" key="key" offset="1">
+                        <li><a href="{:url('Category/add', ['type'=>$key])}">{$item}</a></li>
+                    </foreach>
+                </ul>
+            </div>
+        </li>
 	</ul>
 	<div class="row margin-top-20">
 		<div class="col-md-2">
 			<div class="list-group">
-				<a class="list-group-item" href="#A" data-toggle="tab">基本属性</a>
+				<a class="list-group-item" href="#A" data-toggle="tab">{$category_type[$type]|default='基本属性'}</a>
 			</div>
 		</div>
 		<div class="col-md-6">
 			<form class="js-ajax-form" action="{:url('Category/addPost')}" method="post">
+				<input type="hidden" name="type" value="{$type|default=0}">
 				<div class="tab-content">
 					<div class="tab-pane active" id="A">
 						<div class="form-group">
