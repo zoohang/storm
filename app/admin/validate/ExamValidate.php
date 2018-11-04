@@ -6,15 +6,24 @@
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
-// | Author: 老猫 <thinkcmf@126.com>
+// | Author: 小夏 < 449134904@qq.com>
 // +----------------------------------------------------------------------
-namespace app\admin\model;
+namespace app\admin\validate;
 
-use think\Model;
+use think\Validate;
 
-class ExamModel extends Model
+class ExamValidate extends Validate
 {
+    protected $rule = [
+        'cid' => 'require',
+        'property' => 'require',
+        'title' => 'require',
+    ];
 
-    protected $autoWriteTimestamp = true;
+    protected $message = [
+        'cid.require' => '分类不能为空',
+        'property.require'  => '试卷性质不能为空',
+        'title.require' => '试卷名称不能为空',
+    ];
 
 }

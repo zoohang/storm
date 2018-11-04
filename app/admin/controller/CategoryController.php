@@ -11,10 +11,8 @@
 namespace app\admin\controller;
 
 use app\admin\model\CategoryModel;
-use app\admin\model\RouteModel;
 use cmf\controller\AdminBaseController;
 use think\Db;
-use app\admin\model\ThemeModel;
 use think\Request;
 
 

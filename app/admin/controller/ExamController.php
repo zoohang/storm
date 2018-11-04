@@ -10,6 +10,7 @@
 // +----------------------------------------------------------------------
 namespace app\admin\controller;
 
+use app\admin\model\ExamModel;
 use cmf\controller\AdminBaseController;
 use app\admin\model\CategoryModel;
 use think\Db;
@@ -98,10 +99,11 @@ class ExamController extends AdminBaseController
      */
     public function add()
     {
-
         $CategoryModel = new CategoryModel();
         $categoryTree = $CategoryModel->categoryTree(0, '', $this->type);
         $this->assign('category_tree', $categoryTree);
+        $college = $CategoryModel->field(['id','name'])->where(['type'=>11, 'status'=>1])->select()->toArray();
+        $this->assign('college', $college);
         return $this->fetch();
     }
 
@@ -120,34 +122,23 @@ class ExamController extends AdminBaseController
      */
     public function addPost()
     {
-        if ($this->request->isPost()) {
-            if (!empty($_POST['role_id']) && is_array($_POST['role_id'])) {
-                $role_ids = $_POST['role_id'];
-                unset($_POST['role_id']);
-                $result = $this->validate($this->request->param(), 'User');
-                if ($result !== true) {
-                    $this->error($result);
-                } else {
-                    $_POST['user_pass'] = cmf_password($_POST['user_pass']);
-                    $result             = DB::name('user')->insertGetId($_POST);
-                    if ($result !== false) {
-                        //$role_user_model=M("RoleUser");
-                        foreach ($role_ids as $role_id) {
-                            if (cmf_get_current_admin_id() != 1 && $role_id == 1) {
-                                $this->error("为了网站的安全，非网站创建者不可创建超级管理员！");
-                            }
-                            Db::name('RoleUser')->insert(["role_id" => $role_id, "user_id" => $result]);
-                        }
-                        $this->success("添加成功！", url("user/index"));
-                    } else {
-                        $this->error("添加失败！");
-                    }
-                }
-            } else {
-                $this->error("请为此用户指定角色！");
-            }
-
+        $ExamModel = new ExamModel();
+        $data = $this->request->param();
+        $data['cid'] = $data['parent_id'];
+        unset($data['parent_id']);
+        $result = $this->validate($data, 'Exam');
+        $category_info = Db::name('Category')->where(['id'=>$data['cid']])->find();
+        $data['cname'] = $category_info['name'];
+        $data['create_uid'] = session('ADMIN_ID');
+        $data['create_name'] = session('name');
+        if ($result !== true) {
+            $this->error($result);
         }
+        $result = $ExamModel->allowField(true)->save($data);
+        if ($result === false) {
+            $this->error('添加失败!');
+        }
+        $this->success('添加成功!', url('Category/index'));
     }
 
     /**
