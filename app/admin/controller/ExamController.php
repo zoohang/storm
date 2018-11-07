@@ -15,72 +15,34 @@ use cmf\controller\AdminBaseController;
 use app\admin\model\CategoryModel;
 use think\Db;
 
-/**
- * Class UserController
- * @package app\admin\controller
- * @adminMenuRoot(
- *     'name'   => '管理组',
- *     'action' => 'default',
- *     'parent' => 'user/AdminIndex/default',
- *     'display'=> true,
- *     'order'  => 10000,
- *     'icon'   => '',
- *     'remark' => '管理组'
- * )
- */
 class ExamController extends AdminBaseController
 {
     public $type=1; //category 表中type=1的分类
-    /**
-     * 管理员列表
-     * @adminMenu(
-     *     'name'   => '管理员',
-     *     'parent' => 'default',
-     *     'display'=> true,
-     *     'hasView'=> true,
-     *     'order'  => 10000,
-     *     'icon'   => '',
-     *     'remark' => '管理员管理',
-     *     'param'  => ''
-     * )
-     */
+
     public function index()
     {
-        $content = hook_one('admin_user_index_view');
-
-        if (!empty($content)) {
-            return $content;
-        }
-
-        $where = ["user_type" => 1];
+        $where = [];
         /**搜索条件**/
-        $userLogin = $this->request->param('user_login');
-        $userEmail = trim($this->request->param('user_email'));
-
-        if ($userLogin) {
-            $where['user_login'] = ['like', "%$userLogin%"];
+        $keyword = $this->request->param('keyword');
+        $property = $this->request->param('property', '', 'intval');
+        if ($keyword) {
+            $where[] = ['title', 'like', "%{$keyword}%"];
+        }
+        if ($property) {
+            $where['property'] = $property;
         }
 
-        if ($userEmail) {
-            $where['user_email'] = ['like', "%$userEmail%"];;
-        }
-        $users = Db::name('user')
+        $exams = DB::name('Exam')
             ->where($where)
             ->order("id DESC")
-            ->paginate(10);
-        $users->appends(['user_login' => $userLogin, 'user_email' => $userEmail]);
+            ->paginate(1);
+        // 分页注入搜索条件
+        $exams->appends(['keyword' => $keyword, 'property' => $property]);
         // 获取分页显示
-        $page = $users->render();
-
-        $rolesSrc = Db::name('role')->select();
-        $roles    = [];
-        foreach ($rolesSrc as $r) {
-            $roleId           = $r['id'];
-            $roles["$roleId"] = $r;
-        }
+        $page = $exams->render();
+        $this->assign(['keyword' => $keyword, 'property' => $property]);
         $this->assign("page", $page);
-        $this->assign("roles", $roles);
-        $this->assign("users", $users);
+        $this->assign("list", $exams);
         return $this->fetch();
     }
 
@@ -107,19 +69,6 @@ class ExamController extends AdminBaseController
         return $this->fetch();
     }
 
-    /**
-     * 管理员添加提交
-     * @adminMenu(
-     *     'name'   => '管理员添加提交',
-     *     'parent' => 'index',
-     *     'display'=> false,
-     *     'hasView'=> false,
-     *     'order'  => 10000,
-     *     'icon'   => '',
-     *     'remark' => '管理员添加提交',
-     *     'param'  => ''
-     * )
-     */
     public function addPost()
     {
         $ExamModel = new ExamModel();
@@ -127,100 +76,52 @@ class ExamController extends AdminBaseController
         $data['cid'] = $data['parent_id'];
         unset($data['parent_id']);
         $result = $this->validate($data, 'Exam');
+        if ($result !== true) {
+            $this->error($result);
+        }
         $category_info = Db::name('Category')->where(['id'=>$data['cid']])->find();
         $data['cname'] = $category_info['name'];
         $data['create_uid'] = session('ADMIN_ID');
         $data['create_name'] = session('name');
-        if ($result !== true) {
-            $this->error($result);
-        }
         $result = $ExamModel->allowField(true)->save($data);
         if ($result === false) {
             $this->error('添加失败!');
         }
-        $this->success('添加成功!', url('Category/index'));
+        $this->success('添加成功!', url('Exam/index'));
     }
 
-    /**
-     * 管理员编辑
-     * @adminMenu(
-     *     'name'   => '管理员编辑',
-     *     'parent' => 'index',
-     *     'display'=> false,
-     *     'hasView'=> true,
-     *     'order'  => 10000,
-     *     'icon'   => '',
-     *     'remark' => '管理员编辑',
-     *     'param'  => ''
-     * )
-     */
     public function edit()
     {
-        $content = hook_one('admin_user_edit_view');
-
-        if (!empty($content)) {
-            return $content;
-        }
-
         $id    = $this->request->param('id', 0, 'intval');
-        $roles = DB::name('role')->where(['status' => 1])->order("id DESC")->select();
-        $this->assign("roles", $roles);
-        $role_ids = DB::name('RoleUser')->where(["user_id" => $id])->column("role_id");
-        $this->assign("role_ids", $role_ids);
-
-        $user = DB::name('user')->where(["id" => $id])->find();
-        $this->assign($user);
+        $info = DB::name('exam')->where(["id" => $id])->find();
+        $CategoryModel = new CategoryModel();
+        $categoryTree = $CategoryModel->categoryTree($info['cid'], '', $this->type);
+        $this->assign('category_tree', $categoryTree);
+        $college = $CategoryModel->field(['id','name'])->where(['type'=>11, 'status'=>1])->select()->toArray();
+        $this->assign('college', $college);
+        $this->assign($info);
         return $this->fetch();
     }
 
-    /**
-     * 管理员编辑提交
-     * @adminMenu(
-     *     'name'   => '管理员编辑提交',
-     *     'parent' => 'index',
-     *     'display'=> false,
-     *     'hasView'=> false,
-     *     'order'  => 10000,
-     *     'icon'   => '',
-     *     'remark' => '管理员编辑提交',
-     *     'param'  => ''
-     * )
-     */
     public function editPost()
     {
         if ($this->request->isPost()) {
-            if (!empty($_POST['role_id']) && is_array($_POST['role_id'])) {
-                if (empty($_POST['user_pass'])) {
-                    unset($_POST['user_pass']);
-                } else {
-                    $_POST['user_pass'] = cmf_password($_POST['user_pass']);
-                }
-                $role_ids = $this->request->param('role_id/a');
-                unset($_POST['role_id']);
-                $result = $this->validate($this->request->param(), 'User.edit');
+            $ExamModel = new ExamModel();
+            $data = $this->request->param();
+            $data['cid'] = $data['parent_id'];
+            $category_info = Db::name('Category')->where(['id'=>$data['cid']])->find();
+            $data['cname'] = $category_info['name'];
+            unset($data['parent_id']);
+            $result = $this->validate($data, 'Exam');
 
-                if ($result !== true) {
-                    // 验证失败 输出错误信息
-                    $this->error($result);
-                } else {
-                    $result = DB::name('user')->update($_POST);
-                    if ($result !== false) {
-                        $uid = $this->request->param('id', 0, 'intval');
-                        DB::name("RoleUser")->where(["user_id" => $uid])->delete();
-                        foreach ($role_ids as $role_id) {
-                            if (cmf_get_current_admin_id() != 1 && $role_id == 1) {
-                                $this->error("为了网站的安全，非网站创建者不可创建超级管理员！");
-                            }
-                            DB::name("RoleUser")->insert(["role_id" => $role_id, "user_id" => $uid]);
-                        }
-                        $this->success("保存成功！");
-                    } else {
-                        $this->error("保存失败！");
-                    }
-                }
-            } else {
-                $this->error("请为此用户指定角色！");
+            if ($result !== true) {
+                $this->error($result);
             }
+            $result = $ExamModel->allowField(true)->isUpdate(true)->save($data);
+            if ($result === false) {
+                $this->error('编辑失败!');
+            }
+            $this->success('编辑成功!', url('Exam/index'));
 
         }
     }

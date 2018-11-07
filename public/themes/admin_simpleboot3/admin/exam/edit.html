@@ -3,9 +3,8 @@
 <body>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
-        <li><a href="{:url('Category/index')}">分类管理</a></li>
-        <li><a href="{:url('Category/add')}">添加分类</a></li>
-        <li class="active"><a>编辑分类</a></li>
+        <li><a href="{:url('Exam/index')}">试卷管理</a></li>
+        <li class="active"><a href="{:url('Exam/add')}">编辑试卷</a></li>
     </ul>
     <div class="row margin-top-20">
         <div class="col-md-2">
@@ -14,65 +13,93 @@
             </div>
         </div>
         <div class="col-md-6">
-            <form class="js-ajax-form" action="{:url('Category/editPost')}" method="post">
+            <form class="js-ajax-form" action="{:url('Exam/editPost')}" method="post">
                 <div class="tab-content">
                     <div class="tab-pane active" id="A">
+                        <input type="hidden" name="id" value="{$id}">
                         <div class="form-group">
                             <label for="input-parent"><span class="form-required">*</span>上级</label>
                             <div>
                                 <select class="form-control" name="parent_id" id="input-parent">
-                                    <option value="0">作为一级分类</option>
-                                    {$categories_tree}
+                                    {$category_tree}
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="input-name"><span class="form-required">*</span>分类名称</label>
-                            <div>
-                                <input type="text" class="form-control" id="input-name" name="name" value="{$name}">
+                            <label for="input-parent"><span class="form-required">*</span>刷题类型</label>
+                            <input type="hidden" name="property" value="1" alt="性质 1-真题 2-模拟 3-其他">
+                            <ul id="myTab" class="nav nav-tabs">
+                                <li class="tabs-switch {$property==1 ? 'active' : ''}">
+                                    <a href="#real_test" data-toggle="tab">真题</a>
+                                </li>
+                                <li class="tabs-switch {$property==2 ? 'active' : ''}">
+                                    <a href="#simulation_test" data-toggle="tab">模拟</a>
+                                </li>
+                            </ul>
+                            <div id="myTabContent" class="tab-content">
+                                <div class="tab-pane fade in {$property==1 ? 'active' : ''}" id="real_test">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<code>真题需要选择学校和出版年份</code>
+                                    <blockquote>
+                                        学校:&nbsp;&nbsp;
+                                        <select name="vendor_id" id="vendor_id" class="format-item-container" style="width: 100px;">
+                                            <foreach name="college" item="item">
+                                                <option value="{$item.id}" {if condition='$vendor_id eq $item["id"]'}selected{/if}>{$item.name}</option>
+                                            </foreach>
+                                        </select>&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <input type="hidden" name="vendor_name" value="{$college[0]['name']}">
+                                        年份:&nbsp;&nbsp;
+                                        <input type="number" class="format-item-container" name="vendor_year" style="width: 70px;" value="{$vendor_year}" placeholder="年份">
+                                    </blockquote>
+                                </div>
+                                <div class="tab-pane fade {$property==2 ? 'active' : ''}" id="simulation_test">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;<code>模拟题目: 不用填写学校和年份</code>
+                                </div>
                             </div>
                         </div>
+
                         <div class="form-group">
-                            <label for="input-name">分类别名</label>
+                            <label for="input-name"><span class="form-required">*</span>试卷名称</label>
                             <div>
-                                <input type="text" class="form-control" id="input-alias" name="alias"
-                                       value="{$alias|default=''}">
+                                <input type="text" class="form-control" id="input-name" name="title" value="{$title}">
                             </div>
                         </div>
+
+                        <div class="form-group">
+                            <label for="input-name">试卷别名</label>
+                            <div>
+                                <input type="text" class="form-control" id="input-alias" name="subtitle" value="{$subtitle}">
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label for="input-description">描述</label>
                             <div>
-                                <textarea class="form-control" name="description"
-                                          id="input-description">{$description}</textarea>
+                                <textarea class="form-control" name="description" id="input-description">{$description}</textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="input-description">缩略图</label>
                             <div>
-                                <input type="hidden" name="more[thumbnail]" class="form-control"
-                                       value="{$more.thumbnail|default=''}" id="js-thumbnail-input">
-                                <div>
-                                    <a href="javascript:uploadOneImage('图片上传','#js-thumbnail-input');">
-                                        <if condition="empty($more.thumbnail)">
-                                            <img src="__TMPL__/public/assets/images/default-thumbnail.png"
-                                                 id="js-thumbnail-input-preview"
-                                                 width="135" style="cursor: pointer"/>
-                                            <else/>
-                                            <img src="{:cmf_get_image_preview_url($more.thumbnail)}"
-                                                 id="js-thumbnail-input-preview"
-                                            width="135" style="cursor: pointer"/>
-                                        </if>
-                                    </a>
-                                </div>
+                                <input type="hidden" name="image" id="thumb" value="{$image|default=''}">
+                                <a href="javascript:uploadOneImage('图片上传','#thumb');">
+                                    <if condition="empty($image)">
+                                        <img src="__TMPL__/public/assets/images/default-thumbnail.png"
+                                             id="thumb-preview" width="135" style="cursor: hand"/>
+                                        <else/>
+                                        <img src="{:cmf_get_image_preview_url($image)}" id="thumb-preview"
+                                             width="135" style="cursor: hand"/>
+                                    </if>
+                                </a>
+                                <input type="button" class="btn btn-sm"
+                                       onclick="$('#thumb-preview').attr('src','__TMPL__/public/assets/images/default-thumbnail.png');$('#thumb').val('');return false;"
+                                       value="取消图片">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <input type="hidden" name="id" value="{$id}">
-                    <button type="submit" class="btn btn-primary js-ajax-submit" data-refresh="0">{:lang('SAVE')}
-                    </button>
-                    <a class="btn btn-default" href="{:url('Category/index')}">{:lang('BACK')}</a>
+                    <button type="submit" class="btn btn-primary js-ajax-submit">保存</button>
+                    <a class="btn btn-default" href="{:url('Exam/index')}">返回</a>
                 </div>
             </form>
         </div>
@@ -80,8 +107,14 @@
 </div>
 <script type="text/javascript" src="__STATIC__/js/admin.js"></script>
 <script>
-    $('#input-list_tpl').val("{$list_tpl|default=''}");
-    $('#input-one_tpl').val("{$one_tpl|default=''}");
+    $('.tabs-switch').on('click', function () {
+        var idx = $(this).index();
+        $('input[name=property]').val((parseInt(idx)+1));
+    });
+    $('#vendor_id').on('change',function () {
+        var vendor_name = $(this).find("option:selected").text();
+        $('input[name=vendor_name]').val(vendor_name);
+    })
 </script>
 </body>
 </html>
