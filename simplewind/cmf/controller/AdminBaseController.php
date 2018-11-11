@@ -28,6 +28,7 @@ class AdminBaseController extends BaseController
                 $this->error("您没有访问权限！");
             }
             $this->assign("admin", $user);
+            $this->assign('params', $this->request->param());
         } else {
             if ($this->request->isPost()) {
                 $this->error("您还没有登录！", url("admin/public/login"));

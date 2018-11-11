@@ -10,14 +10,26 @@
 // +----------------------------------------------------------------------
 namespace app\admin\controller;
 
+use app\admin\model\ExamItemModel;
 use app\admin\model\ExamModel;
 use cmf\controller\AdminBaseController;
 use app\admin\model\CategoryModel;
+use think\Cookie;
 use think\Db;
 
 class ExamController extends AdminBaseController
 {
     public $type=1; //category 表中type=1的分类
+    public $status = [-1=>'删除', 0=>'未发布', 1=>'已发布'];
+    public $item_type = [1=>'选择题', 2=>'填空题', 3=>'论述题'];
+
+    public function _initialize()
+    {
+        parent::_initialize();
+        $this->assign('type', $this->type);
+        $this->assign('status' ,$this->status);
+        $this->assign('item_type' ,$this->item_type);
+    }
 
     public function index()
     {
@@ -35,7 +47,7 @@ class ExamController extends AdminBaseController
         $exams = DB::name('Exam')
             ->where($where)
             ->order("id DESC")
-            ->paginate(1);
+            ->paginate();
         // 分页注入搜索条件
         $exams->appends(['keyword' => $keyword, 'property' => $property]);
         // 获取分页显示
@@ -47,28 +59,22 @@ class ExamController extends AdminBaseController
     }
 
     /**
-     * 管理员添加
-     * @adminMenu(
-     *     'name'   => '管理员添加',
-     *     'parent' => 'index',
-     *     'display'=> false,
-     *     'hasView'=> true,
-     *     'order'  => 10000,
-     *     'icon'   => '',
-     *     'remark' => '管理员添加',
-     *     'param'  => ''
-     * )
+     * 试卷添加
      */
     public function add()
     {
         $CategoryModel = new CategoryModel();
         $categoryTree = $CategoryModel->categoryTree(0, '', $this->type);
         $this->assign('category_tree', $categoryTree);
+        //学校类型 11
         $college = $CategoryModel->field(['id','name'])->where(['type'=>11, 'status'=>1])->select()->toArray();
         $this->assign('college', $college);
         return $this->fetch();
     }
 
+    /**
+     * 试卷添加 post
+     */
     public function addPost()
     {
         $ExamModel = new ExamModel();
@@ -90,6 +96,10 @@ class ExamController extends AdminBaseController
         $this->success('添加成功!', url('Exam/index'));
     }
 
+    /**
+     * 试卷编辑
+     * @return mixed
+     */
     public function edit()
     {
         $id    = $this->request->param('id', 0, 'intval');
@@ -103,6 +113,9 @@ class ExamController extends AdminBaseController
         return $this->fetch();
     }
 
+    /**
+     * 试卷保存
+     */
     public function editPost()
     {
         if ($this->request->isPost()) {
@@ -127,68 +140,104 @@ class ExamController extends AdminBaseController
     }
 
     /**
-     * 管理员个人信息修改
-     * @adminMenu(
-     *     'name'   => '个人信息',
-     *     'parent' => 'index',
-     *     'display'=> false,
-     *     'hasView'=> true,
-     *     'order'  => 10000,
-     *     'icon'   => '',
-     *     'remark' => '管理员个人信息修改',
-     *     'param'  => ''
-     * )
+     * 详细题目列表
      */
-    public function userInfo()
-    {
-        $id   = cmf_get_current_admin_id();
-        $user = Db::name('user')->where(["id" => $id])->find();
-        $this->assign($user);
+    public function detail() {
+        $id = $this->request->param('id', 0, 'intval');
+        if (!$id) $this->error('请选择一套试卷');
+        $where = ['exam_id'=>$id, 'status'=>1];
+        $exams_items = DB::name('Exam_item')
+            ->where($where)
+            ->order("list_order ASC,id ASC")
+            ->select();
+        $this->assign('list' , $exams_items);
         return $this->fetch();
     }
 
     /**
-     * 管理员个人信息修改提交
-     * @adminMenu(
-     *     'name'   => '管理员个人信息修改提交',
-     *     'parent' => 'index',
-     *     'display'=> false,
-     *     'hasView'=> false,
-     *     'order'  => 10000,
-     *     'icon'   => '',
-     *     'remark' => '管理员个人信息修改提交',
-     *     'param'  => ''
-     * )
+     * 编辑题目
      */
-    public function userInfoPost()
-    {
-        if ($this->request->isPost()) {
-
-            $data             = $this->request->post();
-            $data['birthday'] = strtotime($data['birthday']);
-            $data['id']       = cmf_get_current_admin_id();
-            $create_result    = Db::name('user')->update($data);;
-            if ($create_result !== false) {
-                $this->success("保存成功！");
-            } else {
-                $this->error("保存失败！");
-            }
+    public function editItem() {
+        $type = $this->request->param('item_type', 0, 'intval');
+        switch ($type) {
+            case 1 :
+                $template_name = 'edit_item_xuanze';
+                break;
+            case 2 :
+                $template_name = 'edit_item_tiankong';
+                break;
+            case 3 :
+                $template_name = 'edit_item_lunshu';
+                break;
+            default :
+                $cookie_type_name = $this->request->cookie('item_template_name');
+                if ($cookie_type_name) {
+                    $template_name = $cookie_type_name;
+                } else {
+                    $template_name = 'edit_item_xuanze';
+                }
         }
+        Cookie::set('item_template_name', $template_name, 86400);
+        //题目信息
+        $info = DB::name('exam_item')->where()->find();
+        return $this->fetch($template_name);
     }
 
     /**
-     * 管理员删除
-     * @adminMenu(
-     *     'name'   => '管理员删除',
-     *     'parent' => 'index',
-     *     'display'=> false,
-     *     'hasView'=> false,
-     *     'order'  => 10000,
-     *     'icon'   => '',
-     *     'remark' => '管理员删除',
-     *     'param'  => ''
-     * )
+     * 保存题目
      */
+    public function saveItem() {
+        $id = $this->request->param('id');
+        $data = $this->request->param();
+        $result = $this->validate($data, 'ExamItem');
+        if ($result !== true) {
+            $this->error($result);
+        }
+        $ExamItemModel = new ExamItemModel();
+        if ($id) {
+            //save
+            $result = $ExamItemModel->allowField(true)->isUpdate(true)->save($data);
+            if ($result === false) {
+                $this->error('编辑失败!');
+            } else {
+                $this->success('编辑成功!', url('Exam/index'));
+            }
+        } else {
+            //add
+            $result = $ExamItemModel->allowField(true)->save($data);
+            if ($result === false) {
+                $this->error('添加失败!');
+            }
+            $this->success('添加成功!', url('Exam/detail'));
+        }
+    }
+
+    public function listOrder()
+    {
+        parent::listOrders(Db::name('exam_item'));
+        $this->success("排序更新成功！", '');
+    }
+
+
+    public function toggle()
+    {
+        $data                = $this->request->param();
+        $examItemModel = new ExamItemModel();
+
+        if (isset($data['ids']) && !empty($data["display"])) {
+            $ids = $this->request->param('ids/a');
+            $examItemModel->where(['id' => ['in', $ids]])->update(['status' => 1]);
+            $this->success("更新成功！");
+        }
+
+        if (isset($data['ids']) && !empty($data["hide"])) {
+            $ids = $this->request->param('ids/a');
+            $examItemModel->where(['id' => ['in', $ids]])->update(['status' => 0]);
+            $this->success("更新成功！");
+        }
+
+    }
+
     public function delete()
     {
         $id = $this->request->param('id', 0, 'intval');
@@ -201,62 +250,6 @@ class ExamController extends AdminBaseController
             $this->success("删除成功！");
         } else {
             $this->error("删除失败！");
-        }
-    }
-
-    /**
-     * 停用管理员
-     * @adminMenu(
-     *     'name'   => '停用管理员',
-     *     'parent' => 'index',
-     *     'display'=> false,
-     *     'hasView'=> false,
-     *     'order'  => 10000,
-     *     'icon'   => '',
-     *     'remark' => '停用管理员',
-     *     'param'  => ''
-     * )
-     */
-    public function ban()
-    {
-        $id = $this->request->param('id', 0, 'intval');
-        if (!empty($id)) {
-            $result = Db::name('user')->where(["id" => $id, "user_type" => 1])->setField('user_status', '0');
-            if ($result !== false) {
-                $this->success("管理员停用成功！", url("user/index"));
-            } else {
-                $this->error('管理员停用失败！');
-            }
-        } else {
-            $this->error('数据传入失败！');
-        }
-    }
-
-    /**
-     * 启用管理员
-     * @adminMenu(
-     *     'name'   => '启用管理员',
-     *     'parent' => 'index',
-     *     'display'=> false,
-     *     'hasView'=> false,
-     *     'order'  => 10000,
-     *     'icon'   => '',
-     *     'remark' => '启用管理员',
-     *     'param'  => ''
-     * )
-     */
-    public function cancelBan()
-    {
-        $id = $this->request->param('id', 0, 'intval');
-        if (!empty($id)) {
-            $result = Db::name('user')->where(["id" => $id, "user_type" => 1])->setField('user_status', '1');
-            if ($result !== false) {
-                $this->success("管理员启用成功！", url("user/index"));
-            } else {
-                $this->error('管理员启用失败！');
-            }
-        } else {
-            $this->error('数据传入失败！');
         }
     }
 }
