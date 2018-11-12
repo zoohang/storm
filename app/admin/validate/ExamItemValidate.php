@@ -18,14 +18,14 @@ class ExamItemValidate extends Validate
         'exam_id' => 'require',
         'item_title' => 'require',
         'type' => 'require',
-        'user_answer' => 'require',
+        'answer' => 'require',
     ];
 
     protected $message = [
         'exam_id.require' => '试卷id不能为空',
         'item_title.require'  => '题目名称不能为空',
         'type.require' => '题目类型不能为空',
-        'user_answer.require' => '题目答案不能为空',
+        'answer.require' => '题目答案不能为空',
     ];
 
 }

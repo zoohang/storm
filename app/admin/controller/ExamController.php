@@ -185,6 +185,7 @@ class ExamController extends AdminBaseController
         $info = [];
         if ($item_id) {
             $info = DB::name('exam_item')->where(['id'=>$item_id])->find();
+            if ($info['option']) $info['option'] = json_decode($info['option'], true);
         }
         $this->assign('info', $info);
         return $this->fetch($template_name);
@@ -194,23 +195,26 @@ class ExamController extends AdminBaseController
      * 保存题目
      */
     public function saveItem() {
-        $id = $this->request->param('id');
-        $data = $this->request->param();
+        $id = $this->request->param('item_id');
+        $data = $this->request->param()['post'];
         $result = $this->validate($data, 'ExamItem');
         if ($result !== true) {
             $this->error($result);
         }
         $ExamItemModel = new ExamItemModel();
+        if ($data['option']) $data['option'] = json_encode($data['option'], 64|256);
         if ($id) {
             //save
+            $data['id'] = $id;
             $result = $ExamItemModel->allowField(true)->isUpdate(true)->save($data);
             if ($result === false) {
                 $this->error('编辑失败!');
             } else {
-                $this->success('编辑成功!', url('Exam/index'));
+                $this->success('编辑成功!');
             }
         } else {
             //add
+            unset($data['id']);
             $result = $ExamItemModel->allowField(true)->save($data);
             if ($result === false) {
                 $this->error('添加失败!');
