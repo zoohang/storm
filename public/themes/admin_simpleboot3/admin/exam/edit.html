@@ -114,6 +114,10 @@
     $('#vendor_id').on('change',function () {
         var vendor_name = $(this).find("option:selected").text();
         $('input[name=vendor_name]').val(vendor_name);
+    });
+    $('.tabs-switch').on('click', function () {
+        var type = $(this).index() + 1;
+        $('input[name=property]').val(type);
     })
 </script>
 </body>

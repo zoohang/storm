@@ -159,6 +159,9 @@ class ExamController extends AdminBaseController
      */
     public function editItem() {
         $type = $this->request->param('item_type', 0, 'intval');
+        $exam_id = $this->request->param('exam_id', 0, 'intval');
+        $item_id = $this->request->param('item_id', 0, 'intval');
+        if (!$exam_id) $this->error('试卷id不能为空');
         switch ($type) {
             case 1 :
                 $template_name = 'edit_item_xuanze';
@@ -179,7 +182,11 @@ class ExamController extends AdminBaseController
         }
         Cookie::set('item_template_name', $template_name, 86400);
         //题目信息
-        $info = DB::name('exam_item')->where()->find();
+        $info = [];
+        if ($item_id) {
+            $info = DB::name('exam_item')->where(['id'=>$item_id])->find();
+        }
+        $this->assign('info', $info);
         return $this->fetch($template_name);
     }
 
