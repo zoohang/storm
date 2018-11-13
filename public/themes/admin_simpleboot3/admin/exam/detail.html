@@ -3,27 +3,38 @@
 <body>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
+        <li><a href="{:url('Exam/index')}">试卷列表</a></li>
         <li class="active"><a href="{:url('Exam/detail', ['id'=>$params['id']])}">题目列表</a></li>
-        <li><a href="{:url('Exam/index')}">试卷管理</a></li>
+        <li>
+            <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    添加题目
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                    <li><a class="js-categories-name-input" data-id="" data-type="1">选择</a></li>
+                    <li><a class="js-categories-name-input" data-id="" data-type="2">填空</a></li>
+                    <li><a class="js-categories-name-input" data-id="" data-type="3">论述</a></li>
+                </ul>
+            </div>
+        </li>
     </ul>
-    <form class="well form-inline margin-top-20" method="post" action="{:url('AdminCategory/index')}">
-        分类名称:
-        <input type="text" class="form-control" name="keyword" style="width: 200px;"
-               value="{$keyword|default=''}" placeholder="请输入分类名称">
-        <input type="submit" class="btn btn-primary" value="搜索"/>
-        <a class="btn btn-danger" href="{:url('AdminCategory/index')}">清空</a>
+    <form class="well form-inline margin-top-20" method="post" action="{:url('Exam/index')}">
+
+        <strong class="lead">{$info.title}</strong>
+        <samll>
+            <button type="button" class="btn btn-primary">{$info.vendor_name}</button>
+            <button type="button" class="btn btn-primary">{$info.vendor_year}</button>
+        </samll>
+        <h5>{$info.subtitle}</h5>
+        <blockquote>
+            <footer>{$info.description}</footer>
+        </blockquote>
     </form>
 
-    <form method="post" class="js-ajax-form" action="{:url('AdminCategory/listOrder')}">
+    <form method="post" class="js-ajax-form" action="{:url('Exam/listOrder')}">
         <div class="table-actions">
             <button type="submit" class="btn btn-primary btn-sm js-ajax-submit">{:lang('SORT')}</button>
-            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
-                    data-action="{:url('AdminCategory/toggle',array('display'=>'1'))}" data-subcheck="true">
-                {:lang('DISPLAY')}
-            </button>
-            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
-                    data-action="{:url('AdminCategory/toggle',array('hide'=>1))}" data-subcheck="true">{:lang('HIDE')}
-            </button>
         </div>
         <table class="table table-hover table-bordered table-list">
             <thead>
@@ -48,21 +59,12 @@
                     <td><input name="list_orders[{$vo.id}]" type="text" size="3" value="{$vo.list_order}"
                                class="input-order"></td>
                     <td>{$vo.id}</td>
-                    <td><a href="{cmf_url('portal/List/index', ['id' => $vo['id']])}" target="_blank">{$vo.name}</a>
-                    </td>
-                    <td>{$vo.description}</td>
-                    <td>{$vo.status?'显示':'隐藏'}</td>
+                    <td>{$item_type[$vo['type']]}</td>
+                    <td>{$vo.item_title}</td>
+                    <td>{$vo.answer}</td>
                     <td>
-                        <a href="{:url('AdminCategory/add', ['parent' => $vo.id])}">添加子分类</a>
-                        <a href="{:url('AdminCategory/edit',['id'=>$vo.id])}">编辑</a>
-                        <a class="js-ajax-delete" href="{:url('AdminCategory/delete',['id'=>$vo.id])}">删除</a>
-                        <empty name="vo.status">
-                            <a class="js-ajax-dialog-btn" data-msg="您确定显示此分类吗"
-                               href="{:url('AdminCategory/toggle',['ids'=>$vo.id,'display'=>1])}">显示</a>
-                            <else/>
-                            <a class="js-ajax-dialog-btn" data-msg="您确定隐藏此分类吗"
-                               href="{:url('AdminCategory/toggle',['ids'=>$vo.id,'hide'=>1])}">隐藏</a>
-                        </empty>
+                        <a alt="{:url('Exam/editItem',['item_id'=>$vo.id, 'exam_id'=>$vo.exam_id, 'item_type'=>$vo.type])}" class="js-categories-name-input" data-id="{$vo.id}" data-type="{$vo.type}">编辑</a>
+                        <a class="js-ajax-delete" href="{:url('Exam/delete_item',['id'=>$vo.id])}">删除</a>
                     </td>
                 </tr>
             </foreach>
@@ -74,5 +76,23 @@
     </form>
 </div>
 <script src="__STATIC__/js/admin.js"></script>
+<script>
+    var exam_id = "{$params.id}";
+    $('body').on('click', '.js-categories-name-input', function() {
+        var item_id = $(this).data('id');
+        var item_type = $(this).data('type');
+        openIframeLayer("{:url('Exam/editItem')}?item_id=" + item_id + '&item_type=' + item_type + '&exam_id=' + exam_id, '题目编辑', {
+            area: ['1000px', '600px'],
+            btn: ['确定', '取消'],
+            yes: function (index, layero) {
+                //do something
+                var iframeWin          = window[layero.find('iframe')[0]['name']];
+                //var selectedCategories = iframeWin.confirm();
+                layer.close(index); //如果设定了yes回调，需进行手工关闭
+                location.reload()
+            }
+        });
+    })
+</script>
 </body>
 </html>

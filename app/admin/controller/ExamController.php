@@ -151,6 +151,9 @@ class ExamController extends AdminBaseController
             ->order("list_order ASC,id ASC")
             ->select();
         $this->assign('list' , $exams_items);
+        //获取试卷信息
+        $info = DB::name('exam')->where(['id'=>$id])->find();
+        $this->assign('info', $info);
         return $this->fetch();
     }
 
@@ -202,7 +205,7 @@ class ExamController extends AdminBaseController
             $this->error($result);
         }
         $ExamItemModel = new ExamItemModel();
-        if ($data['option']) $data['option'] = json_encode($data['option'], 64|256);
+        if (isset($data['option']) && $data['option']) $data['option'] = json_encode($data['option'], 64|256);
         if ($id) {
             //save
             $data['id'] = $id;
@@ -210,7 +213,7 @@ class ExamController extends AdminBaseController
             if ($result === false) {
                 $this->error('编辑失败!');
             } else {
-                $this->success('编辑成功!');
+                $this->success('编辑成功!', url('exam/editItem', ['item_id'=>$id, 'item_type'=>$data['type'], 'exam_id'=>$data['exam_id']]));
             }
         } else {
             //add
@@ -219,7 +222,7 @@ class ExamController extends AdminBaseController
             if ($result === false) {
                 $this->error('添加失败!');
             }
-            $this->success('添加成功!', url('Exam/detail'));
+            $this->success('添加成功!', url('exam/editItem', ['item_id'=>$result, 'item_type'=>$data['type'], 'exam_id'=>$data['exam_id']]));
         }
     }
 
@@ -252,12 +255,17 @@ class ExamController extends AdminBaseController
     public function delete()
     {
         $id = $this->request->param('id', 0, 'intval');
-        if ($id == 1) {
-            $this->error("最高管理员不能删除！");
+        if (Db::name('exam')->where(['id'=> $id])->update(['status' => -1]) !== false) {
+            $this->success("删除成功！");
+        } else {
+            $this->error("删除失败！");
         }
+    }
 
-        if (Db::name('user')->delete($id) !== false) {
-            Db::name("RoleUser")->where(["user_id" => $id])->delete();
+    public function delete_item()
+    {
+        $id = $this->request->param('id', 0, 'intval');
+        if (Db::name('exam_item')->where(['id'=> $id])->update(['status' => -1]) !== false) {
             $this->success("删除成功！");
         } else {
             $this->error("删除失败！");
