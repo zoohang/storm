@@ -85,10 +85,10 @@ class AdminArticleController extends AdminBaseController
         if (!empty($content)) {
             return $content;
         }
-
-        $themeModel        = new ThemeModel();
-        $articleThemeFiles = $themeModel->getActionThemeFiles('portal/Article/index');
-        $this->assign('article_theme_files', $articleThemeFiles);
+        //文章分类属性结构
+        $portalCategoryModel = new PortalCategoryModel();
+        $category = $portalCategoryModel->adminCategoryTree();
+        $this->assign('category', $category);
         return $this->fetch();
     }
 
@@ -183,10 +183,10 @@ class AdminArticleController extends AdminBaseController
         $post            = $portalPostModel->where('id', $id)->find();
         $postCategories  = $post->categories()->alias('a')->column('a.name', 'a.id');
         $postCategoryIds = implode(',', array_keys($postCategories));
-
-        $themeModel        = new ThemeModel();
-        $articleThemeFiles = $themeModel->getActionThemeFiles('portal/Article/index');
-        $this->assign('article_theme_files', $articleThemeFiles);
+        //文章分类属性结构
+        $portalCategoryModel = new PortalCategoryModel();
+        $category = $portalCategoryModel->adminCategoryTree($postCategoryIds);
+        $this->assign('category', $category);
         $this->assign('post', $post);
         $this->assign('post_categories', $postCategories);
         $this->assign('post_category_ids', $postCategoryIds);

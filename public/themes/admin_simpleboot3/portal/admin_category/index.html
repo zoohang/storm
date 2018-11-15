@@ -43,19 +43,6 @@
                 <tbody>
                 {$category_tree}
                 </tbody>
-                <tfoot>
-                <tr>
-                    <th width="16" style="padding-left:20px;"><label><input type="checkbox" class="js-check-all"
-                                                                            data-direction="x"
-                                                                            data-checklist="js-check-x"></label></th>
-                    <th width="50">排序</th>
-                    <th width="50">ID</th>
-                    <th>分类名称</th>
-                    <th>描述</th>
-                    <th>状态</th>
-                    <th width="200">操作</th>
-                </tr>
-                </tfoot>
             </table>
             <else/>
             <table class="table table-hover table-bordered table-list">
@@ -81,8 +68,7 @@
                         <td><input name="list_orders[{$vo.id}]" type="text" size="3" value="{$vo.list_order}"
                                    class="input-order"></td>
                         <td>{$vo.id}</td>
-                        <td><a href="{cmf_url('portal/List/index', ['id' => $vo['id']])}" target="_blank">{$vo.name}</a>
-                        </td>
+                        <td>{$vo.name}</td>
                         <td>{$vo.description}</td>
                         <td>{$vo.status?'显示':'隐藏'}</td>
                         <td>
@@ -100,24 +86,8 @@
                     </tr>
                 </foreach>
                 </tbody>
-                <tfoot>
-                <tr>
-                    <th width="16"><label><input type="checkbox" class="js-check-all"
-                                                 data-direction="x"
-                                                 data-checklist="js-check-x"></label></th>
-                    <th width="50">排序</th>
-                    <th width="50">ID</th>
-                    <th>分类名称</th>
-                    <th>描述</th>
-                    <th>状态</th>
-                    <th width="200">操作</th>
-                </tr>
-                </tfoot>
             </table>
         </empty>
-        <div class="table-actions">
-            <button type="submit" class="btn btn-primary btn-sm js-ajax-submit">{:lang('SORT')}</button>
-        </div>
     </form>
 </div>
 <script src="__STATIC__/js/admin.js"></script>

@@ -104,7 +104,7 @@ class PortalCategoryModel extends Model
                         <td style='padding-left:20px;'><input type='checkbox' class='js-check' data-yid='js-check-y' data-xid='js-check-x' name='ids[]' value='\$id' data-parent_id='\$parent_id' data-id='\$id'></td>
                         <td><input name='list_orders[\$id]' type='text' size='3' value='\$list_order' class='input-order'></td>
                         <td>\$id</td>
-                        <td>\$spacer <a href='\$url' target='_blank'>\$name</a></td>
+                        <td>\$name</td>
                         <td>\$description</td>
                         <td>\$status_text</td>
                         <td>\$str_action</td>
@@ -144,7 +144,7 @@ class PortalCategoryModel extends Model
             $result = false;
         }
 
-        if ($result != false) {
+        /*if ($result != false) {
             //设置别名
             $routeModel = new RouteModel();
             if (!empty($data['alias']) && !empty($id)) {
@@ -152,7 +152,7 @@ class PortalCategoryModel extends Model
                 $routeModel->setRoute($data['alias'] . '/:id', 'portal/Article/index', ['cid' => $id], 2, 4999);
             }
             $routeModel->getRoutes(true);
-        }
+        }*/
 
         return $result;
     }
@@ -194,7 +194,7 @@ class PortalCategoryModel extends Model
                 }
             }
 
-            $routeModel = new RouteModel();
+            /*$routeModel = new RouteModel();
             if (!empty($data['alias'])) {
                 $routeModel->setRoute($data['alias'], 'portal/List/index', ['id' => $data['id']], 2, 5000);
                 $routeModel->setRoute($data['alias'] . '/:id', 'portal/Article/index', ['cid' => $data['id']], 2, 4999);
@@ -203,7 +203,7 @@ class PortalCategoryModel extends Model
                 $routeModel->deleteRoute('portal/Article/index', ['cid' => $data['id']]);
             }
 
-            $routeModel->getRoutes(true);
+            $routeModel->getRoutes(true);*/
         }
 
 

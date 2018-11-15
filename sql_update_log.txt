@@ -1,0 +1,4 @@
+2018-11-15
+删除st_route 文章分类路由数据
+文章分类表新增字段 alias 用来代替之前的路由别名字段
+ALTER TABLE `st_portal_category` ADD COLUMN `alias`  varchar(200) NOT NULL DEFAULT '' COMMENT '小标题' AFTER `name`;
