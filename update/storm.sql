@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-11-01 23:55:41
+Date: 2018-11-17 22:32:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -98,7 +98,7 @@ INSERT INTO `st_admin_menu` VALUES ('54', '50', '2', '0', '10000', 'admin', 'Rba
 INSERT INTO `st_admin_menu` VALUES ('55', '50', '2', '0', '10000', 'admin', 'Rbac', 'roleDelete', '', '删除角色', '', '删除角色');
 INSERT INTO `st_admin_menu` VALUES ('56', '50', '1', '0', '10000', 'admin', 'Rbac', 'authorize', '', '设置角色权限', '', '设置角色权限');
 INSERT INTO `st_admin_menu` VALUES ('57', '50', '2', '0', '10000', 'admin', 'Rbac', 'authorizePost', '', '角色授权提交', '', '角色授权提交');
-INSERT INTO `st_admin_menu` VALUES ('58', '0', '1', '1', '10000', 'admin', 'RecycleBin', 'index', '', '回收站', '', '回收站');
+INSERT INTO `st_admin_menu` VALUES ('58', '0', '1', '1', '30', 'admin', 'RecycleBin', 'index', '', '回收站', '', '回收站');
 INSERT INTO `st_admin_menu` VALUES ('59', '58', '2', '0', '10000', 'admin', 'RecycleBin', 'restore', '', '回收站还原', '', '回收站还原');
 INSERT INTO `st_admin_menu` VALUES ('60', '58', '2', '0', '10000', 'admin', 'RecycleBin', 'delete', '', '回收站彻底删除', '', '回收站彻底删除');
 INSERT INTO `st_admin_menu` VALUES ('61', '6', '1', '1', '10000', 'admin', 'Route', 'index', '', 'URL美化', '', 'URL规则管理');
@@ -161,7 +161,7 @@ INSERT INTO `st_admin_menu` VALUES ('117', '111', '2', '0', '10000', 'admin', 'U
 INSERT INTO `st_admin_menu` VALUES ('118', '111', '2', '0', '10000', 'admin', 'User', 'delete', '', '管理员删除', '', '管理员删除');
 INSERT INTO `st_admin_menu` VALUES ('119', '111', '2', '0', '10000', 'admin', 'User', 'ban', '', '停用管理员', '', '停用管理员');
 INSERT INTO `st_admin_menu` VALUES ('120', '111', '2', '0', '10000', 'admin', 'User', 'cancelBan', '', '启用管理员', '', '启用管理员');
-INSERT INTO `st_admin_menu` VALUES ('121', '0', '0', '1', '30', 'portal', 'AdminIndex', 'default', '', '门户管理', 'th', '门户管理');
+INSERT INTO `st_admin_menu` VALUES ('121', '0', '0', '1', '10000', 'portal', 'AdminIndex', 'default', '', '头条', 'th', '门户管理');
 INSERT INTO `st_admin_menu` VALUES ('122', '121', '1', '1', '10000', 'portal', 'AdminArticle', 'index', '', '文章管理', '', '文章列表');
 INSERT INTO `st_admin_menu` VALUES ('123', '122', '1', '0', '10000', 'portal', 'AdminArticle', 'add', '', '添加文章', '', '添加文章');
 INSERT INTO `st_admin_menu` VALUES ('124', '122', '2', '0', '10000', 'portal', 'AdminArticle', 'addPost', '', '添加文章提交', '', '添加文章提交');
@@ -191,7 +191,7 @@ INSERT INTO `st_admin_menu` VALUES ('147', '146', '1', '0', '10000', 'portal', '
 INSERT INTO `st_admin_menu` VALUES ('148', '146', '2', '0', '10000', 'portal', 'AdminTag', 'addPost', '', '添加文章标签提交', '', '添加文章标签提交');
 INSERT INTO `st_admin_menu` VALUES ('149', '146', '2', '0', '10000', 'portal', 'AdminTag', 'upStatus', '', '更新标签状态', '', '更新标签状态');
 INSERT INTO `st_admin_menu` VALUES ('150', '146', '2', '0', '10000', 'portal', 'AdminTag', 'delete', '', '删除文章标签', '', '删除文章标签');
-INSERT INTO `st_admin_menu` VALUES ('151', '0', '1', '1', '10000', 'user', 'AdminAsset', 'index', '', '资源管理', 'file', '资源管理列表');
+INSERT INTO `st_admin_menu` VALUES ('151', '0', '1', '1', '40', 'user', 'AdminAsset', 'index', '', '资源管理', 'file', '资源管理列表');
 INSERT INTO `st_admin_menu` VALUES ('152', '151', '2', '0', '10000', 'user', 'AdminAsset', 'delete', '', '删除文件', '', '删除文件');
 INSERT INTO `st_admin_menu` VALUES ('153', '110', '0', '1', '10000', 'user', 'AdminIndex', 'default1', '', '用户组', '', '用户组');
 INSERT INTO `st_admin_menu` VALUES ('154', '153', '1', '1', '10000', 'user', 'AdminIndex', 'index', '', '本站用户', '', '本站用户');
@@ -210,8 +210,8 @@ INSERT INTO `st_admin_menu` VALUES ('172', '169', '1', '0', '10000', 'plugin/Wxa
 INSERT INTO `st_admin_menu` VALUES ('173', '169', '2', '0', '10000', 'plugin/Wxapp', 'AdminWxapp', 'editPost', '', '编辑小程序提交保存', '', '编辑小程序');
 INSERT INTO `st_admin_menu` VALUES ('174', '169', '2', '0', '10000', 'plugin/Wxapp', 'AdminWxapp', 'delete', '', '删除小程序', '', '删除小程序');
 INSERT INTO `st_admin_menu` VALUES ('175', '0', '1', '1', '10000', 'admin', 'Exam', 'default', '', '应用', 'book', '');
-INSERT INTO `st_admin_menu` VALUES ('176', '175', '1', '1', '10000', 'admin', 'Exam', 'index', '', '刷题试卷', '', 'pencil');
-INSERT INTO `st_admin_menu` VALUES ('177', '175', '1', '1', '10000', 'admin', 'Category', 'index', '', '综合分类', 'book', '');
+INSERT INTO `st_admin_menu` VALUES ('176', '175', '1', '1', '2', 'admin', 'Exam', 'index', '', '刷题试卷', '', 'pencil');
+INSERT INTO `st_admin_menu` VALUES ('177', '175', '1', '1', '1', 'admin', 'Category', 'index', '', '综合分类', 'book', '');
 
 -- ----------------------------
 -- Table structure for st_asset
@@ -232,7 +232,7 @@ CREATE TABLE `st_asset` (
   `suffix` varchar(10) NOT NULL DEFAULT '' COMMENT '文件后缀名,不包括点',
   `more` text COMMENT '其它详细信息,JSON格式',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COMMENT='资源表';
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COMMENT='资源表';
 
 -- ----------------------------
 -- Records of st_asset
@@ -247,6 +247,12 @@ INSERT INTO `st_asset` VALUES ('7', '1', '2896', '1540972183', '1', '0', '94a284
 INSERT INTO `st_asset` VALUES ('8', '1', '5983', '1540972314', '1', '0', '84e8b3423fb3f1ffbeaae3ef04adef4c3d48d80ed62fc3ad2e8c49837cc2801d', 'fdb5d2e6a9586fe6c723c8ffb67e9262.jpg', 'portal/20181031/2d4c902c344aa229774eb8318b1325f3.jpg', '84e8b3423fb3f1ffbeaae3ef04adef4c', '80046d7b9bdc4c5869fc907ce9f4e642aa3c3138', 'jpg', null);
 INSERT INTO `st_asset` VALUES ('9', '1', '2291', '1541081747', '1', '0', 'c28eb8582dc63998a81c9e6c785b87d90bd700345b7920f43cf621b7c8b80e29', '48b56854b52e7c791bc5048f37bdf4db.jpg', 'admin/20181101/ac0d23b5df572355650894916019cad1.jpg', 'c28eb8582dc63998a81c9e6c785b87d9', '8a4778b3eab01d5ac014466a4d1b9ee9b38d8939', 'jpg', null);
 INSERT INTO `st_asset` VALUES ('10', '1', '6656', '1541081984', '1', '0', 'e7d321d0a10dc390769e5bd69306a2053af24486420a6e5da95901f0be213ea1', '47cb23dad1b3057c2a7e5c18811e99e3.jpg', 'admin/20181101/c2c0f2c533803c20b87266e6633a94f5.jpg', 'e7d321d0a10dc390769e5bd69306a205', 'b906a420d3a85eb852720546b189f02024eebf53', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('11', '1', '27798', '1541602934', '1', '0', '5f947010be8950055381f7786c370baa11bddba3a7d2e4fef7e84669a8d5fd0b', '2e832a5b9fa6245983bbec913c5deca2.jpg', 'admin/20181107/f05a104ce593705eace17696bc5a3233.jpg', '5f947010be8950055381f7786c370baa', 'fb93656b0b48a6e56c2b77ac93e05610bd3fc6cb', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('12', '1', '5696', '1541604577', '1', '0', 'fcfc74aabd31e23ca99e8d83506260b4d9d6f44fdd9384fe47a122606740bfe3', '1d7eee1693557f042ddedff0e2287dd6.jpg', 'admin/20181107/5299ca5b02abe7163b0569cc5aed01da.jpg', 'fcfc74aabd31e23ca99e8d83506260b4', '49fd14128b9b925f0011b127126994bd5c406f36', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('13', '1', '4089', '1541605644', '1', '0', '5e7cdaa0bc218f72ce7b2024597261e79c815ca6d472b2a0edde6abb6a4f35e0', '4f51816941460de157072c7c276ee0b5.jpg', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '5e7cdaa0bc218f72ce7b2024597261e7', 'a243b39b7e823d3b00791fb29f673b301f80574e', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('14', '1', '4663', '1541606146', '1', '0', 'eb440aa540753810798fc6632428b8a94d30bd3184596f1cbd7fcca8c6720592', '3a3af738cab001e55cc9eeda09ca053e.jpg', 'admin/20181107/63db5dfe51c921796566f1142596ce97.jpg', 'eb440aa540753810798fc6632428b8a9', 'a7925521452c4400ae8ce34cb6e5c80b57bbabd9', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('15', '1', '7371', '1542292179', '1', '0', 'b98e9d310a4b5bc4c503fc33164d1e89a6b0b1615465f2c88eed4a63902acef3', '8ad32355d4f2f8471c40d55540c51ea4.jpg', 'default/20181115/35cc4c44cfb509d952fa1a3ca160f2d6.jpg', 'b98e9d310a4b5bc4c503fc33164d1e89', '82d153de142419c47c7ea9e00f2e463a9c04ba7f', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('16', '1', '6056', '1542292193', '1', '0', 'e45fa34bc06bfbaf630dcf952519495ccec35029700c31d85c053318c5bf8461', '14de682ff09d546b958645aa7e503f2e.jpg', 'default/20181115/31c0c24c1cf453d33259f302969f7c4d.jpg', 'e45fa34bc06bfbaf630dcf952519495c', '7fa172579cd23b548888382963ec5305805e75f1', 'jpg', null);
 
 -- ----------------------------
 -- Table structure for st_auth_access
@@ -424,7 +430,7 @@ INSERT INTO `st_auth_rule` VALUES ('134', '1', 'portal', 'admin_url', 'portal/Ad
 INSERT INTO `st_auth_rule` VALUES ('135', '1', 'portal', 'admin_url', 'portal/AdminCategory/select', '', '文章分类选择对话框', '');
 INSERT INTO `st_auth_rule` VALUES ('136', '1', 'portal', 'admin_url', 'portal/AdminCategory/listOrder', '', '文章分类排序', '');
 INSERT INTO `st_auth_rule` VALUES ('137', '1', 'portal', 'admin_url', 'portal/AdminCategory/delete', '', '删除文章分类', '');
-INSERT INTO `st_auth_rule` VALUES ('138', '1', 'portal', 'admin_url', 'portal/AdminIndex/default', '', '门户管理', '');
+INSERT INTO `st_auth_rule` VALUES ('138', '1', 'portal', 'admin_url', 'portal/AdminIndex/default', '', '头条', '');
 INSERT INTO `st_auth_rule` VALUES ('139', '1', 'portal', 'admin_url', 'portal/AdminPage/index', '', '页面管理', '');
 INSERT INTO `st_auth_rule` VALUES ('140', '1', 'portal', 'admin_url', 'portal/AdminPage/add', '', '添加页面', '');
 INSERT INTO `st_auth_rule` VALUES ('141', '1', 'portal', 'admin_url', 'portal/AdminPage/addPost', '', '添加页面提交', '');
@@ -477,13 +483,18 @@ CREATE TABLE `st_category` (
   `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '服务类型 1-刷题 2-打卡 3在线课堂 4-线下课堂',
   `more` text COMMENT '扩展属性',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='admin服务分类表[]';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='admin服务分类表[]';
 
 -- ----------------------------
 -- Records of st_category
 -- ----------------------------
 INSERT INTO `st_category` VALUES ('1', '0', '0', '1', '0', '10000', '建筑', '建筑建筑', '建筑建筑建筑', '0-1', '0', '{\"thumbnail\":\"admin\\/20181101\\/ac0d23b5df572355650894916019cad1.jpg\"}');
 INSERT INTO `st_category` VALUES ('2', '1', '0', '1', '0', '10000', '建筑二级分类', '建筑二级分类建筑二级分类', '建筑二级分类建筑二级分类建筑二级分类', '0-1-2', '0', '{\"thumbnail\":\"admin\\/20181101\\/c2c0f2c533803c20b87266e6633a94f5.jpg\"}');
+INSERT INTO `st_category` VALUES ('3', '0', '0', '1', '0', '10000', '重大', '重庆大学', '', '0-3', '11', '{\"thumbnail\":\"\"}');
+INSERT INTO `st_category` VALUES ('4', '0', '0', '1', '0', '10000', '西大', '西南大学', '', '0-4', '11', '{\"thumbnail\":\"\"}');
+INSERT INTO `st_category` VALUES ('5', '0', '0', '1', '0', '10000', '建筑', '', '', '0-5', '1', '{\"thumbnail\":\"\"}');
+INSERT INTO `st_category` VALUES ('6', '0', '0', '1', '0', '10000', '规划', '', '', '0-6', '1', '{\"thumbnail\":\"\"}');
+INSERT INTO `st_category` VALUES ('7', '0', '0', '1', '0', '10000', '园林', '', '', '0-7', '1', '{\"thumbnail\":\"\"}');
 
 -- ----------------------------
 -- Table structure for st_comment
@@ -522,6 +533,92 @@ CREATE TABLE `st_comment` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for st_course
+-- ----------------------------
+DROP TABLE IF EXISTS `st_course`;
+CREATE TABLE `st_course` (
+  `cid` int(11) NOT NULL AUTO_INCREMENT,
+  `ctitile` varchar(256) NOT NULL DEFAULT '' COMMENT '课程名称',
+  `tid` int(11) NOT NULL DEFAULT '0' COMMENT '讲师id',
+  `tname` varchar(255) NOT NULL DEFAULT '' COMMENT '讲师名称',
+  `pid` int(11) NOT NULL DEFAULT '0' COMMENT '课程分类id',
+  `pname` varchar(128) NOT NULL DEFAULT '' COMMENT '分类名称',
+  `desc` text COMMENT '课程介绍',
+  `num` int(11) NOT NULL DEFAULT '0' COMMENT '课程小结数量',
+  `collect_num` int(11) NOT NULL DEFAULT '0' COMMENT '收藏数量',
+  `price` int(11) NOT NULL DEFAULT '0' COMMENT '费用',
+  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '类型 1-视频 2-音频 3-图文',
+  `image` varchar(256) NOT NULL DEFAULT '' COMMENT '展示图片',
+  `preview_url` varchar(256) NOT NULL DEFAULT '' COMMENT '视频预览地址',
+  `create_time` int(10) NOT NULL DEFAULT '0',
+  `update_time` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`cid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='课程表';
+
+-- ----------------------------
+-- Records of st_course
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for st_course_item
+-- ----------------------------
+DROP TABLE IF EXISTS `st_course_item`;
+CREATE TABLE `st_course_item` (
+  `item_id` int(11) NOT NULL AUTO_INCREMENT,
+  `item_title` varchar(128) NOT NULL DEFAULT '' COMMENT '课题名称',
+  `cid` int(11) NOT NULL DEFAULT '0' COMMENT '课程id [course id]',
+  `ctitle` varchar(255) NOT NULL DEFAULT '' COMMENT '课程标题',
+  `sid` int(11) NOT NULL DEFAULT '0' COMMENT '章节id',
+  `stitle` varchar(128) NOT NULL DEFAULT '' COMMENT '章节名称',
+  `desc` text COMMENT '介绍',
+  `source_url` varchar(256) NOT NULL DEFAULT '' COMMENT '资源路径',
+  `create_time` int(10) NOT NULL DEFAULT '0',
+  `update_time` int(10) NOT NULL DEFAULT '0',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-删除 1-显示',
+  PRIMARY KEY (`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='课题表';
+
+-- ----------------------------
+-- Records of st_course_item
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for st_course_section
+-- ----------------------------
+DROP TABLE IF EXISTS `st_course_section`;
+CREATE TABLE `st_course_section` (
+  `sid` int(11) NOT NULL AUTO_INCREMENT,
+  `stitle` varchar(128) NOT NULL DEFAULT '' COMMENT '章节标题',
+  `cid` int(11) NOT NULL DEFAULT '0' COMMENT '课程id',
+  `ctitle` varchar(128) NOT NULL DEFAULT '' COMMENT '课程标题',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-删除 1-展示',
+  PRIMARY KEY (`sid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='课程-章节关联表';
+
+-- ----------------------------
+-- Records of st_course_section
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for st_course_teacher
+-- ----------------------------
+DROP TABLE IF EXISTS `st_course_teacher`;
+CREATE TABLE `st_course_teacher` (
+  `tid` int(11) NOT NULL AUTO_INCREMENT COMMENT '讲师id',
+  `tname` varchar(128) NOT NULL DEFAULT '' COMMENT '讲师名称',
+  `summary` varchar(256) NOT NULL DEFAULT '' COMMENT '简介',
+  `avatar` varchar(256) NOT NULL DEFAULT '' COMMENT '讲师头像url',
+  `create_time` int(10) NOT NULL,
+  `update_time` int(10) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-隐藏 1-展示',
+  PRIMARY KEY (`tid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='在线课程/线下课程 讲师表';
+
+-- ----------------------------
+-- Records of st_course_teacher
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for st_exam
 -- ----------------------------
 DROP TABLE IF EXISTS `st_exam`;
@@ -537,17 +634,20 @@ CREATE TABLE `st_exam` (
   `create_name` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '编辑名称',
   `title` varchar(50) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '标题',
   `subtitle` varchar(50) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '小标题',
-  `image` varchar(50) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '封面图',
+  `description` text NOT NULL COMMENT '描述',
+  `image` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '封面图',
   `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
   `delete_time` int(10) NOT NULL DEFAULT '0' COMMENT '删除时间',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态;1:已发布;0:未发布;-1:删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='试卷表[刷题]';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='试卷表[刷题]';
 
 -- ----------------------------
 -- Records of st_exam
 -- ----------------------------
+INSERT INTO `st_exam` VALUES ('1', '5', '建筑', '1', '3', '重大', '2018', '1', 'admin', '重大密卷', '三年模拟五年高考', '三年模拟五年高考, 你怕不怕?', '', '1541262925', '1541262925', '0', '0');
+INSERT INTO `st_exam` VALUES ('2', '6', '规划', '1', '3', '重大', '2008', '1', 'admin', '西南大学2009研究生真题', '西南大学2009研究生真题1', '西南大学2009研究生真题211', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '1541602937', '1541606440', '0', '0');
 
 -- ----------------------------
 -- Table structure for st_exam_item
@@ -559,19 +659,30 @@ CREATE TABLE `st_exam_item` (
   `item_title` varchar(200) NOT NULL DEFAULT '题目',
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '题目类型 1:选择题,2:填空题,3:论述题',
   `option` text NOT NULL COMMENT '选择题[选项][json]',
-  `user_answer` text NOT NULL COMMENT '用户回答',
   `answer` text NOT NULL COMMENT '参考答案',
   `analysis` text NOT NULL COMMENT '分析',
+  `knowledge` text NOT NULL COMMENT '知识点',
   `create_time` int(10) NOT NULL DEFAULT '0',
-  `update_time` int(10) NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态 1-正常 0-删除',
+  `update_time` int(10) NOT NULL DEFAULT '0',
+  `list_order` int(11) NOT NULL DEFAULT '100' COMMENT '排序 排序值越小越靠前',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态 1-正常 0-隐藏 -1删除',
   PRIMARY KEY (`id`),
   KEY `exam_id_idx` (`exam_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_exam_item
 -- ----------------------------
+INSERT INTO `st_exam_item` VALUES ('1', '1', '啊啊啊', '1', '{\"A\":\"啊啊啊啊啊啊啊啊啊啊啊啊啊啊白斑病白斑病\",\"B\":\"白斑病白斑病吧\",\"C\":\"草草草草草草草草草\",\"D\":\"滴答滴答滴答滴答滴答的\"}', 'D', '反反复复发', '吱吱吱吱吱吱吱吱吱吱吱吱吱吱在', '1542039232', '1542039232', '2', '1');
+INSERT INTO `st_exam_item` VALUES ('2', '1', '啊啊啊1', '1', '{\"A\":\"啊啊啊啊啊啊啊啊啊啊啊啊啊啊白斑病白斑病2\",\"B\":\"白斑病白斑病吧\",\"C\":\"草草草草草草草草草\",\"D\":\"滴答滴答滴答滴答滴答的\"}', 'D', '反反复复发', '吱吱吱吱吱吱吱吱吱吱吱吱吱吱在', '1542039906', '1542039906', '3', '1');
+INSERT INTO `st_exam_item` VALUES ('3', '1', '啊啊啊3', '1', '{\"A\":\"啊啊啊啊啊啊啊啊啊啊啊啊啊啊白斑病白斑病3\",\"B\":\"白斑病白斑病吧3\",\"C\":\"草草草草草草草草草3\",\"D\":\"滴答滴答滴答滴答滴答的3\"}', 'D', '反反复复发3', '吱吱吱吱吱吱吱吱吱吱吱吱吱吱在3', '1542039932', '1542040125', '4', '1');
+INSERT INTO `st_exam_item` VALUES ('4', '1', '1', '2', '', '1', '1', '1', '1542113284', '1542113284', '5', '1');
+INSERT INTO `st_exam_item` VALUES ('5', '2', 'lunshu1', '3', '', 'lunshu1', 'lunshu1', 'lunshu123', '1542120943', '1542122472', '1003', '1');
+INSERT INTO `st_exam_item` VALUES ('6', '2', '12', '3', '', '1', '1', '1', '1542122521', '1542122831', '1001', '-1');
+INSERT INTO `st_exam_item` VALUES ('7', '2', 'ttt', '2', '', 'ttt1', 'ttttt', 'ttttt', '1542122953', '1542123130', '100', '1');
+INSERT INTO `st_exam_item` VALUES ('8', '2', '44', '2', '', '44', '44', '44', '1542122986', '1542122986', '100', '1');
+INSERT INTO `st_exam_item` VALUES ('9', '2', '1', '2', '', '1', '11', '1', '1542123030', '1542123030', '100', '1');
+INSERT INTO `st_exam_item` VALUES ('10', '2', '2', '3', '', '2', '22', '2', '1542123141', '1542123141', '100', '1');
 
 -- ----------------------------
 -- Table structure for st_hook
@@ -804,6 +915,7 @@ CREATE TABLE `st_portal_category` (
   `delete_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间',
   `list_order` float NOT NULL DEFAULT '10000' COMMENT '排序',
   `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '分类名称',
+  `alias` varchar(200) NOT NULL DEFAULT '' COMMENT '小标题',
   `description` varchar(255) NOT NULL DEFAULT '' COMMENT '分类描述',
   `path` varchar(255) NOT NULL DEFAULT '' COMMENT '分类层级关系路径',
   `seo_title` varchar(100) NOT NULL DEFAULT '',
@@ -813,14 +925,18 @@ CREATE TABLE `st_portal_category` (
   `one_tpl` varchar(50) NOT NULL DEFAULT '' COMMENT '分类文章页模板',
   `more` text COMMENT '扩展属性',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='portal应用 文章分类表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='portal应用 文章分类表';
 
 -- ----------------------------
 -- Records of st_portal_category
 -- ----------------------------
-INSERT INTO `st_portal_category` VALUES ('1', '0', '0', '1', '0', '10000', '建筑', '', '0-1', '', '', '', 'list', 'article', '{\"thumbnail\":\"\"}');
-INSERT INTO `st_portal_category` VALUES ('2', '0', '0', '1', '0', '10000', '规划', '', '0-2', '', '', '', 'list', 'article', '{\"thumbnail\":\"\"}');
-INSERT INTO `st_portal_category` VALUES ('3', '1', '0', '1', '0', '10000', '建一', '', '0-1-3', '', '', '', 'list', 'article', '{\"thumbnail\":\"\"}');
+INSERT INTO `st_portal_category` VALUES ('1', '0', '0', '1', '0', '10000', '建筑', '建筑alias', '建筑', '0-1', '', '', '', 'list', 'article', '{\"thumbnail\":\"admin\\/20181101\\/c2c0f2c533803c20b87266e6633a94f5.jpg\"}');
+INSERT INTO `st_portal_category` VALUES ('2', '0', '0', '1', '0', '10000', '规划', '', '', '0-2', '', '', '', 'list', 'article', '{\"thumbnail\":\"\"}');
+INSERT INTO `st_portal_category` VALUES ('3', '1', '0', '0', '1542287935', '10000', '建一', '', '', '0-1-3', '', '', '', 'list', 'article', '{\"thumbnail\":\"\"}');
+INSERT INTO `st_portal_category` VALUES ('4', '0', '0', '1', '0', '10000', '园林', '', '园林', '0-4', '', '', '', 'list', 'article', '{\"thumbnail\":\"\"}');
+INSERT INTO `st_portal_category` VALUES ('5', '1', '0', '1', '0', '10000', '建筑一级', '建筑一级alias', '建筑一级', '0-1-5', '', '', '', 'list', 'article', '{\"thumbnail\":\"\"}');
+INSERT INTO `st_portal_category` VALUES ('6', '1', '0', '1', '0', '10000', '建筑二级', '', '建筑二级', '0-1-6', '', '', '', '', '', '{\"thumbnail\":\"\"}');
+INSERT INTO `st_portal_category` VALUES ('7', '1', '0', '1', '0', '10000', '小二', '小二alias', '小二desc', '0-1-7', '', '', '', '', '', '{\"thumbnail\":\"portal\\/20181031\\/dcc8f9fe68e35680ff60b209508ca7ce.jpg\"}');
 
 -- ----------------------------
 -- Table structure for st_portal_category_post
@@ -834,12 +950,15 @@ CREATE TABLE `st_portal_category_post` (
   `status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '状态,1:发布;0:不发布',
   PRIMARY KEY (`id`),
   KEY `term_taxonomy_id` (`category_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='portal应用 分类文章对应表';
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COMMENT='portal应用 分类文章对应表';
 
 -- ----------------------------
 -- Records of st_portal_category_post
 -- ----------------------------
-INSERT INTO `st_portal_category_post` VALUES ('3', '2', '3', '10000', '1');
+INSERT INTO `st_portal_category_post` VALUES ('4', '2', '1', '10000', '1');
+INSERT INTO `st_portal_category_post` VALUES ('5', '3', '2', '10000', '1');
+INSERT INTO `st_portal_category_post` VALUES ('6', '4', '2', '10000', '1');
+INSERT INTO `st_portal_category_post` VALUES ('11', '5', '5', '10000', '1');
 
 -- ----------------------------
 -- Table structure for st_portal_post
@@ -876,13 +995,16 @@ CREATE TABLE `st_portal_post` (
   KEY `parent_id` (`parent_id`),
   KEY `user_id` (`user_id`),
   KEY `create_time` (`create_time`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='portal应用 文章表';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='portal应用 文章表';
 
 -- ----------------------------
 -- Records of st_portal_post
 -- ----------------------------
-INSERT INTO `st_portal_post` VALUES ('1', '0', '2', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1540969665', '1540969665', '1540969500', '0', '测试直接添加页面', '测试 直接 添加 页面', '测试直接添加页面', '', '', '\n&lt;p&gt;&lt;span style=&quot;text-decoration: underline;&quot;&gt;测试直接添加页面&lt;/span&gt;&lt;/p&gt;\n&lt;p&gt;&lt;strong&gt;测试直接添加页面&lt;/strong&gt;&lt;/p&gt;\n&lt;p&gt;&lt;em&gt;测试直接添加页面&lt;/em&gt;&lt;/p&gt;\n', null, '{\"thumbnail\":\"portal\\/20181031\\/c7cae5f03d3af648e043704ec6f45296.jpg\",\"template\":\"page\",\"photos\":[{\"url\":\"portal\\/20181031\\/8f953a156ac5e7985093783571f78025.jpg\",\"name\":\"0ae3ac53ea686ed2a70e3eeca7217fac.jpg\"}]}');
-INSERT INTO `st_portal_post` VALUES ('2', '0', '1', '1', '1', '1', '1', '0', '0', '10', '0', '0', '0', '1540970569', '1541077857', '1540970280', '0', '测试文章属于两个分类', '测试,文章,属于,两个,分类', '测试文章属于两个分类', '', 'portal/20181031/423bb38785881980610dbe0619ce7a80.jpg', '\n&lt;p&gt;测试文章属于两个分类&lt;/p&gt;\n&lt;p&gt;&lt;span style=&quot;border: 1px solid rgb(0, 0, 0);&quot;&gt;测试文章属于两个分类&lt;/span&gt;&lt;/p&gt;\n&lt;p&gt;&lt;span style=&quot;text-decoration: underline;&quot;&gt;测试文章属于两个分类&lt;/span&gt;&lt;/p&gt;\n', null, '{\"audio\":\"\",\"video\":\"portal\\/20181031\\/eff42dcb01713702ee7197e2d712be3d.mp4\",\"thumbnail\":\"portal\\/20181031\\/423bb38785881980610dbe0619ce7a80.jpg\",\"template\":\"\",\"photos\":[{\"url\":\"portal\\/20181031\\/e05dd234377733572c25b9678c510a42.jpg\",\"name\":\"5ac1bebd03cf3d7a2d166edb7a5f845e.jpg\"}]}');
+INSERT INTO `st_portal_post` VALUES ('1', '0', '2', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1540969665', '1542289038', '1540969500', '0', '测试直接添加页面', '测试 直接 添加 页面', '测试直接添加页面', '', '', '\n&lt;p&gt;&lt;span style=&quot;text-decoration: underline;&quot;&gt;测试直接添加页面&lt;/span&gt;&lt;/p&gt;\n&lt;p&gt;&lt;strong&gt;测试直接添加页面&lt;/strong&gt;&lt;/p&gt;\n&lt;p&gt;&lt;em&gt;测试直接添加页面&lt;/em&gt;&lt;/p&gt;\n', null, '{\"thumbnail\":\"portal\\/20181031\\/c7cae5f03d3af648e043704ec6f45296.jpg\",\"template\":\"\",\"photos\":[{\"url\":\"portal\\/20181031\\/8f953a156ac5e7985093783571f78025.jpg\",\"name\":\"0ae3ac53ea686ed2a70e3eeca7217fac.jpg\"}]}');
+INSERT INTO `st_portal_post` VALUES ('2', '0', '1', '1', '1', '0', '1', '0', '0', '10', '0', '0', '0', '1540970569', '1542289391', '1540970280', '0', '测试文章属于两个分类', '', '测试文章属于两个分类', 'https://mp.weixin.qq.com/s/kwJ5U4oKEDY94RAazAtxzw', 'portal/20181031/423bb38785881980610dbe0619ce7a80.jpg', '\n&lt;p&gt;测试文章属于两个分类&lt;/p&gt;\n&lt;p&gt;&lt;span style=&quot;border: 1px solid rgb(0, 0, 0);&quot;&gt;测试文章属于两个分类&lt;/span&gt;&lt;/p&gt;\n&lt;p&gt;&lt;span style=&quot;text-decoration: underline;&quot;&gt;测试文章属于两个分类&lt;/span&gt;&lt;/p&gt;\n', null, '{\"audio\":\"\",\"video\":\"portal\\/20181031\\/eff42dcb01713702ee7197e2d712be3d.mp4\",\"thumbnail\":\"portal\\/20181031\\/423bb38785881980610dbe0619ce7a80.jpg\"}');
+INSERT INTO `st_portal_post` VALUES ('3', '0', '1', '1', '1', '0', '1', '0', '0', '0', '0', '0', '0', '1542290082', '1542290082', '1542290063', '0', '1', '2', '4', '3', '', '&lt;p&gt;5&lt;/p&gt;', null, '{\"audio\":\"\",\"video\":\"\",\"thumbnail\":\"\",\"template\":\"\"}');
+INSERT INTO `st_portal_post` VALUES ('4', '0', '1', '1', '1', '0', '1', '0', '0', '0', '0', '0', '0', '1542290252', '1542290252', '1542290232', '0', '1', '2', '4', '3', '', '&lt;p&gt;5&lt;/p&gt;', null, '{\"audio\":\"\",\"video\":\"\",\"thumbnail\":\"\",\"template\":\"\"}');
+INSERT INTO `st_portal_post` VALUES ('5', '0', '1', '1', '1', '1', '1', '1', '1', '0', '0', '0', '0', '1542290679', '1542290978', '1542290640', '0', '2', '2', '2', '2', '', '&lt;p&gt;2&lt;/p&gt;', null, '{\"audio\":\"\",\"video\":\"\",\"thumbnail\":\"\"}');
 
 -- ----------------------------
 -- Table structure for st_portal_tag
@@ -895,7 +1017,7 @@ CREATE TABLE `st_portal_tag` (
   `post_count` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '标签文章数',
   `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '标签名称',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='portal应用 文章标签表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='portal应用 文章标签表';
 
 -- ----------------------------
 -- Records of st_portal_tag
@@ -906,6 +1028,7 @@ INSERT INTO `st_portal_tag` VALUES ('3', '1', '0', '0', '文章');
 INSERT INTO `st_portal_tag` VALUES ('4', '1', '0', '0', '属于');
 INSERT INTO `st_portal_tag` VALUES ('5', '1', '0', '0', '两个');
 INSERT INTO `st_portal_tag` VALUES ('6', '1', '0', '0', '分类');
+INSERT INTO `st_portal_tag` VALUES ('7', '1', '0', '0', '2');
 
 -- ----------------------------
 -- Table structure for st_portal_tag_post
@@ -918,16 +1041,14 @@ CREATE TABLE `st_portal_tag_post` (
   `status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '状态,1:发布;0:不发布',
   PRIMARY KEY (`id`),
   KEY `post_id` (`post_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='portal应用 标签文章对应表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='portal应用 标签文章对应表';
 
 -- ----------------------------
 -- Records of st_portal_tag_post
 -- ----------------------------
-INSERT INTO `st_portal_tag_post` VALUES ('1', '2', '2', '1');
-INSERT INTO `st_portal_tag_post` VALUES ('2', '3', '2', '1');
-INSERT INTO `st_portal_tag_post` VALUES ('3', '4', '2', '1');
-INSERT INTO `st_portal_tag_post` VALUES ('4', '5', '2', '1');
-INSERT INTO `st_portal_tag_post` VALUES ('5', '6', '2', '1');
+INSERT INTO `st_portal_tag_post` VALUES ('6', '7', '3', '1');
+INSERT INTO `st_portal_tag_post` VALUES ('7', '7', '4', '1');
+INSERT INTO `st_portal_tag_post` VALUES ('8', '7', '5', '1');
 
 -- ----------------------------
 -- Table structure for st_recycle_bin
@@ -941,11 +1062,12 @@ CREATE TABLE `st_recycle_bin` (
   `name` varchar(255) DEFAULT '' COMMENT '删除内容名称',
   `user_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT=' 回收站';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT=' 回收站';
 
 -- ----------------------------
 -- Records of st_recycle_bin
 -- ----------------------------
+INSERT INTO `st_recycle_bin` VALUES ('1', '3', '1542287935', 'portal_category', '建一', '0');
 
 -- ----------------------------
 -- Table structure for st_role
@@ -1000,14 +1122,11 @@ CREATE TABLE `st_route` (
   `full_url` varchar(255) NOT NULL DEFAULT '' COMMENT '完整url',
   `url` varchar(255) NOT NULL DEFAULT '' COMMENT '实际显示的url',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='url路由表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='url路由表';
 
 -- ----------------------------
 -- Records of st_route
 -- ----------------------------
-INSERT INTO `st_route` VALUES ('1', '10000', '1', '1', 'portal/List/index', 'list/:id');
-INSERT INTO `st_route` VALUES ('2', '5000', '1', '2', 'portal/List/index?id=1', '建筑建筑');
-INSERT INTO `st_route` VALUES ('3', '4999', '1', '2', 'portal/Article/index?cid=1', '建筑建筑/:id');
 
 -- ----------------------------
 -- Table structure for st_slide
