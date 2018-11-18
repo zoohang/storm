@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地连接
+Source Server         : localhost
 Source Server Version : 50553
-Source Host           : 127.0.0.1:3306
+Source Host           : localhost:3306
 Source Database       : storm
 
 Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-11-17 22:32:32
+Date: 2018-11-18 19:00:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -36,7 +36,7 @@ CREATE TABLE `st_admin_menu` (
   KEY `status` (`status`),
   KEY `parent_id` (`parent_id`),
   KEY `controller` (`controller`)
-) ENGINE=InnoDB AUTO_INCREMENT=178 DEFAULT CHARSET=utf8mb4 COMMENT='后台菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=180 DEFAULT CHARSET=utf8mb4 COMMENT='后台菜单表';
 
 -- ----------------------------
 -- Records of st_admin_menu
@@ -212,6 +212,8 @@ INSERT INTO `st_admin_menu` VALUES ('174', '169', '2', '0', '10000', 'plugin/Wxa
 INSERT INTO `st_admin_menu` VALUES ('175', '0', '1', '1', '10000', 'admin', 'Exam', 'default', '', '应用', 'book', '');
 INSERT INTO `st_admin_menu` VALUES ('176', '175', '1', '1', '2', 'admin', 'Exam', 'index', '', '刷题试卷', '', 'pencil');
 INSERT INTO `st_admin_menu` VALUES ('177', '175', '1', '1', '1', 'admin', 'Category', 'index', '', '综合分类', 'book', '');
+INSERT INTO `st_admin_menu` VALUES ('178', '175', '1', '1', '3', 'admin', 'Course', 'index', '', '在线课堂', '', '');
+INSERT INTO `st_admin_menu` VALUES ('179', '175', '1', '1', '10', 'admin', 'Course', 'teacher', '', '课题讲师列表', '', '');
 
 -- ----------------------------
 -- Table structure for st_asset
@@ -232,7 +234,7 @@ CREATE TABLE `st_asset` (
   `suffix` varchar(10) NOT NULL DEFAULT '' COMMENT '文件后缀名,不包括点',
   `more` text COMMENT '其它详细信息,JSON格式',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COMMENT='资源表';
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COMMENT='资源表';
 
 -- ----------------------------
 -- Records of st_asset
@@ -253,6 +255,8 @@ INSERT INTO `st_asset` VALUES ('13', '1', '4089', '1541605644', '1', '0', '5e7cd
 INSERT INTO `st_asset` VALUES ('14', '1', '4663', '1541606146', '1', '0', 'eb440aa540753810798fc6632428b8a94d30bd3184596f1cbd7fcca8c6720592', '3a3af738cab001e55cc9eeda09ca053e.jpg', 'admin/20181107/63db5dfe51c921796566f1142596ce97.jpg', 'eb440aa540753810798fc6632428b8a9', 'a7925521452c4400ae8ce34cb6e5c80b57bbabd9', 'jpg', null);
 INSERT INTO `st_asset` VALUES ('15', '1', '7371', '1542292179', '1', '0', 'b98e9d310a4b5bc4c503fc33164d1e89a6b0b1615465f2c88eed4a63902acef3', '8ad32355d4f2f8471c40d55540c51ea4.jpg', 'default/20181115/35cc4c44cfb509d952fa1a3ca160f2d6.jpg', 'b98e9d310a4b5bc4c503fc33164d1e89', '82d153de142419c47c7ea9e00f2e463a9c04ba7f', 'jpg', null);
 INSERT INTO `st_asset` VALUES ('16', '1', '6056', '1542292193', '1', '0', 'e45fa34bc06bfbaf630dcf952519495ccec35029700c31d85c053318c5bf8461', '14de682ff09d546b958645aa7e503f2e.jpg', 'default/20181115/31c0c24c1cf453d33259f302969f7c4d.jpg', 'e45fa34bc06bfbaf630dcf952519495c', '7fa172579cd23b548888382963ec5305805e75f1', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('17', '1', '792', '1542520778', '1', '0', '8c9777c96ee2cc95324cd29630409307aac50329aab0e83428bd988b2271c97a', 'volumehover.png', 'admin/20181118/9f53def1e668321e9513d5bd1a019e14.png', '8c9777c96ee2cc95324cd29630409307', '702401b5a9f0cf7641a6310eeeeec07e17274a44', 'png', null);
+INSERT INTO `st_asset` VALUES ('18', '1', '346', '1542522013', '1', '0', '7eebfbb6b539886469c8578262e6d3b92d616b3dc4625a99e33cd58b906f1ef9', 'smallpausehover.png', 'admin/20181118/ec1baa9e0e30c35deb575a3d2efca386.png', '7eebfbb6b539886469c8578262e6d3b9', '5d588ddb7d67027f2224dabc5d6ead1ed87da390', 'png', null);
 
 -- ----------------------------
 -- Table structure for st_auth_access
@@ -288,7 +292,7 @@ CREATE TABLE `st_auth_rule` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`) USING BTREE,
   KEY `module` (`app`,`status`,`type`)
-) ENGINE=InnoDB AUTO_INCREMENT=178 DEFAULT CHARSET=utf8mb4 COMMENT='权限规则表';
+) ENGINE=InnoDB AUTO_INCREMENT=180 DEFAULT CHARSET=utf8mb4 COMMENT='权限规则表';
 
 -- ----------------------------
 -- Records of st_auth_rule
@@ -464,6 +468,8 @@ INSERT INTO `st_auth_rule` VALUES ('174', '1', 'plugin/Wxapp', 'plugin_url', 'pl
 INSERT INTO `st_auth_rule` VALUES ('175', '1', 'Admin', 'admin_url', 'Admin/Exam/default', '', '应用', '');
 INSERT INTO `st_auth_rule` VALUES ('176', '1', 'admin', 'admin_url', 'admin/Exam/index', '', '刷题试卷', '');
 INSERT INTO `st_auth_rule` VALUES ('177', '1', 'admin', 'admin_url', 'admin/Category/index', '', '综合分类', '');
+INSERT INTO `st_auth_rule` VALUES ('178', '1', 'admin', 'admin_url', 'admin/Course/index', '', '在线课堂', '');
+INSERT INTO `st_auth_rule` VALUES ('179', '1', 'admin', 'admin_url', 'admin/Course/teacher', '', '课题讲师列表', '');
 
 -- ----------------------------
 -- Table structure for st_category
@@ -483,7 +489,7 @@ CREATE TABLE `st_category` (
   `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '服务类型 1-刷题 2-打卡 3在线课堂 4-线下课堂',
   `more` text COMMENT '扩展属性',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='admin服务分类表[]';
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COMMENT='admin服务分类表[]';
 
 -- ----------------------------
 -- Records of st_category
@@ -495,6 +501,9 @@ INSERT INTO `st_category` VALUES ('4', '0', '0', '1', '0', '10000', '西大', '�
 INSERT INTO `st_category` VALUES ('5', '0', '0', '1', '0', '10000', '建筑', '', '', '0-5', '1', '{\"thumbnail\":\"\"}');
 INSERT INTO `st_category` VALUES ('6', '0', '0', '1', '0', '10000', '规划', '', '', '0-6', '1', '{\"thumbnail\":\"\"}');
 INSERT INTO `st_category` VALUES ('7', '0', '0', '1', '0', '10000', '园林', '', '', '0-7', '1', '{\"thumbnail\":\"\"}');
+INSERT INTO `st_category` VALUES ('8', '0', '0', '1', '0', '10000', '前端', '前端', '前端', '0-8', '3', '{\"thumbnail\":\"\"}');
+INSERT INTO `st_category` VALUES ('9', '0', '0', '1', '0', '10000', '后端', '后端', '后端', '0-9', '3', '{\"thumbnail\":\"\"}');
+INSERT INTO `st_category` VALUES ('10', '0', '0', '1', '0', '10000', '服务端', '服务端', '服务端', '0-10', '3', '{\"thumbnail\":\"\"}');
 
 -- ----------------------------
 -- Table structure for st_comment
@@ -543,7 +552,7 @@ CREATE TABLE `st_course` (
   `tname` varchar(255) NOT NULL DEFAULT '' COMMENT '讲师名称',
   `pid` int(11) NOT NULL DEFAULT '0' COMMENT '课程分类id',
   `pname` varchar(128) NOT NULL DEFAULT '' COMMENT '分类名称',
-  `desc` text COMMENT '课程介绍',
+  `description` text COMMENT '课程介绍',
   `num` int(11) NOT NULL DEFAULT '0' COMMENT '课程小结数量',
   `collect_num` int(11) NOT NULL DEFAULT '0' COMMENT '收藏数量',
   `price` int(11) NOT NULL DEFAULT '0' COMMENT '费用',
@@ -570,7 +579,7 @@ CREATE TABLE `st_course_item` (
   `ctitle` varchar(255) NOT NULL DEFAULT '' COMMENT '课程标题',
   `sid` int(11) NOT NULL DEFAULT '0' COMMENT '章节id',
   `stitle` varchar(128) NOT NULL DEFAULT '' COMMENT '章节名称',
-  `desc` text COMMENT '介绍',
+  `description` text COMMENT '介绍',
   `source_url` varchar(256) NOT NULL DEFAULT '' COMMENT '资源路径',
   `create_time` int(10) NOT NULL DEFAULT '0',
   `update_time` int(10) NOT NULL DEFAULT '0',
@@ -607,16 +616,19 @@ CREATE TABLE `st_course_teacher` (
   `tid` int(11) NOT NULL AUTO_INCREMENT COMMENT '讲师id',
   `tname` varchar(128) NOT NULL DEFAULT '' COMMENT '讲师名称',
   `summary` varchar(256) NOT NULL DEFAULT '' COMMENT '简介',
+  `description` text COMMENT '详细介绍',
   `avatar` varchar(256) NOT NULL DEFAULT '' COMMENT '讲师头像url',
   `create_time` int(10) NOT NULL,
   `update_time` int(10) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-隐藏 1-展示',
   PRIMARY KEY (`tid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='在线课程/线下课程 讲师表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='在线课程/线下课程 讲师表';
 
 -- ----------------------------
 -- Records of st_course_teacher
 -- ----------------------------
+INSERT INTO `st_course_teacher` VALUES ('1', '张三', '高级工程师', '高级工程师很厉害的', 'admin/20181118/9f53def1e668321e9513d5bd1a019e14.png', '0', '0', '1');
+INSERT INTO `st_course_teacher` VALUES ('2', '李四', '李四李四', '李四李四李四', 'admin/20181118/ec1baa9e0e30c35deb575a3d2efca386.png', '0', '0', '1');
 
 -- ----------------------------
 -- Table structure for st_exam

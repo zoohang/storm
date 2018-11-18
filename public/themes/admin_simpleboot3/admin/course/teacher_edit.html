@@ -1,0 +1,95 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('course/teacher')}">讲师管理</a></li>
+        <li class="active"><a href="{:url('course/add')}">编辑讲师</a></li>
+    </ul>
+    <div class="row margin-top-20">
+        <div class="col-md-2">
+            <div class="list-group">
+                <a class="list-group-item" href="#A" data-toggle="tab">基本属性</a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <form class="js-ajax-form" action="{:url('course/teacherSave')}" method="post">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <input type="hidden" name="tid" value="{$params.tid|default=''}">
+                        <div class="form-group">
+                            <label for="input-name"><span class="form-required">*</span>讲师名称</label>
+                            <div>
+                                <input type="text" class="form-control" id="input-name" name="tname" value="{$tname|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-alias">简介</label>
+                            <div>
+                                <input type="text" class="form-control" id="input-alias" name="summary" value="{$summary|default=''}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-description">详细介绍</label>
+                            <div>
+                                <textarea class="form-control" name="description" id="input-description">{$description|default=''}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-description">头像</label>
+                            <div>
+                                <input type="hidden" name="avatar" id="thumb" value="{$avatar|default=''}">
+                                <a href="javascript:uploadOneImage('图片上传','#thumb');">
+                                    <if condition="empty($avatar)">
+                                        <img src="__TMPL__/public/assets/images/default-thumbnail.png"
+                                             id="thumb-preview" width="135" style="cursor: hand"/>
+                                        <else/>
+                                        <img src="{:cmf_get_image_preview_url($avatar)}" id="thumb-preview"
+                                             width="135" style="cursor: hand"/>
+                                    </if>
+                                </a>
+                                <input type="button" class="btn btn-sm"
+                                       onclick="$('#thumb-preview').attr('src','__TMPL__/public/assets/images/default-thumbnail.png');$('#thumb').val('');return false;"
+                                       value="取消图片">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-description">状态</label>
+                            <div>
+                                <label class="radio-inline">
+                                    <input type="radio" name="status" id="inlineRadio1" value="1" {$status == 1 ? 'checked' : ''}> 显示
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="status" id="inlineRadio2" value="0" {$status == 0 ? 'checked' : ''}> 隐藏
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary js-ajax-submit">保存</button>
+                    <a class="btn btn-default" href="{:url('course/teacherSave')}">返回</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    $('.tabs-switch').on('click', function () {
+        var idx = $(this).index();
+        $('input[name=property]').val((parseInt(idx)+1));
+    });
+    $('#vendor_id').on('change',function () {
+        var vendor_name = $(this).find("option:selected").text();
+        $('input[name=vendor_name]').val(vendor_name);
+    });
+    $('.tabs-switch').on('click', function () {
+        var type = $(this).index() + 1;
+        $('input[name=property]').val(type);
+    })
+</script>
+</body>
+</html>

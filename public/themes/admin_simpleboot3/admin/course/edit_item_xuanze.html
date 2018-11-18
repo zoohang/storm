@@ -1,0 +1,109 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <include file="exam/nav_link" />
+    </ul>
+    <form action="{:url('Exam/saveItem')}" method="post" class="form-horizontal js-ajax-form margin-top-20">
+        <div class="row">
+            <div class="col-md-9">
+                <table class="table table-bordered">
+                    <tr>
+                        <th width="70"><span class="form-required">*</span>题目</th>
+                        <td>
+                            <input class="form-control" type="text" style="width:100%" name="post[item_title]" id="item_title"
+                                   required value="{$info.item_title|default=''}" placeholder="请输入题目"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th rowspan="4">选项</th>
+                        <td>
+                            A
+                            <input class="form-control inline" type="text" name="post[option][A]" value="{$info.option.A|default=''}"
+                                    style="width: 80%" placeholder="请输入A选项内容">&nbsp;&nbsp;
+                            <label class="checkbox-inline">
+                                &nbsp;&nbsp;<input type="checkbox" class="right-check" value="A">&nbsp;&nbsp;
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            B
+                            <input class="form-control inline" type="text" name="post[option][B]" value="{$info.option.B|default=''}"
+                                    style="width: 80%" placeholder="请输入B选项内容">&nbsp;&nbsp;
+                            <label class="checkbox-inline">
+                                &nbsp;&nbsp;<input type="checkbox" class="right-check" value="B">&nbsp;&nbsp;
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            C
+                            <input class="form-control inline" type="text" name="post[option][C]" value="{$info.option.C|default=''}"
+                                    style="width: 80%" placeholder="请输入C选项内容">&nbsp;&nbsp;
+                            <label class="checkbox-inline">
+                                &nbsp;&nbsp;<input type="checkbox" class="right-check" value="C">&nbsp;&nbsp;
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            D
+                            <input class="form-control inline" type="text" name="post[option][D]" value="{$info.option.D|default=''}"
+                                   style="width: 80%" placeholder="请输入D选项内容">&nbsp;&nbsp;
+                            <label class="checkbox-inline">
+                                &nbsp;&nbsp;<input type="checkbox" class="right-check" value="D">&nbsp;&nbsp;
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>答案</th>
+                        <td><input class="form-control" type="text" name="post[answer]" id="answer"
+                                   value="{$info.answer|default=''}"  style="width: 100%" placeholder="请选择正确选项" readonly></td>
+                    </tr>
+                    <tr>
+                        <th>分析</th>
+                        <td>
+                            <textarea class="form-control" name="post[analysis]" id="analysis"
+                                      style="height: 100px;"
+                                      placeholder="请填写分析">{$info.analysis|default=''}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>知识点</th>
+                        <td>
+                            <textarea class="form-control" name="post[knowledge]" id="knowledge"
+                                      style="height: 100px;"
+                                      placeholder="请填写知识点">{$info.knowledge|default=''}</textarea>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <input type="hidden" name="post[exam_id]" value="{$params.exam_id}"/>
+                <input type="hidden" name="item_id" value="{$params.item_id|default=''}"/>
+                <input type="hidden" name="post[type]" value="1"/>
+                <button type="submit" class="btn btn-primary js-ajax-submit">{:lang('SAVE')}</button>
+                <!--<a class="btn btn-default" href="{:url('SlideItem/index')}">{:lang('BACK')}</a>-->
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript">
+    var choose_arr = ['A','B','C','D'];
+    $('.right-check').on('change', function() {
+        var answer = [];
+        $('.right-check').each(function(index,element) {
+            if ($(element).prop('checked')){
+                answer.push(choose_arr[index]);
+            }
+        });
+        $('#answer').val(answer.join(''));
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('course/index')}">课程列表</a></li>
+        <li><a href="{:url('course/edit')}">添加</a></li>
+    </ul>
+
+    <form method="post" class="js-ajax-form" action="{:url('course/listOrder')}">
+        <div class="table-actions">
+            <button type="submit" class="btn btn-primary btn-sm js-ajax-submit">{:lang('SORT')}</button>
+        </div>
+        <table class="table table-hover table-bordered table-list">
+            <thead>
+            <tr>
+                <th width="16"><label><input type="checkbox" class="js-check-all"
+                                             data-direction="x"
+                                             data-checklist="js-check-x"></label></th>
+                <th width="50">排序</th>
+                <th width="50">ID</th>
+                <th>类型</th>
+                <th>题目</th>
+                <th>答案</th>
+                <th width="200">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="list" item="vo">
+                <tr>
+                    <td><input
+                            type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x"
+                            name="ids[]" value="{$vo.cid}"></td>
+                    <td><input name="list_orders[{$vo.cid}]" type="text" size="3" value="{$vo.list_order}"
+                               class="input-order"></td>
+                    <td>{$vo.cid}</td>
+                    <td>{$item_type[$vo['type']]}</td>
+                    <td>{$vo.item_title}</td>
+                    <td>{$vo.answer}</td>
+                    <td>
+                        <a alt="{:url('course/edit',['cid'=>$vo.cid])}">编辑</a>
+                        <a class="js-ajax-delete" href="{:url('course/delete_item',['id'=>$vo.cid])}">删除</a>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <div class="table-actions">
+            <button type="submit" class="btn btn-primary btn-sm js-ajax-submit">{:lang('SORT')}</button>
+        </div>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script>
+    $('body').on('click', '.js-categories-name-input', function() {
+        var item_id = $(this).data('id');
+        var item_type = $(this).data('type');
+        openIframeLayer("{:url('course/editItem')}?item_id=" + item_id + '&item_type=' + item_type + '&course_id=' + course_id, '题目编辑', {
+            area: ['1000px', '600px'],
+            btn: ['确定', '取消'],
+            yes: function (index, layero) {
+                //do something
+                var iframeWin          = window[layero.find('iframe')[0]['name']];
+                //var selectedCategories = iframeWin.confirm();
+                layer.close(index); //如果设定了yes回调，需进行手工关闭
+                location.reload()
+            }
+        });
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+<style>
+    .uploadBtn {
+        position: relative;
+        height: 40px;
+        width: 70px;
+        display: inline-block;
+        cursor: pointer;
+        background: #00b7ee;
+        color: #fff;
+        text-align: center;
+        border-radius: 3px;
+        overflow: hidden;
+        z-index: 10;
+    }
+    
+    .uploadBtn:after {
+        content: '选择文件';
+        position: absolute;
+        line-height: 40px;
+        display: inline-block;
+        top: 0;
+        left: 0;
+        width: 70px;
+        z-index: 11;
+    }
+    .uploadQuiet {
+        position: relative;
+        height: 40px;
+        width: 70px;
+        cursor: pointer;
+        background: #75ab3a;
+        color: #fff;
+        text-align: center;
+        border-radius: 3px;
+        overflow: hidden;
+        z-index: 10;
+        display: none;
+    }
+
+    .uploadQuiet:after {
+        content: '立即上传';
+        position: absolute;
+        display: inline-block;
+        line-height: 40px;
+        top: 0;
+        left: 0;
+        width: 70px;
+        z-index: 11;
+    }
+    
+    #files {
+        height: 40px;
+        line-height: 40px;
+        width: 70px;
+        opacity: 0;
+        position: relative;
+        z-index: 20;
+    }
+    .videoPlayerLocal{
+        display: none;
+        height: 200px;
+        width:auto;
+    }
+    .uploadProcess{
+        position: relative;
+        height: 200px;
+        width:355.56px;
+        display: none;
+        overflow: hidden;
+        background-color: rgba(222,222,222,0.8)
+    }
+    .shadowForPro{
+        height: 100%;
+        width: 100%;
+        /*background-color: rgba(0,0,0,0.2);*/
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 20;
+        font-size: 30px;
+        text-align: center;
+        line-height: 200px;
+        color: #ffffff;
+        display: none;
+        transition:top 0.3s;
+    }
+    .shadowForPro:after{
+        content: '';
+        position: absolute;
+        width: 800px;
+        height: 800px;
+        border-radius: 45%;
+        left: 50%;
+        background-color: rgba(0,0,0,0.5);
+        animation-name: rotate;
+        animation-duration: 10s;
+        animation-iteration-count: infinite;
+        bottom: 12px;
+    }
+    .shadowForPro:before{
+        content: '';
+        position: absolute;
+        width: 800px;
+        height: 800px;
+        border-radius: 47%;
+        left: 50%;
+        background-color: rgba(0,0,0,0.5);
+        animation-name: rotate;
+        animation-duration: 10s;
+        animation-iteration-count: infinite;
+        bottom: 15px;
+    }
+    @keyframes rotate {
+        0% {
+            transform: translate(-50%, 0) rotateZ(0deg);
+        }
+        50% {
+            transform: translate(-50%, -2%) rotateZ(180deg);
+        }
+        100% {
+            transform: translate(-50%, 0%) rotateZ(360deg);
+        }
+    }
+    .shadowForProBg{
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0,0,0,0.2);
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 19;
+        font-size: 30px;
+        text-align: center;
+        line-height: 200px;
+        display: none;
+        color: #ffffff;
+    }
+</style>
+<tr id="videoGro">
+    <th></th>
+    <td>
+        <div class="uploadBtn"><input type="file" name="file" id="files" accept="video/*"/></div>
+        <div class="uploadQuiet"></div>
+        <!--预览与播放-->
+        <!--阿里云播放-->
+        <div class="prism-player" id="J_prismPlayer" style=" "></div>
+        <!--本地播放-->
+        <div class="uploadProcess">
+            <video controls autoplay class="videoPlayerLocal"></video>
+            <div class="shadowForPro"></div>
+            <div class="shadowForProBg"></div>
+        </div>
+
+    </td>
+</tr>
+<input type="hidden" name="video_url" value="{$preview_url|default=''}">
+<input type="hidden" name="video_id" value="{$video_id|default=''}">
+<input type="hidden" name="video_long" value="{$video_long|default=''}">
+<input type="hidden" name="videosize" value="{$videosize|default=''}">
+
+<script src="__STATIC__/aliyun/upload/es6-promise.min.js"></script>
+<script src="__STATIC__/aliyun/upload/aliyun-oss-sdk4.13.2.min.js"></script>
+<script src="__STATIC__/aliyun/upload/aliyun-upload-sdk1.3.1.min.js"></script>
+<link rel="stylesheet" href="__STATIC__/aliyun/player/aliplayer-min.css"/>
+<script charset="utf-8" type="text/javascript" src="__STATIC__/aliyun/player/aliplayer-h5-min.js"></script>
+<script>
+    $(function () {
+        if ($("input[name=video_id]").val()) {
+            $("#videoGro").show();
+            playerInit($('input[name=video_id]').val());   //请求数据并初始化阿里播放器
+        } else {
+            $(".uploadQuiet").hide()
+        }
+    });
+    <!-- 上传 -->
+    var uploadAuth, uploadAddress, videoId;
+    var uploader = new AliyunUpload.Vod({
+        //分片大小默认1M，不能小于100K
+        partSize: 1048576,
+        //并行上传分片个数，默认5
+        parallel: 5,
+        //网络原因失败时，重新上传次数，默认为3
+        retryCount: 3,
+        //网络原因失败时，重新上传间隔时间，默认为2秒
+        retryDuration: 5,
+        // 开始上传
+        'onUploadstarted': function (uploadInfo) {
+            log(0);
+            //上传方式1, 需要根据uploadInfo.videoId是否有值，调用点播的不同接口获取uploadauth和uploadAddress，如果videoId有值，调用刷新视频上传凭证接口，否则调用创建视频上传凭证接口
+            // uploader.setUploadAuthAndAddress(uploadInfo, uploadAuth, uploadAddress,videoId);
+            uploader.setUploadAuthAndAddress(uploadInfo, uploadAuth, uploadAddress, videoId);
+            //上传方式2
+            // uploader.setSTSToken(uploadInfo, accessKeyId, accessKeySecret,secretToken);
+        },
+        // 文件上传成功
+        'onUploadSucceed': function (uploadInfo) {
+            log(1);
+//            TODO
+            //$('input[name=videosize]').val(MAth.floor(uploadInfo.file.size/1024));
+            $('input[name=video_id]').val(videoId);
+            $('input[name=video_long]').val(Math.ceil($(".videoPlayerLocal")[0].duration));
+        },
+        // 文件上传失败
+        'onUploadFailed': function (uploadInfo, code, message) {
+            log(2, message);
+        },
+        // 文件上传进度，单位：字节
+        'onUploadProgress': function (uploadInfo, totalSize, loadedPercent) {
+            log(3, Math.ceil(loadedPercent * 100));
+        },
+        // 上传凭证超时
+        'onUploadTokenExpired': function (uploadInfo) {
+            log(4);
+            //上传方式1  实现时，根据uploadInfo.videoId调用刷新视频上传凭证接口重新获取UploadAuth
+            // uploader.resumeUploadWithAuth(uploadAuth);
+            // 上传方式2 实现时，从新获取STS临时账号用于恢复上传
+            // uploader.resumeUploadWithSTSToken(accessKeyId, accessKeySecret, secretToken, expireTime);
+        },
+        //全部文件上传结束
+        'onUploadEnd': function (uploadInfo) {
+            console.log(uploadInfo);
+            log(5);
+        }
+    });
+    document.getElementById("files").addEventListener('change', function (event) {
+        var windowURL = window.URL || window.webkitURL;
+        dataURL = windowURL.createObjectURL(document.getElementById("files").files[0]);
+        $('.videoPlayerLocal').attr("src", dataURL).show();
+        $('.uploadProcess').show();
+        player ? player.pause() : '';
+        $(".uploadQuiet").css("display","inline-block")
+
+    });
+    $(".uploadQuiet").click(function () {
+        getTicket();
+    });
+    var getTicket = function () {
+        $.post("/index.php/admin/many_video/client_get_upload_ticket", {
+            title: document.getElementById("files").files[0].name.split(".")[0],
+            file_name: document.getElementById("files").files[0].name
+        }, function (result, status) {
+            if (result.UploadAuth && result.UploadAddress && result.VideoId) {
+                uploadAuth = result.UploadAuth;
+                uploadAddress = result.UploadAddress;
+                videoId = result.VideoId;
+                var userData = '{"Vod":{"UserData":{"IsShowWaterMark":"false","Priority":"7"}}}';
+                uploader.addFile(document.getElementById("files").files[0], null, null, null, userData);
+                userData = '{"Vod":{"UserData":{"IsShowWaterMark":"false","Priority":"7"}}}';
+                uploader.addFile(document.getElementById("files").files[0], null, null, null, userData);
+                uploader.startUpload();
+            } else {
+                layer.open({
+                    content: '初始化失败，请重新选择并选择上传'
+                    , skin: 'msg'
+                    , time: 4 //2秒后自 动关闭
+                })
+            }
+        })
+    };
+
+    var log = function (type, value) {
+        //console.log(type);
+//        0 开始上传，初始化上传进度条，隐藏上传按钮，禁用选择文件按钮  1 上传成功 结束标志，显示完成效果，解封选择文件按钮 显示阿里播放器并播放 2 上传失败，解封选择文件按钮,显示失败message
+        //        3上传进度，百分比  4 上传超时  5全部上传成功  隐藏本地，显示阿里云视频
+        //if (!type) return;
+        //console.log(type+"hou");
+        switch (type) {
+            case 0 :
+                $('.uploadProcess video').next().show().next().show();
+                $('.uploadQuiet').hide();
+                $(".uploadBtn").css("background-color", "grey").children("input").attr("disabled", "disabled");
+                break;
+            case 1 :
+                $('.uploadProcess .shadowForPro').hide().next().html("上传完成")
+                $(".uploadBtn").css("background-color", "#00b7ee").children("input").removeAttr("disabled");
+                break;
+            case 2 :
+                $('.uploadProcess .shadowForPro').html("上传失败");
+                $(".uploadBtn").css("background-color", "#00b7ee").children("input").removeAttr("disabled");
+                break;
+            case 3 :
+                $('.shadowForPro').css("top", "-" + value + "%");
+                $('.shadowForProBg').html('已上传' + value + "%");
+                break;
+            case 4 :
+                $('.uploadProcess .shadowForPro').html("上传超时 解决方案");
+                break;
+            case 5 :
+                $(".uploadProcess").hide().children("video")[0].pause();
+                $("#files").val("");
+                $(".shadowForProBg").hide().html("");
+                playerInit(videoId);
+//                需要请求播放相关的东西
+                break;
+        }
+    };
+    var player = '';
+    var playerInit = function (videoId) {
+        $.ajax({
+            type: "GET",
+            url: "/index.php/home/tool/get_vod_origin?video_id=" + videoId,
+            dataType: "json",
+            header: {
+                'content-type': 'application/x-www-form-urlencoded',
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            success: function (result, status) {
+                if (result.RequestId) {
+                    if (player) {
+                        player.dispose(); //销毁
+                        $('#J_prismPlayer').empty(); //id为html里指定的播放器的容器id
+                    }
+
+                    player = new Aliplayer({
+                        id: 'J_prismPlayer',
+                        width: '320px',
+                        height: '180px',
+                        autoplay: true,
+                        //播放方式二：点播用户推荐
+                        source: result.Mezzanine.FileURL,
+//                        vid: videoId,
+//                        playauth: result.PlayAuth,
+//                        format: 'm3u8'
+                    }, function (player) {
+                        console.log('播放器创建好了。')
+                    });
+                    $('input[name=video_url]').val(result.Mezzanine.FileURL);
+                    $('input[name=videosize]').val(Math.ceil(result.Mezzanine.Size / 1024));
+                } else {
+                    layer.open({
+                        content: '初始化失败，请重新选择并选择上传'
+                        , skin: 'msg'
+                        , time: 4 //2秒后自 动关闭
+                    })
+                }
+            }
+        });
+    }
+</script>

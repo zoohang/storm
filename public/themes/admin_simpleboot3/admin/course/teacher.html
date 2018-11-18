@@ -1,0 +1,62 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('course/teacher')}">讲师管理</a></li>
+        <li><a href="{:url('course/teacherEdit')}">添加讲师</a></li>
+    </ul>
+    <form class="well form-inline margin-top-20" method="post" action="{:url('course/teacher')}">
+        名称:
+        <input type="text" class="form-control" name="keyword" style="width: 200px;"
+               value="{$keyword|default=''}" placeholder="请输入讲师名称">
+        <input type="submit" class="btn btn-primary" value="搜索"/>
+        <a class="btn btn-danger" href="{:url('course/teacher')}">清空</a>
+    </form>
+    <form method="post" class="js-ajax-form" action="{:url('course/listOrder')}">
+        <table class="table table-hover table-bordered table-list" id="menus-table">
+            <thead>
+            <tr>
+                <th width="50">ID</th>
+                <th>讲师名称</th>
+                <th>头像</th>
+                <th>简介</th>
+                <th>状态</th>
+                <th width="200">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="list" item="vo">
+                <tr>
+                    <td>{$vo.tid}</td>
+                    <td>{$vo.tname}</td>
+                    <td>
+                        <notempty name="vo.avatar">
+                            <img src="{:cmf_get_image_preview_url($vo.avatar)}" id="thumb-preview"
+                                 width="50" style="cursor: hand" onclick="javascript:parent.imagePreviewDialog('{:cmf_get_image_preview_url($vo.avatar)}');"/>
+                            <else/>
+                            <i class="fa fa-close fa-fw"></i>
+                        </notempty>
+                    </td>
+                    <td>{$vo.summary}</td>
+                    <td>{$status[$vo.status]}</td>
+                    <td>
+                        <a href='{:url("course/teacherEdit",array("tid"=>$vo["tid"]))}'>编辑</a>
+                        <a class="js-ajax-delete" href="{:url('course/teacherDelete',array('tid'=>$vo['tid']))}">隐藏</a>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <ul class="pagination">{$page|default=''}</ul>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script>
+    $(document).ready(function () {
+
+    });
+
+</script>
+</body>
+</html>
