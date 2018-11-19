@@ -73,6 +73,9 @@ class CourseController extends AdminBaseController
         $categoryTree = $CategoryModel->categoryTree(isset($info['cid']) ? $info['cid']: 0, '', $this->type);
         $this->assign('category_tree', $categoryTree);
 
+        //讲师
+        $teachers = DB::name('course_teacher')->where(['status'=>1])->select();
+        $this->assign('teachers', $teachers);
         $this->assign($info);
         return $this->fetch();
     }
