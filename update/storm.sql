@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
+Source Server         : 本地连接
 Source Server Version : 50553
-Source Host           : localhost:3306
+Source Host           : 127.0.0.1:3306
 Source Database       : storm
 
 Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-11-18 19:00:57
+Date: 2018-11-21 00:34:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -548,8 +548,6 @@ DROP TABLE IF EXISTS `st_course`;
 CREATE TABLE `st_course` (
   `cid` int(11) NOT NULL AUTO_INCREMENT,
   `ctitile` varchar(256) NOT NULL DEFAULT '' COMMENT '课程名称',
-  `tid` int(11) NOT NULL DEFAULT '0' COMMENT '讲师id',
-  `tname` varchar(255) NOT NULL DEFAULT '' COMMENT '讲师名称',
   `pid` int(11) NOT NULL DEFAULT '0' COMMENT '课程分类id',
   `pname` varchar(128) NOT NULL DEFAULT '' COMMENT '分类名称',
   `description` text COMMENT '课程介绍',
@@ -562,11 +560,15 @@ CREATE TABLE `st_course` (
   `create_time` int(10) NOT NULL DEFAULT '0',
   `update_time` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`cid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='课程表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='课程表';
 
 -- ----------------------------
 -- Records of st_course
 -- ----------------------------
+INSERT INTO `st_course` VALUES ('5', '222', '9', '后端', '333', '0', '0', '0', '0', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '', '1542726612', '1542726612');
+INSERT INTO `st_course` VALUES ('6', '222', '9', '后端', '333', '0', '0', '0', '0', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '', '1542726663', '1542726663');
+INSERT INTO `st_course` VALUES ('7', 'nginx123111', '10', '服务端', 'nginx233312', '0', '0', '0', '1', 'admin/20181107/5299ca5b02abe7163b0569cc5aed01da.jpg', '', '1542727290', '1542729286');
+INSERT INTO `st_course` VALUES ('8', 'php', '9', '后端', 'php', '0', '0', '0', '1', 'admin/20181107/f05a104ce593705eace17696bc5a3233.jpg', '', '1542729348', '1542729476');
 
 -- ----------------------------
 -- Table structure for st_course_item
@@ -629,6 +631,32 @@ CREATE TABLE `st_course_teacher` (
 -- ----------------------------
 INSERT INTO `st_course_teacher` VALUES ('1', '张三', '高级工程师', '高级工程师很厉害的', 'admin/20181118/9f53def1e668321e9513d5bd1a019e14.png', '0', '0', '1');
 INSERT INTO `st_course_teacher` VALUES ('2', '李四', '李四李四', '李四李四李四', 'admin/20181118/ec1baa9e0e30c35deb575a3d2efca386.png', '0', '0', '1');
+
+-- ----------------------------
+-- Table structure for st_course_teacher_relation
+-- ----------------------------
+DROP TABLE IF EXISTS `st_course_teacher_relation`;
+CREATE TABLE `st_course_teacher_relation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `cid` int(11) NOT NULL DEFAULT '0' COMMENT '课程id',
+  `tid` int(11) NOT NULL DEFAULT '0' COMMENT '讲师id',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0-删除 1-正常',
+  PRIMARY KEY (`id`),
+  KEY `cid` (`cid`),
+  KEY `tid` (`tid`),
+  KEY `status` (`status`)
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COMMENT='讲师_课程关联表';
+
+-- ----------------------------
+-- Records of st_course_teacher_relation
+-- ----------------------------
+INSERT INTO `st_course_teacher_relation` VALUES ('1', '5', '1', '1');
+INSERT INTO `st_course_teacher_relation` VALUES ('2', '5', '2', '1');
+INSERT INTO `st_course_teacher_relation` VALUES ('3', '6', '1', '1');
+INSERT INTO `st_course_teacher_relation` VALUES ('4', '6', '2', '1');
+INSERT INTO `st_course_teacher_relation` VALUES ('18', '7', '1', '1');
+INSERT INTO `st_course_teacher_relation` VALUES ('19', '7', '2', '1');
+INSERT INTO `st_course_teacher_relation` VALUES ('21', '8', '1', '1');
 
 -- ----------------------------
 -- Table structure for st_exam
