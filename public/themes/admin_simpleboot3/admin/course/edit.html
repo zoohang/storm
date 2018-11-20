@@ -58,7 +58,7 @@
                                     </optgroup>-->
                                 </select>
                             </div>
-                            <input type="hidden" name="tid" value="{$tid|default=''}" id="teacher_select">
+                            <input type="hidden" name="tid" value="{$tids_str|default=''}" id="teacher_select">
                         </div>
 
                         <div class="form-group">
@@ -77,6 +77,18 @@
                                 <input type="button" class="btn btn-sm"
                                        onclick="$('#thumb-preview').attr('src','__TMPL__/public/assets/images/default-thumbnail.png');$('#thumb').val('');return false;"
                                        value="取消图片">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="input-name"><span class="form-required">*</span>课程类型</label>
+                            <div>
+                                <label class="radio-inline">
+                                    <input type="radio" name="type" id="inlineRadio1" value="1" {$type==1?'checked':''}> 视频
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="type" id="inlineRadio2" value="3" {$type==3?'checked':''}> 图文
+                                </label>
                             </div>
                         </div>
 
@@ -103,7 +115,11 @@
         $('input[name=pname]').val(name);
     });
     //初始化赋值
-    $('.selectpicker').selectpicker('val', [3,2]);
+    var select_tids = "{$select_tids}";
+    if (select_tids) {
+        select_tids = JSON.parse(select_tids);
+    }
+    $('.selectpicker').selectpicker('val', select_tids);
     //更新取值
     $('.selectpicker').on('changed.bs.select',function(e){
         if ($(this).val()) {

@@ -11,7 +11,7 @@
 namespace app\admin\controller;
 
 use app\admin\model\ExamItemModel;
-use app\admin\model\ExamModel;
+use app\admin\model\CourseModel;
 use cmf\controller\AdminBaseController;
 use app\admin\model\CategoryModel;
 use think\Cookie;
@@ -59,50 +59,89 @@ class CourseController extends AdminBaseController
     }
 
     /**
-     * 试卷编辑
+     * 编辑
      * @return mixed
      */
     public function edit()
     {
         $id    = $this->request->param('id', 0, 'intval');
-        $info = [];
+        $info = $tids = [];
         if ($id) {
-            $info = DB::name('exam')->where(["id" => $id])->find();
+            $info = DB::name('course')->where(["cid" => $id])->find();
+            $tids = DB::name('course_teacher_relation')->where(['cid'=>$id, 'status'=>1])->column('tid');
         }
         $CategoryModel = new CategoryModel();
-        $categoryTree = $CategoryModel->categoryTree(isset($info['cid']) ? $info['cid']: 0, '', $this->type);
+        $categoryTree = $CategoryModel->categoryTree(isset($info['pid']) ? $info['pid']: 0, '', $this->type);
         $this->assign('category_tree', $categoryTree);
 
         //讲师
         $teachers = DB::name('course_teacher')->where(['status'=>1])->select();
         $this->assign('teachers', $teachers);
         $this->assign($info);
+        $this->assign('select_tids', $tids ? json_encode($tids): '');
+        $this->assign('tids_str', implode(',', $tids));
         return $this->fetch();
     }
 
     /**
-     * 试卷保存
+     * 保存
      */
     public function editPost()
     {
-        if ($this->request->isPost()) {
-            $ExamModel = new ExamModel();
-            $data = $this->request->param();
-            $data['cid'] = $data['parent_id'];
-            $category_info = Db::name('Category')->where(['id'=>$data['cid']])->find();
-            $data['cname'] = $category_info['name'];
-            unset($data['parent_id']);
-            $result = $this->validate($data, 'Exam');
+        $id = $this->request->param('cid');
+        $data = $this->request->param();
+        $result = $this->validate($data, 'Course');
+        if ($result !== true) {
+            $this->error($result);
+        }
+        $CourseModel = new CourseModel();
+        $tid = explode(',', $data['tid']);
 
-            if ($result !== true) {
-                $this->error($result);
+        if ($id) {
+            //save
+            Db::startTrans();
+            try{
+                $CourseModel->isUpdate(true)->allowField(true)->save($data);
+                DB::table('st_course_teacher_relation')->where(['cid'=>$id])->delete();
+                $relation_list = array_map(function($item) use ($id) {
+                    return [
+                        'cid'=>$id,
+                        'tid'=>$item,
+                        'status'=>1
+                    ];
+                }, $tid);
+                Db::table('st_course_teacher_relation')->insertAll($relation_list);
+                // 提交事务
+                Db::commit();
+                $this->success('编辑成功!', url('course/index'));
+            } catch (\Exception $e) {
+                // 回滚事务
+                Db::rollback();
+                var_dump($e->getMessage());
+                $this->error($e->getMessage());
             }
-            $result = $ExamModel->allowField(true)->isUpdate(true)->save($data);
-            if ($result === false) {
+        } else {
+            //add
+            Db::startTrans();
+            try{
+                $CourseModel->isUpdate(false)->allowField(true)->save($data);
+                $cid = $CourseModel->cid;
+                $relation_list = array_map(function($item) use ($cid) {
+                    return [
+                        'cid'=>$cid,
+                        'tid'=>$item,
+                        'status'=>1
+                    ];
+                }, $tid);
+                Db::table('st_course_teacher_relation')->insertAll($relation_list);
+                // 提交事务
+                Db::commit();
+                $this->success('添加成功!', url('course/index'));
+            } catch (\Exception $e) {
+                // 回滚事务
+                Db::rollback();
                 $this->error('编辑失败!');
             }
-            $this->success('编辑成功!', url('Exam/index'));
-
         }
     }
 
