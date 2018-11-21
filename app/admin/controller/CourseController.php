@@ -44,17 +44,40 @@ class CourseController extends AdminBaseController
             $where['property'] = $property;
         }
 
-        $exams = DB::name('Course')
+        $list = DB::name('Course')
             ->where($where)
             ->order("cid DESC")
             ->paginate();
         // 分页注入搜索条件
-        $exams->appends(['keyword' => $keyword, 'property' => $property]);
+        // 获取关联的讲师 tid
+        $cids = array_column($list->items(), 'cid');
+        if ($cids) {
+            $teachers = DB::name('course_teacher_relation a')
+                ->join('__COURSE_TEACHER__ b', 'a.tid=b.tid')
+                ->where(['a.cid'=>['IN', $cids]])
+                ->field(['a.cid','b.tid', 'b.tname'])
+                ->select()
+                ->toArray();
+            $handle_teacher = [];
+            foreach($teachers as $key=>$item) {
+                $handle_teacher[$item['cid']][] = $item['tname'];
+            }
+            $list = $list->each(function ($item, $key) use ($handle_teacher) {
+                if ($handle_teacher[$item['cid']]) {
+                    $item['tnames'] = join(',', $handle_teacher[$item['cid']]);
+                } else {
+                    $item['tnames'] = '';
+                }
+                return $item;
+            });
+        }
+        $list->appends(['keyword' => $keyword, 'property' => $property]);
         // 获取分页显示
-        $page = $exams->render();
+        $page = $list->render();
         $this->assign(['keyword' => $keyword, 'property' => $property]);
         $this->assign("page", $page);
-        $this->assign("list", $exams);
+        $this->assign("list", $list);
+        //dump($list);die;
         return $this->fetch();
     }
 
@@ -64,7 +87,7 @@ class CourseController extends AdminBaseController
      */
     public function edit()
     {
-        $id    = $this->request->param('id', 0, 'intval');
+        $id    = $this->request->param('cid', 0, 'intval');
         $info = $tids = [];
         if ($id) {
             $info = DB::name('course')->where(["cid" => $id])->find();
@@ -113,13 +136,12 @@ class CourseController extends AdminBaseController
                 Db::table('st_course_teacher_relation')->insertAll($relation_list);
                 // 提交事务
                 Db::commit();
-                $this->success('编辑成功!', url('course/index'));
             } catch (\Exception $e) {
                 // 回滚事务
                 Db::rollback();
-                var_dump($e->getMessage());
                 $this->error($e->getMessage());
             }
+            $this->success('编辑成功!', url('course/index'));
         } else {
             //add
             Db::startTrans();
@@ -136,12 +158,13 @@ class CourseController extends AdminBaseController
                 Db::table('st_course_teacher_relation')->insertAll($relation_list);
                 // 提交事务
                 Db::commit();
-                $this->success('添加成功!', url('course/index'));
+                //$this->
             } catch (\Exception $e) {
                 // 回滚事务
                 Db::rollback();
-                $this->error('编辑失败!');
+                $this->error($e->getMessage());
             }
+            $this->success('添加成功!', url('course/index'));
         }
     }
 
