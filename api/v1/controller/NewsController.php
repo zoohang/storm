@@ -11,6 +11,13 @@ namespace api\v1\controller;
 use cmf\controller\RestBaseController;
 use think\Request;
 
+/**
+ * @title 头条新闻接口
+ * @description 接口说明
+ * @group 接口分组
+ * @header name:key require:1 default: desc:秘钥(区别设置)
+ * @param name:public type:int require:1 default:1 other: desc:公共参数(区别设置)
+ */
 class NewsController extends RestBaseController
 {
     // 获取一条新闻信息
