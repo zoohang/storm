@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-11-21 00:34:59
+Date: 2018-11-26 23:22:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -234,7 +234,7 @@ CREATE TABLE `st_asset` (
   `suffix` varchar(10) NOT NULL DEFAULT '' COMMENT '文件后缀名,不包括点',
   `more` text COMMENT '其它详细信息,JSON格式',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COMMENT='资源表';
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COMMENT='资源表';
 
 -- ----------------------------
 -- Records of st_asset
@@ -257,6 +257,8 @@ INSERT INTO `st_asset` VALUES ('15', '1', '7371', '1542292179', '1', '0', 'b98e9
 INSERT INTO `st_asset` VALUES ('16', '1', '6056', '1542292193', '1', '0', 'e45fa34bc06bfbaf630dcf952519495ccec35029700c31d85c053318c5bf8461', '14de682ff09d546b958645aa7e503f2e.jpg', 'default/20181115/31c0c24c1cf453d33259f302969f7c4d.jpg', 'e45fa34bc06bfbaf630dcf952519495c', '7fa172579cd23b548888382963ec5305805e75f1', 'jpg', null);
 INSERT INTO `st_asset` VALUES ('17', '1', '792', '1542520778', '1', '0', '8c9777c96ee2cc95324cd29630409307aac50329aab0e83428bd988b2271c97a', 'volumehover.png', 'admin/20181118/9f53def1e668321e9513d5bd1a019e14.png', '8c9777c96ee2cc95324cd29630409307', '702401b5a9f0cf7641a6310eeeeec07e17274a44', 'png', null);
 INSERT INTO `st_asset` VALUES ('18', '1', '346', '1542522013', '1', '0', '7eebfbb6b539886469c8578262e6d3b92d616b3dc4625a99e33cd58b906f1ef9', 'smallpausehover.png', 'admin/20181118/ec1baa9e0e30c35deb575a3d2efca386.png', '7eebfbb6b539886469c8578262e6d3b9', '5d588ddb7d67027f2224dabc5d6ead1ed87da390', 'png', null);
+INSERT INTO `st_asset` VALUES ('19', '1', '6183', '1543242798', '1', '0', 'f60fe48dc8634b553bd559402f4f44dea399b9e07d6c3968d380bdbd1a68830a', '3283ae7880157e3cdd1f82c4e55cf915.jpg', 'admin/20181126/ade2fe33d0b9d48f3798428e2c6755cd.jpg', 'f60fe48dc8634b553bd559402f4f44de', '99da888eecf1f2cbc373f2b702fe8541bde5b816', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('20', '1', '22291', '1543242846', '1', '0', '759f8d04167324fb6273bbedd0910b55979d9ffc96c061e307ce5b184e82a263', '23e0c3073c3f868036ea7169b72e59fa.jpg', 'admin/20181126/f98a5c314b0331510fe9d835c8f72e72.jpg', '759f8d04167324fb6273bbedd0910b55', '4d3fa428edb64cde000cf4806b094f9a3d6382ae', 'jpg', null);
 
 -- ----------------------------
 -- Table structure for st_auth_access
@@ -556,19 +558,20 @@ CREATE TABLE `st_course` (
   `price` int(11) NOT NULL DEFAULT '0' COMMENT '费用',
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '类型 1-视频 2-音频 3-图文',
   `image` varchar(256) NOT NULL DEFAULT '' COMMENT '展示图片',
-  `preview_url` varchar(256) NOT NULL DEFAULT '' COMMENT '视频预览地址',
+  `list_order` float NOT NULL DEFAULT '10000' COMMENT '排序',
   `create_time` int(10) NOT NULL DEFAULT '0',
   `update_time` int(10) NOT NULL DEFAULT '0',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0-删除 1-显示',
   PRIMARY KEY (`cid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='课程表';
 
 -- ----------------------------
 -- Records of st_course
 -- ----------------------------
-INSERT INTO `st_course` VALUES ('5', '222', '9', '后端', '333', '0', '0', '0', '0', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '', '1542726612', '1542726612');
-INSERT INTO `st_course` VALUES ('6', '222', '9', '后端', '333', '0', '0', '0', '0', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '', '1542726663', '1542726663');
-INSERT INTO `st_course` VALUES ('7', 'nginx123111', '10', '服务端', 'nginx233312', '0', '0', '0', '1', 'admin/20181107/5299ca5b02abe7163b0569cc5aed01da.jpg', '', '1542727290', '1542729286');
-INSERT INTO `st_course` VALUES ('8', 'php', '9', '后端', 'php', '0', '0', '0', '1', 'admin/20181107/f05a104ce593705eace17696bc5a3233.jpg', '', '1542729348', '1542729476');
+INSERT INTO `st_course` VALUES ('5', '222', '9', '后端', '333', '0', '0', '0', '0', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '12', '1542726612', '1542726612', '1');
+INSERT INTO `st_course` VALUES ('6', '222', '9', '后端', '333', '0', '0', '0', '0', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '3', '1542726663', '1542726663', '1');
+INSERT INTO `st_course` VALUES ('7', 'nginx123111', '10', '服务端', 'nginx233312', '0', '0', '0', '1', 'admin/20181107/5299ca5b02abe7163b0569cc5aed01da.jpg', '1', '1542727290', '1542812050', '1');
+INSERT INTO `st_course` VALUES ('8', 'php56789', '9', '后端', 'php567891', '0', '0', '0', '1', 'admin/20181107/f05a104ce593705eace17696bc5a3233.jpg', '0', '1542729348', '1542812037', '1');
 
 -- ----------------------------
 -- Table structure for st_course_item
@@ -579,12 +582,14 @@ CREATE TABLE `st_course_item` (
   `item_title` varchar(128) NOT NULL DEFAULT '' COMMENT '课题名称',
   `cid` int(11) NOT NULL DEFAULT '0' COMMENT '课程id [course id]',
   `ctitle` varchar(255) NOT NULL DEFAULT '' COMMENT '课程标题',
-  `sid` int(11) NOT NULL DEFAULT '0' COMMENT '章节id',
-  `stitle` varchar(128) NOT NULL DEFAULT '' COMMENT '章节名称',
+  `parent_id` int(11) NOT NULL DEFAULT '0' COMMENT '章节id 1:章节信息 2:小节数据',
+  `path` varchar(255) NOT NULL DEFAULT '' COMMENT '分类层级关系路径',
   `description` text COMMENT '介绍',
-  `source_url` varchar(256) NOT NULL DEFAULT '' COMMENT '资源路径',
+  `source_id` char(32) NOT NULL DEFAULT '' COMMENT '资源id',
+  `list_order` float NOT NULL DEFAULT '10000' COMMENT '排序',
   `create_time` int(10) NOT NULL DEFAULT '0',
   `update_time` int(10) NOT NULL DEFAULT '0',
+  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '资源类型 1-视频 2-图文',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-删除 1-显示',
   PRIMARY KEY (`item_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='课题表';
@@ -629,8 +634,8 @@ CREATE TABLE `st_course_teacher` (
 -- ----------------------------
 -- Records of st_course_teacher
 -- ----------------------------
-INSERT INTO `st_course_teacher` VALUES ('1', '张三', '高级工程师', '高级工程师很厉害的', 'admin/20181118/9f53def1e668321e9513d5bd1a019e14.png', '0', '0', '1');
-INSERT INTO `st_course_teacher` VALUES ('2', '李四', '李四李四', '李四李四李四', 'admin/20181118/ec1baa9e0e30c35deb575a3d2efca386.png', '0', '0', '1');
+INSERT INTO `st_course_teacher` VALUES ('1', '张三', '高级工程师', '高级工程师很厉害的', 'admin/20181126/f98a5c314b0331510fe9d835c8f72e72.jpg', '0', '0', '1');
+INSERT INTO `st_course_teacher` VALUES ('2', '李四', '李四李四', '李四李四李四', 'admin/20181126/ade2fe33d0b9d48f3798428e2c6755cd.jpg', '0', '0', '1');
 
 -- ----------------------------
 -- Table structure for st_course_teacher_relation
@@ -645,7 +650,7 @@ CREATE TABLE `st_course_teacher_relation` (
   KEY `cid` (`cid`),
   KEY `tid` (`tid`),
   KEY `status` (`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COMMENT='讲师_课程关联表';
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COMMENT='讲师_课程关联表';
 
 -- ----------------------------
 -- Records of st_course_teacher_relation
@@ -654,9 +659,8 @@ INSERT INTO `st_course_teacher_relation` VALUES ('1', '5', '1', '1');
 INSERT INTO `st_course_teacher_relation` VALUES ('2', '5', '2', '1');
 INSERT INTO `st_course_teacher_relation` VALUES ('3', '6', '1', '1');
 INSERT INTO `st_course_teacher_relation` VALUES ('4', '6', '2', '1');
-INSERT INTO `st_course_teacher_relation` VALUES ('18', '7', '1', '1');
-INSERT INTO `st_course_teacher_relation` VALUES ('19', '7', '2', '1');
-INSERT INTO `st_course_teacher_relation` VALUES ('21', '8', '1', '1');
+INSERT INTO `st_course_teacher_relation` VALUES ('35', '8', '2', '1');
+INSERT INTO `st_course_teacher_relation` VALUES ('36', '7', '1', '1');
 
 -- ----------------------------
 -- Table structure for st_exam
@@ -1512,4 +1516,21 @@ CREATE TABLE `st_verification_code` (
 
 -- ----------------------------
 -- Records of st_verification_code
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for st_video_vod
+-- ----------------------------
+DROP TABLE IF EXISTS `st_video_vod`;
+CREATE TABLE `st_video_vod` (
+  `video_id` char(32) NOT NULL DEFAULT '' COMMENT '视频/资源id',
+  `video_url` varchar(255) NOT NULL DEFAULT '' COMMENT '视频播放地址',
+  `source_raw` text NOT NULL COMMENT '原始数据',
+  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  PRIMARY KEY (`video_id`),
+  UNIQUE KEY `primary_video_id` (`video_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='阿里云_资源_列表';
+
+-- ----------------------------
+-- Records of st_video_vod
 -- ----------------------------

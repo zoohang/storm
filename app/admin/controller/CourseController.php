@@ -36,17 +36,21 @@ class CourseController extends AdminBaseController
         $where = [];
         /**搜索条件**/
         $keyword = $this->request->param('keyword');
-        $property = $this->request->param('property', '', 'intval');
+        $category = $this->request->param('category', '', 'intval');
         if ($keyword) {
-            $where[] = ['ctitile', 'like', "%{$keyword}%"];
+            $where['ctitile'] = ['like', "%{$keyword}%"];
         }
-        if ($property) {
-            $where['property'] = $property;
-        }
-
+        if ($category) {
+            $where['pid'] = $category;
+            $selectId = $category;
+        } else $selectId=0;
+        //在线课程/所属分类
+        $categoryModel = new CategoryModel();
+        $course_category = $categoryModel->categoryTree($selectId, '', $this->type);
+        $this->assign("course_category", $course_category);
         $list = DB::name('Course')
             ->where($where)
-            ->order("cid DESC")
+            ->order(["list_order" => "ASC"])
             ->paginate();
         // 分页注入搜索条件
         // 获取关联的讲师 tid
@@ -71,10 +75,10 @@ class CourseController extends AdminBaseController
                 return $item;
             });
         }
-        $list->appends(['keyword' => $keyword, 'property' => $property]);
+        $list->appends(['keyword' => $keyword, 'category' => $category]);
         // 获取分页显示
         $page = $list->render();
-        $this->assign(['keyword' => $keyword, 'property' => $property]);
+        $this->assign(['keyword' => $keyword, 'category' => $category]);
         $this->assign("page", $page);
         $this->assign("list", $list);
         //dump($list);die;
@@ -169,25 +173,25 @@ class CourseController extends AdminBaseController
     }
 
     /**
-     * 详细题目列表
+     * 课程-章节详情-列表-管理
      */
     public function detail() {
-        $id = $this->request->param('id', 0, 'intval');
-        if (!$id) $this->error('请选择一套试卷');
-        $where = ['exam_id'=>$id, 'status'=>1];
-        $exams_items = DB::name('Exam_item')
+        $cid = $this->request->param('cid', 0, 'intval');
+        if (!$cid) $this->error('请选择一个课程');
+        $where = ['cid'=>$cid, 'status'=>1];
+        $list = DB::name('course_item')
             ->where($where)
-            ->order("list_order ASC,id ASC")
+            ->order("list_order ASC,cid ASC")
             ->select();
-        $this->assign('list' , $exams_items);
-        //获取试卷信息
-        $info = DB::name('exam')->where(['id'=>$id])->find();
+        $this->assign('list' , $list);
+        //获取课程信息
+        $info = DB::name('course')->where(['cid'=>$cid])->find();
         $this->assign('info', $info);
         return $this->fetch();
     }
 
     /**
-     * 编辑题目
+     * 编辑题目 todo 课程的添加/编辑
      */
     public function editItem() {
         $type = $this->request->param('item_type', 0, 'intval');
@@ -257,7 +261,7 @@ class CourseController extends AdminBaseController
 
     public function listOrder()
     {
-        parent::listOrders(Db::name('exam_item'));
+        parent::listOrders(Db::name('course'));
         $this->success("排序更新成功！", '');
     }
 
