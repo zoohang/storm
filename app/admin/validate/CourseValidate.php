@@ -15,7 +15,7 @@ use think\Validate;
 class CourseValidate extends Validate
 {
     protected $rule = [
-        'ctitile' => 'require',
+        'ctitle' => 'require',
         'tid' => 'require',
         'pid' => 'require',
         'pname' => 'require',
@@ -25,7 +25,7 @@ class CourseValidate extends Validate
     ];
 
     protected $message = [
-        'ctitile.require' => '课程名称不能为空',
+        'ctitle.require' => '课程名称不能为空',
         'tid.require' => '讲师不能为空',
         'pid.require' => '课程分类id不能为空',
         'pname.require' => '课程分类名称不能为空',

@@ -1,0 +1,59 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('course/detail', ['cid'=>$params['cid']])}">课程管理</a></li>
+        <li class="active"><a>章节编辑</a></li>
+    </ul>
+    <div class="row margin-top-20">
+        <div class="col-md-2">
+            <div class="list-group">
+                <a class="list-group-item" href="#A" data-toggle="tab">基本属性</a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <form class="js-ajax-form" action="{:url('course/saveSection')}" method="post">
+                <input type="hidden" name="cid" value="{$params['cid']}">
+                <input type="hidden" name="item_id" value="{$params['item_id']|default=''}">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <div class="form-group">
+                            <label for="input-name"><span class="form-required">*</span>章节标题</label>
+                            <div>
+                                <input type="text" class="form-control" id="input-name" name="item_title" value="{$info.item_title|default=''}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-description">章节简介</label>
+                            <div>
+                                <textarea class="form-control" name="description" id="input-description">{$info.description|default=''}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary js-ajax-submit">保存</button>
+                    <a class="btn btn-default" href="{:url('course/teacherSave')}">返回</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    $('.tabs-switch').on('click', function () {
+        var idx = $(this).index();
+        $('input[name=property]').val((parseInt(idx)+1));
+    });
+    $('#vendor_id').on('change',function () {
+        var vendor_name = $(this).find("option:selected").text();
+        $('input[name=vendor_name]').val(vendor_name);
+    });
+    $('.tabs-switch').on('click', function () {
+        var type = $(this).index() + 1;
+        $('input[name=property]').val(type);
+    })
+</script>
+</body>
+</html>

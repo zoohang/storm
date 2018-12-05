@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-11-26 23:22:19
+Date: 2018-12-05 23:50:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -549,7 +549,7 @@ CREATE TABLE `st_comment` (
 DROP TABLE IF EXISTS `st_course`;
 CREATE TABLE `st_course` (
   `cid` int(11) NOT NULL AUTO_INCREMENT,
-  `ctitile` varchar(256) NOT NULL DEFAULT '' COMMENT '课程名称',
+  `ctitle` varchar(256) NOT NULL DEFAULT '' COMMENT '课程名称',
   `pid` int(11) NOT NULL DEFAULT '0' COMMENT '课程分类id',
   `pname` varchar(128) NOT NULL DEFAULT '' COMMENT '分类名称',
   `description` text COMMENT '课程介绍',
@@ -592,11 +592,13 @@ CREATE TABLE `st_course_item` (
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '资源类型 1-视频 2-图文',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-删除 1-显示',
   PRIMARY KEY (`item_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='课题表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='课题表';
 
 -- ----------------------------
 -- Records of st_course_item
 -- ----------------------------
+INSERT INTO `st_course_item` VALUES ('1', '第1章 课程介绍', '8', 'php56789', '0', '', '带领大家初步认识下什么是PhpStorm、以及他的特性、如何获取phpstorm、以及如何安装', '', '10000', '1544024701', '1544025009', '0', '1');
+INSERT INTO `st_course_item` VALUES ('2', '第2章 PhpStorm的基本操作', '8', 'php56789', '0', '', '本章主要介绍下编辑器的工作区、如何导入本地项目到编辑器中，以及字体设置技巧', '', '10000', '1544024785', '0', '0', '1');
 
 -- ----------------------------
 -- Table structure for st_course_section

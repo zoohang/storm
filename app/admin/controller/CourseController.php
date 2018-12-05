@@ -38,7 +38,7 @@ class CourseController extends AdminBaseController
         $keyword = $this->request->param('keyword');
         $category = $this->request->param('category', '', 'intval');
         if ($keyword) {
-            $where['ctitile'] = ['like', "%{$keyword}%"];
+            $where['ctitle'] = ['like', "%{$keyword}%"];
         }
         if ($category) {
             $where['pid'] = $category;
@@ -162,7 +162,6 @@ class CourseController extends AdminBaseController
                 Db::table('st_course_teacher_relation')->insertAll($relation_list);
                 // 提交事务
                 Db::commit();
-                //$this->
             } catch (\Exception $e) {
                 // 回滚事务
                 Db::rollback();
@@ -188,6 +187,57 @@ class CourseController extends AdminBaseController
         $info = DB::name('course')->where(['cid'=>$cid])->find();
         $this->assign('info', $info);
         return $this->fetch();
+    }
+
+    /**
+     * 新增章节
+     */
+    public function editSection() {
+        $cid = $this->request->param('cid', 0, 'intval');
+        if (!$cid) $this->error('请选择一个课程');
+        $item_id = $this->request->param('item_id', 0, 'intval');
+        $info = [];
+        if ($item_id) {
+            //编辑
+            $info = DB::name('course_item')->where(['item_id'=>$item_id])->find();
+        }
+        $this->assign('info', $info);
+        return $this->fetch();
+    }
+
+    /**
+     * 保存章节
+     */
+    public function saveSection() {
+        $cid = $this->request->param('cid', 0, 'intval');
+        if (!$cid) $this->error('请选择一个课程');
+        $item_id = $this->request->param('item_id', 0, 'intval');
+        $item_title = $this->request->param('item_title', '');
+        $description = $this->request->param('description', '');
+        if (!$item_title) $this->error('请认真填写章节标题');
+        $course_info = DB::name('course')->where(['cid'=>$cid])->find();
+        $data = [
+            'cid' => $cid,
+            'ctitle' => $course_info['ctitle'],
+            'item_title' => $item_title,
+            'description' => $description,
+            'status' => 1
+        ];
+        if ($item_id) {
+            //更新
+            $data['item_id'] = $item_id;
+            $data['update_time'] = $this->request->time();
+            $res = DB::name('course_item')->update($data);
+        } else {
+            //新增
+            $data['create_time'] = $this->request->time();
+            $res = DB::name('course_item')->insertGetId($data);
+        }
+        if ($res !== false) {
+            $this->success('成功!', url('course/detail', ['cid'=>$cid]));
+        } else {
+            $this->error('失败, 请重试');
+        }
     }
 
     /**
