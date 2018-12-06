@@ -213,14 +213,14 @@ class CourseController extends AdminBaseController
         if (!$cid) $this->error('请选择一个课程');
         $item_id = $this->request->param('item_id', 0, 'intval');
         $item_title = $this->request->param('item_title', '');
-        $description = $this->request->param('description', '');
+        $summary = $this->request->param('summary', '');
         if (!$item_title) $this->error('请认真填写章节标题');
         $course_info = DB::name('course')->where(['cid'=>$cid])->find();
         $data = [
             'cid' => $cid,
             'ctitle' => $course_info['ctitle'],
             'item_title' => $item_title,
-            'description' => $description,
+            'summary' => $summary,
             'status' => 1
         ];
         if ($item_id) {
@@ -245,35 +245,27 @@ class CourseController extends AdminBaseController
      */
     public function editItem() {
         $type = $this->request->param('item_type', 0, 'intval');
-        $exam_id = $this->request->param('exam_id', 0, 'intval');
+        $cid = $this->request->param('cid', 0, 'intval');
         $item_id = $this->request->param('item_id', 0, 'intval');
-        if (!$exam_id) $this->error('试卷id不能为空');
-        switch ($type) {
-            case 1 :
-                $template_name = 'edit_item_xuanze';
-                break;
-            case 2 :
-                $template_name = 'edit_item_tiankong';
-                break;
-            case 3 :
-                $template_name = 'edit_item_lunshu';
-                break;
-            default :
-                $cookie_type_name = $this->request->cookie('item_template_name');
-                if ($cookie_type_name) {
-                    $template_name = $cookie_type_name;
-                } else {
-                    $template_name = 'edit_item_xuanze';
-                }
+        if (!$cid) $this->error('试卷id不能为空');
+        //查询该课程的模型是视频还是图文
+        $course_info = DB::name('course')->where(['cid'=>$cid])->find();
+        if ($course_info['type'] == 1) {
+            $template_name = 'video';
+        } elseif($course_info['type'] == 3) {
+            $template_name = 'article';
+        } else {
+            //todo 其他模型
         }
-        Cookie::set('item_template_name', $template_name, 86400);
+        Cookie::set('course_template', $template_name, 86400);
         //题目信息
         $info = [];
         if ($item_id) {
-            $info = DB::name('exam_item')->where(['id'=>$item_id])->find();
+            $info = DB::name('course_item')->where(['item_id'=>$item_id])->find();
             if ($info['option']) $info['option'] = json_decode($info['option'], true);
         }
         $this->assign('info', $info);
+        $this->assign('course_info', $course_info);
         return $this->fetch($template_name);
     }
 

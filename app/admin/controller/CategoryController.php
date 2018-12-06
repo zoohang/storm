@@ -153,7 +153,6 @@ class CategoryController extends AdminBaseController
             $categoryModel = new CategoryModel();
             $categoriesTree      = $categoryModel->CategoryTree($category['parent_id'], $id, $category['type']);
             $this->assign($category);
-            dump($category);
             $this->assign('categories_tree', $categoriesTree);
             return $this->fetch();
         } else {

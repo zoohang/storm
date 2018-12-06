@@ -4,7 +4,7 @@
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
         <li><a href="{:url('course/detail', ['cid'=>$params['cid']])}">课程管理</a></li>
-        <li class="active"><a>章节编辑</a></li>
+        <li class="active"><a>课题编辑</a></li>
     </ul>
     <div class="row margin-top-20">
         <div class="col-md-2">
@@ -16,18 +16,25 @@
             <form class="js-ajax-form" action="{:url('course/saveSection')}" method="post">
                 <input type="hidden" name="cid" value="{$params['cid']}">
                 <input type="hidden" name="item_id" value="{$params['item_id']|default=''}">
+                <input type="hidden" name="type" value="1">
                 <div class="tab-content">
                     <div class="tab-pane active" id="A">
                         <div class="form-group">
-                            <label for="input-name"><span class="form-required">*</span>章节标题</label>
+                            <label for="input-name"><span class="form-required">*</span>课题标题</label>
                             <div>
                                 <input type="text" class="form-control" id="input-name" name="item_title" value="{$info.item_title|default=''}">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="input-summary">章节简介</label>
+                            <label for="input-summary">课题简介</label>
                             <div>
                                 <textarea class="form-control" name="summary" id="input-summary">{$info.summary|default=''}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-name">视频上传</label>
+                            <div>
+                                <include file="course/upload"/>
                             </div>
                         </div>
                     </div>
