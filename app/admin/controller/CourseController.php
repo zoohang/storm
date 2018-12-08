@@ -16,6 +16,7 @@ use cmf\controller\AdminBaseController;
 use app\admin\model\CategoryModel;
 use think\Cookie;
 use think\Db;
+use app\base\model\VodModel;
 
 class CourseController extends AdminBaseController
 {
@@ -416,6 +417,56 @@ class CourseController extends AdminBaseController
             $this->success("删除成功！");
         } else {
             $this->error("删除失败！");
+        }
+    }
+
+    /**
+     * 获取上传凭证
+     * 前端上传获取视频的基本信息 标题title 视频路径file_name
+     * 之后搬迁到admin模块
+     */
+    public function client_get_upload_ticket() {
+        $info = [
+            'title' => $this->request->param('title'),
+            'file_name' => $this->request->param('file_name'),
+        ];
+        if (strlen($info['title']) > 127) {
+            $info['title'] = msubstr($info['title'], 0, 40, 'utf-8', false);
+        }
+        if (!$info['title'] || !$info['file_name']) $this->error('标题和视频地址必填');
+        $res = VodModel::getInstance()->create_upload_video($info);
+        return json($res);
+    }
+
+    public function get_vod_origin() {
+        $video_id = $this->request->param('video_id');
+        if (!$video_id) $this->error('video_id必填');
+        $res = VodModel::getInstance()->get_mezzanine_info($video_id);
+        return json($res);
+    }
+
+    //todo
+    public function get_player_info() {
+        $video_id = I('get.video_id');
+        if (!$video_id) exit(json_encode(['status'=>false, 'message'=>'video_id必填', 'data'=>'']));
+        $res = VodModel::getInstance()->get_play_info($video_id);
+        exit(json_encode($res));
+    }
+
+    //todo
+    public function get_player_info_by_vid($id=null) {
+        $vid = isset($id) ? $id : I('get.vid', 0, 'intval');
+        if (!$vid) {
+            return false;
+        }
+        $video_id = M('video_vod')->where(['vid'=>$vid])->getField('video_id');
+        if (!$video_id) {
+            return false;
+        } else {
+            $auth = $this->get_player_auth($video_id)->PlayAuth;
+            header('Content-Type:application/json; charset=utf-8');
+            $data = ['video_id'=>$video_id, 'play_auth'=>$auth];
+            exit(json_encode(['status'=>true, 'message'=>'获取成功', 'data'=>$data]));
         }
     }
 }

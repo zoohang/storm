@@ -235,7 +235,7 @@
         getTicket();
     });
     var getTicket = function () {
-        $.post("/index.php/admin/many_video/client_get_upload_ticket", {
+        $.post("/admin/course/client_get_upload_ticket", {
             title: document.getElementById("files").files[0].name.split(".")[0],
             file_name: document.getElementById("files").files[0].name
         }, function (result, status) {
@@ -298,7 +298,7 @@
     var playerInit = function (videoId) {
         $.ajax({
             type: "GET",
-            url: "/index.php/home/tool/get_vod_origin?video_id=" + videoId,
+            url: "/admin/course/get_vod_origin?video_id=" + videoId,
             dataType: "json",
             header: {
                 'content-type': 'application/x-www-form-urlencoded',
