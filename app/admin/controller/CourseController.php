@@ -10,6 +10,7 @@
 // +----------------------------------------------------------------------
 namespace app\admin\controller;
 
+use app\admin\model\CourseItemModel;
 use app\admin\model\ExamItemModel;
 use app\admin\model\CourseModel;
 use cmf\controller\AdminBaseController;
@@ -179,10 +180,15 @@ class CourseController extends AdminBaseController
         $cid = $this->request->param('cid', 0, 'intval');
         if (!$cid) $this->error('请选择一个课程');
         $where = ['cid'=>$cid, 'status'=>1];
-        $list = DB::name('course_item')
+        /*$list = DB::name('course_item')
             ->where($where)
             ->order("list_order ASC,cid ASC")
             ->select();
+        $this->assign('list' , $list);*/
+
+        //model
+        $CourseItemModel = new CourseItemModel();
+        $list = $CourseItemModel->CategoryTableTree($cid);
         $this->assign('list' , $list);
         //获取课程信息
         $info = DB::name('course')->where(['cid'=>$cid])->find();
@@ -262,8 +268,9 @@ class CourseController extends AdminBaseController
         //题目信息
         $info = [];
         if ($item_id) {
-            $info = DB::name('course_item')->where(['item_id'=>$item_id])->find();
-            if ($info['option']) $info['option'] = json_decode($info['option'], true);
+            $CourseItemModel = new CourseItemModel();
+            $info = $CourseItemModel->get($item_id);
+            //if ($info['option']) $info['option'] = json_decode($info['option'], true);
         }
         $this->assign('info', $info);
         $this->assign('course_info', $course_info);
@@ -275,29 +282,30 @@ class CourseController extends AdminBaseController
      */
     public function saveItem() {
         $id = $this->request->param('item_id');
-        $data = $this->request->param()['post'];
-        $result = $this->validate($data, 'ExamItem');
+        $data = $this->request->param();
+        /*$result = $this->validate($data, 'CourseItem');
         if ($result !== true) {
             $this->error($result);
-        }
-        $ExamItemModel = new ExamItemModel();
-        if (isset($data['option']) && $data['option']) $data['option'] = json_encode($data['option'], 64|256);
+        }*/
+        $CourseItemModel = new CourseItemModel();
+        //if (isset($data['option']) && $data['option']) $data['option'] = json_encode($data['option'], 64|256);
         if ($id) {
             //save
             $data['id'] = $id;
-            $result = $ExamItemModel->allowField(true)->isUpdate(true)->save($data);
+            $result = $CourseItemModel->allowField(true)->isUpdate(true)->save($data);
             if ($result === false) {
                 $this->error('编辑失败!');
             } else {
+                exit;
                 $this->success('编辑成功!', url('exam/editItem', ['item_id'=>$id, 'item_type'=>$data['type'], 'exam_id'=>$data['exam_id']]));
             }
         } else {
             //add
             unset($data['id']);
-            $result = $ExamItemModel->allowField(true)->save($data);
+            $result = $CourseItemModel->allowField(true)->save($data);
             if ($result === false) {
                 $this->error('添加失败!');
-            }
+            }exit;
             $this->success('添加成功!', url('exam/editItem', ['item_id'=>$result, 'item_type'=>$data['type'], 'exam_id'=>$data['exam_id']]));
         }
     }
@@ -340,8 +348,8 @@ class CourseController extends AdminBaseController
 
     public function delete_item()
     {
-        $id = $this->request->param('id', 0, 'intval');
-        if (Db::name('exam_item')->where(['id'=> $id])->update(['status' => -1]) !== false) {
+        $item_id = $this->request->param('item_id', 0, 'intval');
+        if (Db::name('exam_item')->where(['item_id'=> $item_id])->update(['status' => -1]) !== false) {
             $this->success("删除成功！");
         } else {
             $this->error("删除失败！");

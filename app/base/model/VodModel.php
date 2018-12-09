@@ -4,10 +4,8 @@
  */
 namespace app\base\model;
 use string\String;
-use Think\Controller;
 require_once EXTEND_PATH.'aliyun-php-sdk/aliyun-php-sdk-core/Config.php';
 require_once EXTEND_PATH.'aliyun-php-sdk/aliyun-oss-php-sdk-2.2.4/autoload.php';
-use Think\Exception;
 use vod\Request\V20170321 as vod;
 use OSS\OssClient;
 use OSS\Core\OssException;
