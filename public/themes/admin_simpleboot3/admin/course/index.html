@@ -19,11 +19,40 @@
     </form>
     <form class="js-ajax-form" action="{:url('course/listOrder')}" method="post">
         <div class="table-actions">
-            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit">{:lang('SORT')}</button>
+            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
+                    data-action="{:url('course/listOrder')}">排序
+            </button>
+            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
+                    data-action="{:url('course/publish',array('yes'=>1))}" data-subcheck="true">发布
+            </button>
+            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
+                    data-action="{:url('course/publish',array('no'=>1))}" data-subcheck="true">取消发布
+            </button>
+            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
+                    data-action="{:url('course/top',array('yes'=>1))}" data-subcheck="true">置顶
+            </button>
+            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
+                    data-action="{:url('course/top',array('no'=>1))}" data-subcheck="true">取消置顶
+            </button>
+            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
+                    data-action="{:url('course/recommend',array('yes'=>1))}" data-subcheck="true">推荐
+            </button>
+            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
+                    data-action="{:url('course/recommend',array('no'=>1))}" data-subcheck="true">取消推荐
+            </button>
+            <button class="btn btn-danger btn-sm js-ajax-submit" type="submit"
+                    data-action="{:url('course/delete')}" data-subcheck="true" data-msg="您确定删除吗？">
+                {:lang('DELETE')}
+            </button>
         </div>
         <table class="table table-hover table-bordered table-list">
             <thead>
             <tr>
+                <th width="15">
+                    <label>
+                        <input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x">
+                    </label>
+                </th>
                 <th width="80">{:lang('SORT')}</th>
                 <th width="50">ID</th>
                 <th>图片</th>
@@ -31,13 +60,19 @@
                 <th>课程标题</th>
                 <th>描述</th>
                 <th>讲师</th>
-                <th>创建时间</th>
+                <th>更新时间	</th>
+                <th>发布时间</th>
+                <th width="70">状态</th>
                 <th width="200">操作</th>
             </tr>
             </thead>
             <tbody>
             <foreach name="list" item="vo">
                 <tr>
+                    <td>
+                        <input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                               value="{$vo.cid}" title="ID:{$vo.cid}">
+                    </td>
                     <td><input name="list_orders[{$vo.cid}]" type="text" size="3" value="{$vo.list_order}" class="input-order valid" aria-invalid="false"></td>
                     <td>{$vo.cid}</td>
                     <td><img src="{:cmf_get_image_preview_url($vo.image)}" id="thumb-preview"
@@ -46,11 +81,39 @@
                     <td>{$vo.ctitle}</td>
                     <td>{$vo.description|mb_substr=0,20,'utf8'}</td>
                     <td>{$vo.tnames}</td>
-                    <td>{$vo.create_time|date='Y-m-d',###}</td>
+                    <td>
+                        <notempty name="vo.update_time">
+                            {:date('Y-m-d H:i',$vo['update_time'])}
+                        </notempty>
+                    </td>
+                    <td>
+                        <empty name="vo.published_time">
+                            未发布
+                            <else/>
+                            {:date('Y-m-d H:i',$vo['published_time'])}
+                        </empty>
+                    </td>
+                    <td>
+                        <switch name="vo.status">
+                            <case value="0"><a data-toggle="tooltip" title="已删除"><i class="fa fa-close"></i></a></case>
+                            <case value="1"><a data-toggle="tooltip" title="已发布"><i class="fa fa-check"></i></a></case>
+                            <case value="2"><a data-toggle="tooltip" title="未发布"><i class="fa fa-close"></i></a></case>
+                        </switch>
+                        <notempty name="vo.is_top">
+                            <a data-toggle="tooltip" title="已置顶"><i class="fa fa-arrow-up"></i></a>
+                            <else/>
+                            <a data-toggle="tooltip" title="未置顶"><i class="fa fa-arrow-down"></i></a>
+                        </notempty>
+                        <notempty name="vo.recommended">
+                            <a data-toggle="tooltip" title="已推荐"><i class="fa fa-thumbs-up"></i></a>
+                            <else/>
+                            <a data-toggle="tooltip" title="未推荐"><i class="fa fa-thumbs-down"></i></a>
+                        </notempty>
+                    </td>
                     <td>
                         <a href="{:url('course/detail',['cid'=>$vo.cid])}">章节详情</a>
                         <a href="{:url('course/edit',['cid'=>$vo.cid])}">编辑</a>
-                        <a class="js-ajax-delete" href="{:url('course/delete_item',['id'=>$vo.cid])}">删除</a>
+                        <a class="js-ajax-delete" href="{:url('course/delete',['id'=>$vo.cid])}">删除</a>
                     </td>
                 </tr>
             </foreach>

@@ -114,6 +114,24 @@ function object_to_array($obj) {
     }
     return $obj;
 }
+
+function create_upload_image($client, $imageType, $imageExt) {
+    $request = new vod\CreateUploadImageRequest();
+    $request->setImageType($imageType);
+    $request->setImageExt($imageExt);
+    $request->setAcceptFormat('JSON');
+    return $client->getAcsResponse($request);
+}
+
+try {
+    $client = init_vod_client($accessKeyId, $accessKeySecret);
+    $imageInfo = create_upload_image($client, 'default', 'jpg');
+    var_dump($imageInfo);
+} catch (Exception $e) {
+    print $e->getMessage()."\n";
+}
+exit;
+
 //修复my_video_vod表数据
 //try {
     //todo

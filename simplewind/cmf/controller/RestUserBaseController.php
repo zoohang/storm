@@ -17,7 +17,7 @@ class RestUserBaseController extends RestBaseController
     {
 
         if (empty($this->user)) {
-            $this->error(['code' => 10001, 'msg' => '登录已失效!']);
+            $this->error(['code' => 401, 'msg' => '登录已失效!']);
         }
 
     }

@@ -4,18 +4,21 @@
 // +----------------------------------------------------------------------
 // | Copyright (c) 2013-2017 http://www.thinkcmf.com All rights reserved.
 // +----------------------------------------------------------------------
-// | Author: Dean <zxxjjforever@163.com>
+// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
-namespace api\v1\controller;
+// | Author: wuwu <15093565100@163.com>
+// +----------------------------------------------------------------------
+namespace api\portal\model;
 
-use cmf\controller\RestUserBaseController;
+use think\Model;
 
-class UserController extends RestUserBaseController
+class PortalCategoryPostModel extends Model
 {
-    // 获取用户信息
-    public function getUserInfo()
+    /**
+     * 基础查询
+     */
+    protected function base($query)
     {
-        return json(['name'=>111], 200, ['power_by'=>111]);
+        $query->where('status', 1);
     }
-
 }

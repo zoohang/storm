@@ -99,10 +99,12 @@ class RestBaseController
         $deviceType = $this->request->header('XX-Device-Type');
 
         if (empty($deviceType)) {
+            $this->error('应用来源必填');
             return;
         }
 
         if (!in_array($deviceType, $this->allowedDeviceTypes)) {
+            $this->error('应用来源不在指定的范围中');
             return;
         }
 
@@ -125,6 +127,9 @@ class RestBaseController
             $this->user     = $user;
             $this->userId   = $user['id'];
             $this->userType = $user['user_type'];
+        } else {
+            //todo token不存在 验证失败
+            $this->error('token验证失败, 请重新拉取授权');
         }
 
     }
@@ -229,7 +234,7 @@ class RestBaseController
      */
     protected function success($msg = '', $data = '', array $header = [])
     {
-        $code   = 1;
+        $code   = 200;
         $result = [
             'code' => $code,
             'msg'  => $msg,
@@ -254,7 +259,7 @@ class RestBaseController
      */
     protected function error($msg = '', $data = '', array $header = [])
     {
-        $code = 0;
+        $code = 400;
         if (is_array($msg)) {
             $code = $msg['code'];
             $msg  = $msg['msg'];
@@ -290,7 +295,7 @@ class RestBaseController
     public function getUserId()
     {
         if (empty($this->userId)) {
-            $this->error(['code' => 10001, 'msg' => '用户未登录']);
+            $this->error(['code' => 401, 'msg' => '用户未登录']);
         }
         return $this->userId;
 

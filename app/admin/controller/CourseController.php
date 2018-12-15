@@ -11,7 +11,6 @@
 namespace app\admin\controller;
 
 use app\admin\model\CourseItemModel;
-use app\admin\model\ExamItemModel;
 use app\admin\model\CourseModel;
 use cmf\controller\AdminBaseController;
 use app\admin\model\CategoryModel;
@@ -254,7 +253,7 @@ class CourseController extends AdminBaseController
         $type = $this->request->param('item_type', 0, 'intval');
         $cid = $this->request->param('cid', 0, 'intval');
         $item_id = $this->request->param('item_id', 0, 'intval');
-        if (!$cid) $this->error('试卷id不能为空');
+        if (!$cid) $this->error('课程id不能为空');
         //查询该课程的模型是视频还是图文
         $course_info = DB::name('course')->where(['cid'=>$cid])->find();
         if ($course_info['type'] == 1) {
@@ -283,12 +282,13 @@ class CourseController extends AdminBaseController
     public function saveItem() {
         $id = $this->request->param('item_id');
         $data = $this->request->param();
+        $cid = $this->request->param('cid'); //课程ID
+        if (!$cid) $this->error('课程id不能为空');
         /*$result = $this->validate($data, 'CourseItem');
         if ($result !== true) {
             $this->error($result);
         }*/
         $CourseItemModel = new CourseItemModel();
-        //if (isset($data['option']) && $data['option']) $data['option'] = json_encode($data['option'], 64|256);
         if ($id) {
             //save
             $data['id'] = $id;
@@ -296,8 +296,7 @@ class CourseController extends AdminBaseController
             if ($result === false) {
                 $this->error('编辑失败!');
             } else {
-                exit;
-                $this->success('编辑成功!', url('exam/editItem', ['item_id'=>$id, 'item_type'=>$data['type'], 'exam_id'=>$data['exam_id']]));
+                $this->success('编辑成功!', url('course/detail', ['cid'=>$cid]));
             }
         } else {
             //add
@@ -305,8 +304,9 @@ class CourseController extends AdminBaseController
             $result = $CourseItemModel->allowField(true)->save($data);
             if ($result === false) {
                 $this->error('添加失败!');
-            }exit;
-            $this->success('添加成功!', url('exam/editItem', ['item_id'=>$result, 'item_type'=>$data['type'], 'exam_id'=>$data['exam_id']]));
+            } else {
+                $this->success('编辑成功!', url('course/detail', ['cid'=>$cid]));
+            }
         }
     }
 
@@ -338,11 +338,91 @@ class CourseController extends AdminBaseController
 
     public function delete()
     {
-        $id = $this->request->param('id', 0, 'intval');
-        if (Db::name('exam')->where(['id'=> $id])->update(['status' => -1]) !== false) {
-            $this->success("删除成功！");
-        } else {
-            $this->error("删除失败！");
+        $param       = $this->request->param();
+        $CourseModel = new CourseModel();
+        if (isset($param['id'])) {
+            if ($CourseModel->where(['cid'=> $param['id']])->update(['status' => 0]) !== false) {
+                $this->success("删除成功！");
+            } else {
+                $this->error("删除失败！");
+            }
+        }
+        if (isset($param['ids'])) {
+            if ($CourseModel->where(['cid'=> ['in', $param['ids']]])->update(['status' => 0]) !== false) {
+                $this->success("删除成功！");
+            } else {
+                $this->error("删除失败！");
+            }
+        }
+
+    }
+
+    public function publish()
+    {
+        $param           = $this->request->param();
+        $CourseModel = new CourseModel();
+
+        if (isset($param['ids']) && isset($param["yes"])) {
+            $ids = $this->request->param('ids/a');
+
+            $CourseModel->where(['cid' => ['in', $ids]])->update(['status' => 1, 'published_time' => time()]);
+
+            $this->success("发布成功！", '');
+        }
+
+        if (isset($param['ids']) && isset($param["no"])) {
+            $ids = $this->request->param('ids/a');
+
+            $CourseModel->where(['cid' => ['in', $ids]])->update(['status' => 2]);
+
+            $this->success("取消发布成功！", '');
+        }
+
+    }
+
+    public function top()
+    {
+        $param           = $this->request->param();
+        $CourseModel = new CourseModel();
+
+        if (isset($param['ids']) && isset($param["yes"])) {
+            $ids = $this->request->param('ids/a');
+
+            $CourseModel->where(['cid' => ['in', $ids]])->update(['is_top' => 1]);
+
+            $this->success("置顶成功！", '');
+
+        }
+
+        if (isset($_POST['ids']) && isset($param["no"])) {
+            $ids = $this->request->param('ids/a');
+
+            $CourseModel->where(['cid' => ['in', $ids]])->update(['is_top' => 0]);
+
+            $this->success("取消置顶成功！", '');
+        }
+    }
+
+    public function recommend()
+    {
+        $param           = $this->request->param();
+        $CourseModel = new CourseModel();
+
+        if (isset($param['ids']) && isset($param["yes"])) {
+            $ids = $this->request->param('ids/a');
+
+            $CourseModel->where(['cid' => ['in', $ids]])->update(['recommended' => 1]);
+
+            $this->success("推荐成功！", '');
+
+        }
+        if (isset($param['ids']) && isset($param["no"])) {
+            $ids = $this->request->param('ids/a');
+
+            $CourseModel->where(['cid' => ['in', $ids]])->update(['recommended' => 0]);
+
+            $this->success("取消推荐成功！", '');
+
         }
     }
 
