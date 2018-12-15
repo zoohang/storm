@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-12-05 23:50:37
+Date: 2018-12-16 00:34:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -558,20 +558,23 @@ CREATE TABLE `st_course` (
   `price` int(11) NOT NULL DEFAULT '0' COMMENT '费用',
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '类型 1-视频 2-音频 3-图文',
   `image` varchar(256) NOT NULL DEFAULT '' COMMENT '展示图片',
+  `recommended` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否推荐',
+  `is_top` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否置顶',
   `list_order` float NOT NULL DEFAULT '10000' COMMENT '排序',
   `create_time` int(10) NOT NULL DEFAULT '0',
   `update_time` int(10) NOT NULL DEFAULT '0',
-  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0-删除 1-显示',
+  `published_time` int(10) NOT NULL DEFAULT '0' COMMENT '发布时间',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0-删除 1-已发布 2-未发布',
   PRIMARY KEY (`cid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='课程表';
 
 -- ----------------------------
 -- Records of st_course
 -- ----------------------------
-INSERT INTO `st_course` VALUES ('5', '222', '9', '后端', '333', '0', '0', '0', '0', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '12', '1542726612', '1542726612', '1');
-INSERT INTO `st_course` VALUES ('6', '222', '9', '后端', '333', '0', '0', '0', '0', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '3', '1542726663', '1542726663', '1');
-INSERT INTO `st_course` VALUES ('7', 'nginx123111', '10', '服务端', 'nginx233312', '0', '0', '0', '1', 'admin/20181107/5299ca5b02abe7163b0569cc5aed01da.jpg', '1', '1542727290', '1542812050', '1');
-INSERT INTO `st_course` VALUES ('8', 'php56789', '9', '后端', 'php567891', '0', '0', '0', '1', 'admin/20181107/f05a104ce593705eace17696bc5a3233.jpg', '0', '1542729348', '1542812037', '1');
+INSERT INTO `st_course` VALUES ('5', '222', '9', '后端', '333', '0', '0', '0', '1', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '1', '1', '12', '1542726612', '1542726612', '1544889523', '1');
+INSERT INTO `st_course` VALUES ('6', '222', '9', '后端', '333', '0', '0', '0', '1', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '1', '1', '3', '1542726663', '1542726663', '1544889523', '1');
+INSERT INTO `st_course` VALUES ('7', 'nginx123111', '10', '服务端', 'nginx233312', '0', '0', '0', '1', 'admin/20181107/5299ca5b02abe7163b0569cc5aed01da.jpg', '1', '1', '1', '1542727290', '1542812050', '1544889523', '0');
+INSERT INTO `st_course` VALUES ('8', 'php56789', '9', '后端', 'php567891', '0', '0', '0', '3', 'admin/20181107/f05a104ce593705eace17696bc5a3233.jpg', '1', '1', '22', '1542729348', '1544452406', '1544889523', '1');
 
 -- ----------------------------
 -- Table structure for st_course_item
@@ -582,40 +585,28 @@ CREATE TABLE `st_course_item` (
   `item_title` varchar(128) NOT NULL DEFAULT '' COMMENT '课题名称',
   `cid` int(11) NOT NULL DEFAULT '0' COMMENT '课程id [course id]',
   `ctitle` varchar(255) NOT NULL DEFAULT '' COMMENT '课程标题',
-  `parent_id` int(11) NOT NULL DEFAULT '0' COMMENT '章节id 1:章节信息 2:小节数据',
+  `parent_id` int(11) NOT NULL DEFAULT '0' COMMENT '章节id 上级id',
   `path` varchar(255) NOT NULL DEFAULT '' COMMENT '分类层级关系路径',
+  `summary` varchar(1024) NOT NULL DEFAULT '' COMMENT '摘要',
   `description` text COMMENT '介绍',
   `source_id` char(32) NOT NULL DEFAULT '' COMMENT '资源id',
+  `video_url` varchar(256) NOT NULL DEFAULT '' COMMENT '视频播放地址',
+  `video_long` int(11) NOT NULL DEFAULT '0' COMMENT '视频时长',
+  `video_size` int(11) NOT NULL DEFAULT '0' COMMENT '视频体积大小 kb',
   `list_order` float NOT NULL DEFAULT '10000' COMMENT '排序',
   `create_time` int(10) NOT NULL DEFAULT '0',
   `update_time` int(10) NOT NULL DEFAULT '0',
-  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '资源类型 1-视频 2-图文',
+  `type` tinyint(1) NOT NULL DEFAULT '-1' COMMENT '资源类型 0-小节 1-视频 2-图文',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-删除 1-显示',
   PRIMARY KEY (`item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='课题表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='课题表';
 
 -- ----------------------------
 -- Records of st_course_item
 -- ----------------------------
-INSERT INTO `st_course_item` VALUES ('1', '第1章 课程介绍', '8', 'php56789', '0', '', '带领大家初步认识下什么是PhpStorm、以及他的特性、如何获取phpstorm、以及如何安装', '', '10000', '1544024701', '1544025009', '0', '1');
-INSERT INTO `st_course_item` VALUES ('2', '第2章 PhpStorm的基本操作', '8', 'php56789', '0', '', '本章主要介绍下编辑器的工作区、如何导入本地项目到编辑器中，以及字体设置技巧', '', '10000', '1544024785', '0', '0', '1');
-
--- ----------------------------
--- Table structure for st_course_section
--- ----------------------------
-DROP TABLE IF EXISTS `st_course_section`;
-CREATE TABLE `st_course_section` (
-  `sid` int(11) NOT NULL AUTO_INCREMENT,
-  `stitle` varchar(128) NOT NULL DEFAULT '' COMMENT '章节标题',
-  `cid` int(11) NOT NULL DEFAULT '0' COMMENT '课程id',
-  `ctitle` varchar(128) NOT NULL DEFAULT '' COMMENT '课程标题',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-删除 1-展示',
-  PRIMARY KEY (`sid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='课程-章节关联表';
-
--- ----------------------------
--- Records of st_course_section
--- ----------------------------
+INSERT INTO `st_course_item` VALUES ('1', '第1章 课程介绍', '8', 'php56789', '0', '1', '带领大家初步认识下什么是PhpStorm、以及他的特性、如何获取phpstorm、以及如何安装', '', '', '', '0', '0', '10000', '1544024701', '1544025009', '0', '1');
+INSERT INTO `st_course_item` VALUES ('2', '第2章 PhpStorm的基本操作', '8', 'php56789', '0', '2', '本章主要介绍下编辑器的工作区、如何导入本地项目到编辑器中，以及字体设置技巧', '', '', '', '0', '0', '10000', '1544024785', '0', '0', '1');
+INSERT INTO `st_course_item` VALUES ('3', '初识PhpStorm', '8', 'php56789', '1', '1-3', '初识PhpStorm2', '\n&lt;p&gt;112&lt;/p&gt;\n&lt;p&gt;fsdfd&lt;/p&gt;\n&lt;p&gt;1&lt;/p&gt;\n&lt;p&gt;1232&lt;/p&gt;\n&lt;p&gt;&lt;br&gt;&lt;/p&gt;\n', '', '', '66', '0', '10000', '0', '1544349206', '2', '1');
 
 -- ----------------------------
 -- Table structure for st_course_teacher
@@ -652,7 +643,7 @@ CREATE TABLE `st_course_teacher_relation` (
   KEY `cid` (`cid`),
   KEY `tid` (`tid`),
   KEY `status` (`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COMMENT='讲师_课程关联表';
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COMMENT='讲师_课程关联表';
 
 -- ----------------------------
 -- Records of st_course_teacher_relation
@@ -661,8 +652,8 @@ INSERT INTO `st_course_teacher_relation` VALUES ('1', '5', '1', '1');
 INSERT INTO `st_course_teacher_relation` VALUES ('2', '5', '2', '1');
 INSERT INTO `st_course_teacher_relation` VALUES ('3', '6', '1', '1');
 INSERT INTO `st_course_teacher_relation` VALUES ('4', '6', '2', '1');
-INSERT INTO `st_course_teacher_relation` VALUES ('35', '8', '2', '1');
 INSERT INTO `st_course_teacher_relation` VALUES ('36', '7', '1', '1');
+INSERT INTO `st_course_teacher_relation` VALUES ('41', '8', '2', '1');
 
 -- ----------------------------
 -- Table structure for st_exam
@@ -714,14 +705,14 @@ CREATE TABLE `st_exam_item` (
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态 1-正常 0-隐藏 -1删除',
   PRIMARY KEY (`id`),
   KEY `exam_id_idx` (`exam_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_exam_item
 -- ----------------------------
 INSERT INTO `st_exam_item` VALUES ('1', '1', '啊啊啊', '1', '{\"A\":\"啊啊啊啊啊啊啊啊啊啊啊啊啊啊白斑病白斑病\",\"B\":\"白斑病白斑病吧\",\"C\":\"草草草草草草草草草\",\"D\":\"滴答滴答滴答滴答滴答的\"}', 'D', '反反复复发', '吱吱吱吱吱吱吱吱吱吱吱吱吱吱在', '1542039232', '1542039232', '2', '1');
 INSERT INTO `st_exam_item` VALUES ('2', '1', '啊啊啊1', '1', '{\"A\":\"啊啊啊啊啊啊啊啊啊啊啊啊啊啊白斑病白斑病2\",\"B\":\"白斑病白斑病吧\",\"C\":\"草草草草草草草草草\",\"D\":\"滴答滴答滴答滴答滴答的\"}', 'D', '反反复复发', '吱吱吱吱吱吱吱吱吱吱吱吱吱吱在', '1542039906', '1542039906', '3', '1');
-INSERT INTO `st_exam_item` VALUES ('3', '1', '啊啊啊3', '1', '{\"A\":\"啊啊啊啊啊啊啊啊啊啊啊啊啊啊白斑病白斑病3\",\"B\":\"白斑病白斑病吧3\",\"C\":\"草草草草草草草草草3\",\"D\":\"滴答滴答滴答滴答滴答的3\"}', 'D', '反反复复发3', '吱吱吱吱吱吱吱吱吱吱吱吱吱吱在3', '1542039932', '1542040125', '4', '1');
+INSERT INTO `st_exam_item` VALUES ('3', '1', '初识PhpStorm', '2', '{\"A\":\"啊啊啊啊啊啊啊啊啊啊啊啊啊啊白斑病白斑病3\",\"B\":\"白斑病白斑病吧3\",\"C\":\"草草草草草草草草草3\",\"D\":\"滴答滴答滴答滴答滴答的3\"}', 'D', '反反复复发3', '吱吱吱吱吱吱吱吱吱吱吱吱吱吱在3', '1542039932', '1544349454', '4', '1');
 INSERT INTO `st_exam_item` VALUES ('4', '1', '1', '2', '', '1', '1', '1', '1542113284', '1542113284', '5', '1');
 INSERT INTO `st_exam_item` VALUES ('5', '2', 'lunshu1', '3', '', 'lunshu1', 'lunshu1', 'lunshu123', '1542120943', '1542122472', '1003', '1');
 INSERT INTO `st_exam_item` VALUES ('6', '2', '12', '3', '', '1', '1', '1', '1542122521', '1542122831', '1001', '-1');
@@ -729,6 +720,7 @@ INSERT INTO `st_exam_item` VALUES ('7', '2', 'ttt', '2', '', 'ttt1', 'ttttt', 't
 INSERT INTO `st_exam_item` VALUES ('8', '2', '44', '2', '', '44', '44', '44', '1542122986', '1542122986', '100', '1');
 INSERT INTO `st_exam_item` VALUES ('9', '2', '1', '2', '', '1', '11', '1', '1542123030', '1542123030', '100', '1');
 INSERT INTO `st_exam_item` VALUES ('10', '2', '2', '3', '', '2', '22', '2', '1542123141', '1542123141', '100', '1');
+INSERT INTO `st_exam_item` VALUES ('11', '1', '111111', '1', '{\"A\":\"1\",\"B\":\"2\",\"C\":\"3\",\"D\":\"4\"}', 'AB', '22', '33', '1544450805', '1544450805', '100', '1');
 
 -- ----------------------------
 -- Table structure for st_hook
@@ -1047,10 +1039,10 @@ CREATE TABLE `st_portal_post` (
 -- Records of st_portal_post
 -- ----------------------------
 INSERT INTO `st_portal_post` VALUES ('1', '0', '2', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1540969665', '1542289038', '1540969500', '0', '测试直接添加页面', '测试 直接 添加 页面', '测试直接添加页面', '', '', '\n&lt;p&gt;&lt;span style=&quot;text-decoration: underline;&quot;&gt;测试直接添加页面&lt;/span&gt;&lt;/p&gt;\n&lt;p&gt;&lt;strong&gt;测试直接添加页面&lt;/strong&gt;&lt;/p&gt;\n&lt;p&gt;&lt;em&gt;测试直接添加页面&lt;/em&gt;&lt;/p&gt;\n', null, '{\"thumbnail\":\"portal\\/20181031\\/c7cae5f03d3af648e043704ec6f45296.jpg\",\"template\":\"\",\"photos\":[{\"url\":\"portal\\/20181031\\/8f953a156ac5e7985093783571f78025.jpg\",\"name\":\"0ae3ac53ea686ed2a70e3eeca7217fac.jpg\"}]}');
-INSERT INTO `st_portal_post` VALUES ('2', '0', '1', '1', '1', '0', '1', '0', '0', '10', '0', '0', '0', '1540970569', '1542289391', '1540970280', '0', '测试文章属于两个分类', '', '测试文章属于两个分类', 'https://mp.weixin.qq.com/s/kwJ5U4oKEDY94RAazAtxzw', 'portal/20181031/423bb38785881980610dbe0619ce7a80.jpg', '\n&lt;p&gt;测试文章属于两个分类&lt;/p&gt;\n&lt;p&gt;&lt;span style=&quot;border: 1px solid rgb(0, 0, 0);&quot;&gt;测试文章属于两个分类&lt;/span&gt;&lt;/p&gt;\n&lt;p&gt;&lt;span style=&quot;text-decoration: underline;&quot;&gt;测试文章属于两个分类&lt;/span&gt;&lt;/p&gt;\n', null, '{\"audio\":\"\",\"video\":\"portal\\/20181031\\/eff42dcb01713702ee7197e2d712be3d.mp4\",\"thumbnail\":\"portal\\/20181031\\/423bb38785881980610dbe0619ce7a80.jpg\"}');
-INSERT INTO `st_portal_post` VALUES ('3', '0', '1', '1', '1', '0', '1', '0', '0', '0', '0', '0', '0', '1542290082', '1542290082', '1542290063', '0', '1', '2', '4', '3', '', '&lt;p&gt;5&lt;/p&gt;', null, '{\"audio\":\"\",\"video\":\"\",\"thumbnail\":\"\",\"template\":\"\"}');
-INSERT INTO `st_portal_post` VALUES ('4', '0', '1', '1', '1', '0', '1', '0', '0', '0', '0', '0', '0', '1542290252', '1542290252', '1542290232', '0', '1', '2', '4', '3', '', '&lt;p&gt;5&lt;/p&gt;', null, '{\"audio\":\"\",\"video\":\"\",\"thumbnail\":\"\",\"template\":\"\"}');
-INSERT INTO `st_portal_post` VALUES ('5', '0', '1', '1', '1', '1', '1', '1', '1', '0', '0', '0', '0', '1542290679', '1542290978', '1542290640', '0', '2', '2', '2', '2', '', '&lt;p&gt;2&lt;/p&gt;', null, '{\"audio\":\"\",\"video\":\"\",\"thumbnail\":\"\"}');
+INSERT INTO `st_portal_post` VALUES ('2', '0', '1', '1', '1', '1', '1', '0', '1', '10', '0', '0', '0', '1540970569', '1542289391', '1544884645', '0', '测试文章属于两个分类', '', '测试文章属于两个分类', 'https://mp.weixin.qq.com/s/kwJ5U4oKEDY94RAazAtxzw', 'portal/20181031/423bb38785881980610dbe0619ce7a80.jpg', '\n&lt;p&gt;测试文章属于两个分类&lt;/p&gt;\n&lt;p&gt;&lt;span style=&quot;border: 1px solid rgb(0, 0, 0);&quot;&gt;测试文章属于两个分类&lt;/span&gt;&lt;/p&gt;\n&lt;p&gt;&lt;span style=&quot;text-decoration: underline;&quot;&gt;测试文章属于两个分类&lt;/span&gt;&lt;/p&gt;\n', null, '{\"audio\":\"\",\"video\":\"portal\\/20181031\\/eff42dcb01713702ee7197e2d712be3d.mp4\",\"thumbnail\":\"portal\\/20181031\\/423bb38785881980610dbe0619ce7a80.jpg\"}');
+INSERT INTO `st_portal_post` VALUES ('3', '0', '1', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1542290082', '1542290082', '1544884645', '0', '1', '2', '4', '3', '', '&lt;p&gt;5&lt;/p&gt;', null, '{\"audio\":\"\",\"video\":\"\",\"thumbnail\":\"\",\"template\":\"\"}');
+INSERT INTO `st_portal_post` VALUES ('4', '0', '1', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1542290252', '1542290252', '1544884645', '0', '1', '2', '4', '3', '', '&lt;p&gt;5&lt;/p&gt;', null, '{\"audio\":\"\",\"video\":\"\",\"thumbnail\":\"\",\"template\":\"\"}');
+INSERT INTO `st_portal_post` VALUES ('5', '0', '1', '1', '1', '1', '1', '1', '1', '0', '0', '0', '0', '1542290679', '1544349967', '1544888377', '0', '2', '2', '2', '2', '', '\n&lt;p&gt;1&lt;/p&gt;\n&lt;p&gt;2&lt;/p&gt;\n', null, '{\"audio\":\"\",\"video\":\"\",\"thumbnail\":\"\"}');
 
 -- ----------------------------
 -- Table structure for st_portal_tag
@@ -1330,6 +1322,7 @@ CREATE TABLE `st_user` (
   `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '中国手机不带国家代码，国际手机号格式为：国家代码-手机号',
   `more` text COMMENT '扩展属性',
   PRIMARY KEY (`id`),
+  UNIQUE KEY `mobile` (`mobile`),
   KEY `user_login` (`user_login`),
   KEY `user_nickname` (`user_nickname`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
@@ -1500,7 +1493,7 @@ CREATE TABLE `st_user_token` (
 -- ----------------------------
 -- Records of st_user_token
 -- ----------------------------
-INSERT INTO `st_user_token` VALUES ('1', '1', '1555859193', '1540307193', '3f141ecb3c1504c8d21224d61ec88dba3f141ecb3c1504c8d21224d61ec88dba', 'web');
+INSERT INTO `st_user_token` VALUES ('1', '1', '1555859193', '1540307193', '3f141ecb3c1504c8d21224d61ec88dba3f141ecb3c1504c8d21224d61ec88dba', 'wxapp');
 
 -- ----------------------------
 -- Table structure for st_verification_code
@@ -1514,11 +1507,12 @@ CREATE TABLE `st_verification_code` (
   `code` varchar(8) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '最后发送成功的验证码',
   `account` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '手机号或者邮箱',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='手机邮箱数字验证码表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='手机邮箱数字验证码表';
 
 -- ----------------------------
 -- Records of st_verification_code
 -- ----------------------------
+INSERT INTO `st_verification_code` VALUES ('1', '1', '1544533099', '1544534899', '794006', '13399878665');
 
 -- ----------------------------
 -- Table structure for st_video_vod
