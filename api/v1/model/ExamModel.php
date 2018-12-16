@@ -3,7 +3,7 @@ namespace api\v1\model;
 
 use think\Model;
 
-class CourseModel extends Model
+class ExamModel extends Model
 {
     private static $instance = null;
 

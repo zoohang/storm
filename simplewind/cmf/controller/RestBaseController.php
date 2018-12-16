@@ -124,6 +124,7 @@ class RestBaseController
             ->find();
 
         if (!empty($user)) {
+            unset($user['user_pass']);
             $this->user     = $user;
             $this->userId   = $user['id'];
             $this->userType = $user['user_type'];

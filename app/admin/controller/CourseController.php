@@ -157,7 +157,7 @@ class CourseController extends AdminBaseController
                     return [
                         'cid'=>$cid,
                         'tid'=>$item,
-                        'status'=>1
+                        'status'=>0
                     ];
                 }, $tid);
                 Db::table('st_course_teacher_relation')->insertAll($relation_list);

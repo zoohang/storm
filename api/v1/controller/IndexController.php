@@ -11,8 +11,6 @@ namespace api\v1\controller;
 use api\v1\model\CourseModel;
 use api\v1\model\PortalPostModel;
 use api\v1\model\SlideItemModel;
-use api\v1\model\SlideModel;
-use app\admin\model\CourseItemModel;
 use cmf\controller\RestUserBaseController;
 
 class IndexController extends RestUserBaseController
@@ -25,11 +23,16 @@ class IndexController extends RestUserBaseController
         //头条信息
         $news = PortalPostModel::instance()->getRecommendArticle();
         //打卡信息 todo
-        //在线课堂
+        //在线课堂 todo 6个人已经加入ssd
         $course = CourseModel::instance()->getRecommendCourse();
         //线下课堂
-
-        $this->success('main');
+        //刷题 maybe todo
+        $data = [
+            'slide'=>$slide,
+            'news'=>$news,
+            'course'=>$course,
+        ];
+        $this->success('ok', $data);
     }
 
 }

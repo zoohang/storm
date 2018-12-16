@@ -226,6 +226,75 @@ class ExamController extends AdminBaseController
         }
     }
 
+    public function publish()
+    {
+        $param           = $this->request->param();
+        $ExamModel = new ExamModel();
+
+        if (isset($param['ids']) && isset($param["yes"])) {
+            $ids = $this->request->param('ids/a');
+
+            $ExamModel->where(['id' => ['in', $ids]])->update(['status' => 1, 'published_time' => time()]);
+
+            $this->success("发布成功！", '');
+        }
+
+        if (isset($param['ids']) && isset($param["no"])) {
+            $ids = $this->request->param('ids/a');
+
+            $ExamModel->where(['id' => ['in', $ids]])->update(['status' => 0]);
+
+            $this->success("取消发布成功！", '');
+        }
+
+    }
+    
+    public function top()
+    {
+        $param           = $this->request->param();
+        $ExamModel = new ExamModel();
+
+        if (isset($param['ids']) && isset($param["yes"])) {
+            $ids = $this->request->param('ids/a');
+
+            $ExamModel->where(['id' => ['in', $ids]])->update(['is_top' => 1]);
+
+            $this->success("置顶成功！", '');
+
+        }
+
+        if (isset($_POST['ids']) && isset($param["no"])) {
+            $ids = $this->request->param('ids/a');
+
+            $ExamModel->where(['id' => ['in', $ids]])->update(['is_top' => 0]);
+
+            $this->success("取消置顶成功！", '');
+        }
+    }
+
+    public function recommend()
+    {
+        $param           = $this->request->param();
+        $ExamModel = new ExamModel();
+
+        if (isset($param['ids']) && isset($param["yes"])) {
+            $ids = $this->request->param('ids/a');
+
+            $ExamModel->where(['id' => ['in', $ids]])->update(['recommended' => 1]);
+
+            $this->success("推荐成功！", '');
+
+        }
+        if (isset($param['ids']) && isset($param["no"])) {
+            $ids = $this->request->param('ids/a');
+
+            $ExamModel->where(['id' => ['in', $ids]])->update(['recommended' => 0]);
+
+            $this->success("取消推荐成功！", '');
+
+        }
+    }
+
     public function listOrder()
     {
         parent::listOrders(Db::name('exam_item'));
@@ -254,11 +323,21 @@ class ExamController extends AdminBaseController
 
     public function delete()
     {
-        $id = $this->request->param('id', 0, 'intval');
-        if (Db::name('exam')->where(['id'=> $id])->update(['status' => -1]) !== false) {
-            $this->success("删除成功！");
-        } else {
-            $this->error("删除失败！");
+        $param           = $this->request->param();
+        $ExamModel = new ExamModel();
+        if (isset($param['id'])) {
+            if (Db::name('exam')->where(['id'=> $param['id']])->update(['status' => -1, 'delete_time'=>time()]) !== false) {
+                $this->success("删除成功！");
+            } else {
+                $this->error("删除失败！");
+            }
+        }
+        if (isset($param['ids'])) {
+            if (Db::name('exam')->where(['id'=> ['in', $param['ids']]])->update(['status' => -1, 'delete_time'=>time()]) !== false) {
+                $this->success("删除成功！");
+            } else {
+                $this->error("删除失败！");
+            }
         }
     }
 

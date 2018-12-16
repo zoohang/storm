@@ -317,11 +317,11 @@ tpl;
             $this->error('此分类有子类无法删除!');
         }
         //todo 删除查询 根据不同表进行查询数量
-        $categoryPostCount = Db::name('portal_category_post')->where('category_id', $id)->count();
+        /*$categoryPostCount = Db::name('portal_category_post')->where('category_id', $id)->count();
 
         if ($categoryPostCount > 0) {
             $this->error('此分类有文章无法删除!');
-        }
+        }*/
 
         $data   = [
             'object_id'   => $findCategory['id'],
