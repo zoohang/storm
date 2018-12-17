@@ -1,0 +1,488 @@
+{
+	"variables": [],
+	"info": {
+		"name": "风暴手绘",
+		"_postman_id": "fbb76205-2717-5b9a-43e8-fbd9554dde11",
+		"description": "微信小程序",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "登陆认证",
+			"description": "",
+			"item": [
+				{
+					"name": "登陆",
+					"request": {
+						"url": "api.storm.com/v1/public/login",
+						"method": "POST",
+						"header": [
+							{
+								"key": "XX-Device-Type",
+								"value": "wxapp",
+								"description": ""
+							},
+							{
+								"key": "XX-Token",
+								"value": "token",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "code",
+									"value": "code",
+									"description": "code码",
+									"type": "text"
+								},
+								{
+									"key": "encrypted_data",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "iv",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "raw_data",
+									"value": "",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "signature",
+									"value": "",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "新闻接口",
+			"description": "",
+			"item": [
+				{
+					"name": "新闻列表",
+					"request": {
+						"url": "http://storm.com/api/v1/news",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "新闻详情页",
+					"request": {
+						"url": "http://storm.com/api/v1/news/2",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "新闻编辑页",
+					"request": {
+						"url": "http://storm.com/api/v1/news/2/edit",
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "删除新闻",
+					"request": {
+						"url": "http://storm.com/api/v1/news/1",
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "首页接口",
+			"description": "",
+			"item": [
+				{
+					"name": "首页接口",
+					"request": {
+						"url": {
+							"raw": "api.storm.com/v1/index/index",
+							"host": [
+								"api",
+								"storm",
+								"com"
+							],
+							"path": [
+								"v1",
+								"index",
+								"index"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "",
+									"equals": false,
+									"description": "",
+									"disabled": true
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "XX-Token",
+								"value": "3f141ecb3c1504c8d21224d61ec88dba3f141ecb3c1504c8d21224d61ec88dba",
+								"description": ""
+							},
+							{
+								"key": "XX-Device-Type",
+								"value": "wxapp",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "用户中心",
+			"description": "",
+			"item": [
+				{
+					"name": "获取用户基础信息",
+					"request": {
+						"url": "api.storm.com/v1/user/getUserInfo",
+						"method": "GET",
+						"header": [
+							{
+								"key": "XX-Device-Type",
+								"value": "wxapp",
+								"description": ""
+							},
+							{
+								"key": "XX-Token",
+								"value": "58402d44e82565e3aa3d49605e5bb9c158402d44e82565e3aa3d49605e5bb9c1",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "获取更多用户信息",
+					"request": {
+						"url": "api.storm.com/v1/user/userInfo",
+						"method": "GET",
+						"header": [
+							{
+								"key": "XX-Device-Type",
+								"value": "wxapp",
+								"description": ""
+							},
+							{
+								"key": "XX-Token",
+								"value": "58402d44e82565e3aa3d49605e5bb9c158402d44e82565e3aa3d49605e5bb9c1",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "保存用户信息",
+					"request": {
+						"url": "api.storm.com/v1/user/userInfo",
+						"method": "POST",
+						"header": [
+							{
+								"key": "XX-Device-Type",
+								"value": "wxapp ",
+								"description": ""
+							},
+							{
+								"key": "XX-Token",
+								"value": "58402d44e82565e3aa3d49605e5bb9c158402d44e82565e3aa3d49605e5bb9c1",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "user_nickname",
+									"value": "张三",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "mobile",
+									"value": "13812341234",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "speciality",
+									"value": "机械设计",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "sex",
+									"value": "1",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "school",
+									"value": "湖北理工大",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "grade",
+									"value": "3年2班",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "wx_no",
+									"value": "zhuo_yi_hang",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "user_email",
+									"value": "12355@qq.com",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "dashi",
+									"value": "1",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "enjoy_course",
+									"value": "1,3,5",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "source",
+									"value": "2,4",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "意见反馈",
+					"request": {
+						"url": "api.storm.com/v1/user/feedback",
+						"method": "POST",
+						"header": [
+							{
+								"key": "XX-Device-Type",
+								"value": "wxapp",
+								"description": ""
+							},
+							{
+								"key": "XX-Token",
+								"value": "58402d44e82565e3aa3d49605e5bb9c158402d44e82565e3aa3d49605e5bb9c1",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "type",
+									"value": "程序错误",
+									"description": "传下标",
+									"type": "text"
+								},
+								{
+									"key": "content",
+									"value": "程序错误程序错误程序错误程序错误程序错误\n40404040404",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "刷题",
+			"description": "",
+			"item": [
+				{
+					"name": "刷题首页",
+					"request": {
+						"url": "api.storm.com/v1/exam/index",
+						"method": "GET",
+						"header": [
+							{
+								"key": "XX-Device-Type",
+								"value": "wxapp ",
+								"description": ""
+							},
+							{
+								"key": "XX-Token",
+								"value": "58402d44e82565e3aa3d49605e5bb9c158402d44e82565e3aa3d49605e5bb9c1",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "分类下的刷题列表",
+					"request": {
+						"url": {
+							"raw": "api.storm.com/v1/exam/getCategoryExam?id=5&page=1&limit=2",
+							"host": [
+								"api",
+								"storm",
+								"com"
+							],
+							"path": [
+								"v1",
+								"exam",
+								"getCategoryExam"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "5",
+									"equals": true,
+									"description": "分类id"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"equals": true,
+									"description": "页码 选填 默认 1"
+								},
+								{
+									"key": "limit",
+									"value": "2",
+									"equals": true,
+									"description": "每页显示数量  选填 默认 10"
+								}
+							],
+							"variable": []
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "XX-Device-Type",
+								"value": "wxapp ",
+								"description": ""
+							},
+							{
+								"key": "XX-Token",
+								"value": "58402d44e82565e3aa3d49605e5bb9c158402d44e82565e3aa3d49605e5bb9c1",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "获取试卷的题目列表",
+					"request": {
+						"url": "api.storm.com/v1/exam/getExamItemList",
+						"method": "POST",
+						"header": [
+							{
+								"key": "XX-Device-Type",
+								"value": "wxapp ",
+								"description": ""
+							},
+							{
+								"key": "XX-Token",
+								"value": "58402d44e82565e3aa3d49605e5bb9c158402d44e82565e3aa3d49605e5bb9c1",
+								"description": ""
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "id",
+									"value": "1",
+									"description": "",
+									"type": "text"
+								}
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

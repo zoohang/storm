@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-12-16 00:34:49
+Date: 2018-12-18 00:23:27
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -234,7 +234,7 @@ CREATE TABLE `st_asset` (
   `suffix` varchar(10) NOT NULL DEFAULT '' COMMENT '文件后缀名,不包括点',
   `more` text COMMENT '其它详细信息,JSON格式',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COMMENT='资源表';
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COMMENT='资源表';
 
 -- ----------------------------
 -- Records of st_asset
@@ -259,6 +259,7 @@ INSERT INTO `st_asset` VALUES ('17', '1', '792', '1542520778', '1', '0', '8c9777
 INSERT INTO `st_asset` VALUES ('18', '1', '346', '1542522013', '1', '0', '7eebfbb6b539886469c8578262e6d3b92d616b3dc4625a99e33cd58b906f1ef9', 'smallpausehover.png', 'admin/20181118/ec1baa9e0e30c35deb575a3d2efca386.png', '7eebfbb6b539886469c8578262e6d3b9', '5d588ddb7d67027f2224dabc5d6ead1ed87da390', 'png', null);
 INSERT INTO `st_asset` VALUES ('19', '1', '6183', '1543242798', '1', '0', 'f60fe48dc8634b553bd559402f4f44dea399b9e07d6c3968d380bdbd1a68830a', '3283ae7880157e3cdd1f82c4e55cf915.jpg', 'admin/20181126/ade2fe33d0b9d48f3798428e2c6755cd.jpg', 'f60fe48dc8634b553bd559402f4f44de', '99da888eecf1f2cbc373f2b702fe8541bde5b816', 'jpg', null);
 INSERT INTO `st_asset` VALUES ('20', '1', '22291', '1543242846', '1', '0', '759f8d04167324fb6273bbedd0910b55979d9ffc96c061e307ce5b184e82a263', '23e0c3073c3f868036ea7169b72e59fa.jpg', 'admin/20181126/f98a5c314b0331510fe9d835c8f72e72.jpg', '759f8d04167324fb6273bbedd0910b55', '4d3fa428edb64cde000cf4806b094f9a3d6382ae', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('21', '1', '19308', '1544972380', '1', '0', '516ff3afabb6b65856549130d5f460f32f1ded5249fcbc96e46410a3f0638805', '1b8f2113c0cf3de6150416bce8f8a52c.jpg', 'admin/20181216/f966c57f8fb54b31b1c8307a6b503273.jpg', '516ff3afabb6b65856549130d5f460f3', '97d351890c42bc5a9e8dce6b0a16f8ccb72e7fb0', 'jpg', null);
 
 -- ----------------------------
 -- Table structure for st_auth_access
@@ -564,7 +565,7 @@ CREATE TABLE `st_course` (
   `create_time` int(10) NOT NULL DEFAULT '0',
   `update_time` int(10) NOT NULL DEFAULT '0',
   `published_time` int(10) NOT NULL DEFAULT '0' COMMENT '发布时间',
-  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '0-删除 1-已发布 2-未发布',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '-1-删除 1-已发布 0-未发布',
   PRIMARY KEY (`cid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='课程表';
 
@@ -673,6 +674,10 @@ CREATE TABLE `st_exam` (
   `subtitle` varchar(50) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '小标题',
   `description` text NOT NULL COMMENT '描述',
   `image` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '封面图',
+  `use_num` int(11) NOT NULL DEFAULT '0' COMMENT '使用过人数',
+  `is_top` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否置顶;1:置顶;0:不置顶',
+  `recommended` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否推荐;1:推荐;0:不推荐',
+  `published_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '发布时间',
   `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
   `delete_time` int(10) NOT NULL DEFAULT '0' COMMENT '删除时间',
@@ -683,8 +688,8 @@ CREATE TABLE `st_exam` (
 -- ----------------------------
 -- Records of st_exam
 -- ----------------------------
-INSERT INTO `st_exam` VALUES ('1', '5', '建筑', '1', '3', '重大', '2018', '1', 'admin', '重大密卷', '三年模拟五年高考', '三年模拟五年高考, 你怕不怕?', '', '1541262925', '1541262925', '0', '0');
-INSERT INTO `st_exam` VALUES ('2', '6', '规划', '1', '3', '重大', '2008', '1', 'admin', '西南大学2009研究生真题', '西南大学2009研究生真题1', '西南大学2009研究生真题211', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '1541602937', '1541606440', '0', '0');
+INSERT INTO `st_exam` VALUES ('1', '5', '建筑', '1', '3', '重大', '2018', '1', 'admin', '重大密卷', '三年模拟五年高考', '三年模拟五年高考, 你怕不怕?', 'admin/20181216/f966c57f8fb54b31b1c8307a6b503273.jpg', '0', '1', '1', '1544933431', '1541262925', '1544972383', '1544933425', '1');
+INSERT INTO `st_exam` VALUES ('2', '6', '规划', '1', '3', '重大', '2008', '1', 'admin', '西南大学2009研究生真题', '西南大学2009研究生真题1', '西南大学2009研究生真题211', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '0', '1', '1', '1544933431', '1541602937', '1541606440', '1544933425', '1');
 
 -- ----------------------------
 -- Table structure for st_exam_item
@@ -721,6 +726,66 @@ INSERT INTO `st_exam_item` VALUES ('8', '2', '44', '2', '', '44', '44', '44', '1
 INSERT INTO `st_exam_item` VALUES ('9', '2', '1', '2', '', '1', '11', '1', '1542123030', '1542123030', '100', '1');
 INSERT INTO `st_exam_item` VALUES ('10', '2', '2', '3', '', '2', '22', '2', '1542123141', '1542123141', '100', '1');
 INSERT INTO `st_exam_item` VALUES ('11', '1', '111111', '1', '{\"A\":\"1\",\"B\":\"2\",\"C\":\"3\",\"D\":\"4\"}', 'AB', '22', '33', '1544450805', '1544450805', '100', '1');
+
+-- ----------------------------
+-- Table structure for st_exam_userlog
+-- ----------------------------
+DROP TABLE IF EXISTS `st_exam_userlog`;
+CREATE TABLE `st_exam_userlog` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
+  `exam_id` int(11) NOT NULL DEFAULT '0' COMMENT '试卷id',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户的刷题记录';
+
+-- ----------------------------
+-- Records of st_exam_userlog
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for st_exam_wronglist
+-- ----------------------------
+DROP TABLE IF EXISTS `st_exam_wronglist`;
+CREATE TABLE `st_exam_wronglist` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
+  `exam_id` int(11) NOT NULL DEFAULT '0' COMMENT '试卷id',
+  `exam_name` varchar(255) NOT NULL DEFAULT '' COMMENT '试卷名称',
+  `exam_item_id` int(11) NOT NULL,
+  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '题目类型 1-选择题 2-填空题 3-论述题',
+  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态 1-正常 0-已删除',
+  PRIMARY KEY (`id`),
+  KEY `item_id` (`exam_item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户-错题表';
+
+-- ----------------------------
+-- Records of st_exam_wronglist
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for st_feedback
+-- ----------------------------
+DROP TABLE IF EXISTS `st_feedback`;
+CREATE TABLE `st_feedback` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
+  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1-功能建议 2-课程建议 3-程序错误',
+  `content` text NOT NULL COMMENT '内容',
+  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `is_check` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否查看 0-没有 1-已查看',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态 1-正常 0-已删除',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of st_feedback
+-- ----------------------------
+INSERT INTO `st_feedback` VALUES ('1', '2', '1', '12312312321', '0', '0', '0', '1');
+INSERT INTO `st_feedback` VALUES ('2', '2', '1', '12312312321', '1544945820', '1544945820', '0', '1');
+INSERT INTO `st_feedback` VALUES ('3', '2', '3', '程序错误程序错误程序错误程序错误程序错误\n40404040404', '1544946134', '1544946134', '0', '1');
+INSERT INTO `st_feedback` VALUES ('4', '2', '3', '程序错误程序错误程序错误程序错误程序错误\n40404040404', '1545058935', '1545058935', '0', '1');
 
 -- ----------------------------
 -- Table structure for st_hook
@@ -1320,17 +1385,21 @@ CREATE TABLE `st_user` (
   `last_login_ip` varchar(15) NOT NULL DEFAULT '' COMMENT '最后登录ip',
   `user_activation_key` varchar(60) NOT NULL DEFAULT '' COMMENT '激活码',
   `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '中国手机不带国家代码，国际手机号格式为：国家代码-手机号',
-  `more` text COMMENT '扩展属性',
+  `school` varchar(100) NOT NULL DEFAULT '' COMMENT '学校',
+  `speciality` varchar(100) NOT NULL DEFAULT '' COMMENT '专业',
+  `grade` varchar(100) NOT NULL DEFAULT '' COMMENT '年级',
+  `more` text NOT NULL COMMENT '扩展属性',
   PRIMARY KEY (`id`),
   UNIQUE KEY `mobile` (`mobile`),
   KEY `user_login` (`user_login`),
   KEY `user_nickname` (`user_nickname`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
 -- ----------------------------
 -- Records of st_user
 -- ----------------------------
-INSERT INTO `st_user` VALUES ('1', '1', '0', '0', '1540963551', '1', '1', '0.00', '1540307170', '1', 'admin', '###d393a7505a2e1ce7ae2f9e8087e42bc2', 'admin', '136927705@qq.com', '', '', '', '127.0.0.1', '', '', null);
+INSERT INTO `st_user` VALUES ('1', '1', '0', '0', '1540963551', '1', '1', '0.00', '1540307170', '1', 'admin', '###d393a7505a2e1ce7ae2f9e8087e42bc2', 'admin', '136927705@qq.com', '', 'https://img.myzx.cn/video/mysource/admin/20180713/5b486e7d1778b_100_100.png', '', '127.0.0.1', '', '13399878665', '', '', '', '');
+INSERT INTO `st_user` VALUES ('2', '2', '1', '0', '1544943873', '1', '1', '0.00', '1544935602', '1', '', '###4a86c1e09a02a571683d0ceb112fc2f2', '张三1', '12355@qq.com', '', 'avatar/20181216/45718ee0baf9a1666ca9738d32d457f3.jpg', '', '127.0.0.1', '', '18581290597', '湖北理工大', '机械设计', '3年2班', '{\"wx_no\":\"zhuo_yi_hang\",\"dashi\":\"1\",\"enjoy_course\":\"1,3,5\",\"source\":\"2,4\"}');
 
 -- ----------------------------
 -- Table structure for st_user_action
@@ -1469,12 +1538,13 @@ CREATE TABLE `st_user_score_log` (
   `score` int(11) NOT NULL DEFAULT '0' COMMENT '更改积分，可以为负',
   `coin` int(11) NOT NULL DEFAULT '0' COMMENT '更改金币，可以为负',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='用户操作积分等奖励日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='用户操作积分等奖励日志表';
 
 -- ----------------------------
 -- Records of st_user_score_log
 -- ----------------------------
 INSERT INTO `st_user_score_log` VALUES ('1', '1', '1540963551', 'login', '1', '1');
+INSERT INTO `st_user_score_log` VALUES ('2', '2', '1544943873', 'login', '1', '1');
 
 -- ----------------------------
 -- Table structure for st_user_token
@@ -1488,12 +1558,14 @@ CREATE TABLE `st_user_token` (
   `token` varchar(64) NOT NULL DEFAULT '' COMMENT 'token',
   `device_type` varchar(10) NOT NULL DEFAULT '' COMMENT '设备类型;mobile,android,iphone,ipad,web,pc,mac,wxapp',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='用户客户端登录 token 表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='用户客户端登录 token 表';
 
 -- ----------------------------
 -- Records of st_user_token
 -- ----------------------------
 INSERT INTO `st_user_token` VALUES ('1', '1', '1555859193', '1540307193', '3f141ecb3c1504c8d21224d61ec88dba3f141ecb3c1504c8d21224d61ec88dba', 'wxapp');
+INSERT INTO `st_user_token` VALUES ('2', '2', '1560487602', '1544935602', '58402d44e82565e3aa3d49605e5bb9c158402d44e82565e3aa3d49605e5bb9c1', 'wxapp');
+INSERT INTO `st_user_token` VALUES ('3', '2', '1560495873', '1544943873', '666fe8887dae66e505cf3b371a24b614666fe8887dae66e505cf3b371a24b614', 'web');
 
 -- ----------------------------
 -- Table structure for st_verification_code
@@ -1507,12 +1579,13 @@ CREATE TABLE `st_verification_code` (
   `code` varchar(8) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '最后发送成功的验证码',
   `account` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '手机号或者邮箱',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT='手机邮箱数字验证码表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='手机邮箱数字验证码表';
 
 -- ----------------------------
 -- Records of st_verification_code
 -- ----------------------------
 INSERT INTO `st_verification_code` VALUES ('1', '1', '1544533099', '1544534899', '794006', '13399878665');
+INSERT INTO `st_verification_code` VALUES ('2', '1', '1544935591', '1544937391', '849734', '18581290597');
 
 -- ----------------------------
 -- Table structure for st_video_vod
