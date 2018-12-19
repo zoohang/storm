@@ -17,3 +17,4 @@ https://lanhuapp.com/web/#/item/board?pid=e8ed7dc5-f4ab-429b-9288-8784fd87a0b5
 https://lanhuapp.com/web/#/item/board/detail?pid=e8ed7dc5-f4ab-429b-9288-8784fd87a0b5&project_id=e8ed7dc5-f4ab-429b-9288-8784fd87a0b5&image_id=e6672da7-9f70-49d2-bf32-6cb7f2905a8c
 
 测试远程服务器是否同步更新
+测试远程服务器是否同步更新
