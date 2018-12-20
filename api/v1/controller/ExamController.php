@@ -8,10 +8,14 @@
 // +----------------------------------------------------------------------
 namespace api\v1\controller;
 
+use api\v1\model\ExamUserlogModel;
+use api\v1\model\ExamWronglistModel;
 use api\v1\model\CategoryModel;
 use api\v1\model\ExamItemModel;
 use api\v1\model\ExamModel;
 use cmf\controller\RestUserBaseController;
+use think\Db;
+use think\Validate;
 
 class ExamController extends RestUserBaseController
 {
@@ -61,14 +65,84 @@ class ExamController extends RestUserBaseController
                 }
             }
         }
+        //记录到我的刷题记录
+        $exists = ExamUserlogModel::instance()->get(['user_id'=>$this->userId,'exam_id'=>$id]);
+        if ($exists) {
+            $exists->update_time    = NOW_TIME;
+            $exists->save();
+        } else {
+            $add = [
+                'user_id' => $this->userId,
+                'exam_id' => $id,
+                'title' => $exam_info['title'],
+                'subtitle' => $exam_info['subtitle'],
+                'property' => $exam_info['property'],
+                'create_time' => NOW_TIME,
+                'update_time' => NOW_TIME
+            ];
+            ExamUserlogModel::instance()->allowField(true)->isUpdate(false)->save($add);
+        }
+        //记录到我的刷题记录
         $this->success('ok', $result);
     }
 
+    /**
+     * 我的刷题记录
+     */
+    public function myExamLog() {
+        $page = $this->request->param('page', 1, 'intval,abs');
+        $limit = $this->request->param('limit', config('paginate.list_rows'), 'intval,abs');
+        $where = ['user_id'=> $this->userId];
+        $order = ['update_time' => 'desc'];
+        $list = ExamUserlogModel::instance()->where($where)->order($order)->paginate($limit)->toArray();
+        $this->success('ok', $list);
+    }
 
     /**
-     * 加入错误列表
+     * 加入错题列表
      */
     public function addWrongList() {
+        $id = $this->request->param('id', 0, 'intval,abs');
+        if (!$id) $this->error('题目的id必填');
+        //查询该题目所在的试卷
+        $exam = ExamModel::instance()->getExamInfoByItemId($id);
+        $info = [
+            'user_id' => $this->userId,
+            'exam_id' => $exam['id'],
+            'exam_name' => $exam['title'],
+            'item_id' => $exam['item_id'],
+            'item_id' => $exam['item_title'],
+            'type' => $exam['type'],
+            'create_time' => NOW_TIME
+        ];
+        $res = Db::name('exam_wronglist')->insert($info);
+        if ($res !== false) {
+            $this->success('成功!');
+        } else {
+            $this->error('加入失败, 请重试!');
+        }
+    }
 
+    /**
+     * 查看我的错题本[列表]
+     */
+    public function checkMyWrongListByType() {
+        $type = $this->request->param('type', 0, 'intval,abs');
+        $limit = $this->request->param('type', config('paginate.list_rows'), 'intval,abs');
+        $validate = new Validate([
+            'type'   => 'number|between:1,3',
+        ], [
+            'type.number'=>'type必须是数字',
+            'type.between'=>'type只能在1-3之间',
+        ]);
+        if (!$validate->check(['type'=>$type])) {
+            $this->error($validate->getError());
+        }
+        $list = ExamWronglistModel::instance()
+            ->where(['user_id'=>$this->userId, 'type'=>$type])
+            ->order(['id'=>'desc'])
+            ->paginate($limit)
+            ->toArray();
+        $this->success('ok', $list);
     }
 }

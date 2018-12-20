@@ -1,6 +1,7 @@
 <?php
 namespace api\v1\model;
 
+use think\Db;
 use think\Model;
 
 class ExamModel extends Model
@@ -55,14 +56,13 @@ class ExamModel extends Model
         return $name;
     }
 
-    /**
-     * @param int $num
-     * @return array
-     */
-    public function getRecommendCourse($num=4)
-    {
-        $where = ['recommended' => 1];
-        return $this->where($where)->order(['list_order' => 'desc'])->limit(10)->select()->toArray();
+    public function getExamInfoByItemId($item_id) {
+        return $info = Db::name('Exam')
+            ->alias('a')
+            ->join('__EXAM_ITEM__ b', 'a.id=b.exam_id')
+            ->field(['a.*', 'b.id item_id', 'b.item_title', 'b.type'])
+            ->where(['b.id'=>$item_id])
+            ->find();
     }
 }
 
