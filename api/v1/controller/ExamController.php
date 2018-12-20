@@ -47,7 +47,11 @@ class ExamController extends RestUserBaseController
     public function getExamItemList() {
         $id = $this->request->param('id', 0, 'intval,abs');
         if (!$id) $this->error('试卷的id必填');
-        $exam_info = ExamModel::instance()->where(['id'=>$id])->find()->toArray();
+        $exam_info = ExamModel::instance()->where(['id'=>$id])->find();
+        if (!$exam_info) {
+            $this->error('该试卷不存在, 或已经下架了');
+        }
+        $exam_info = $exam_info->toArray();
         $data = ExamItemModel::instance()->where(['exam_id'=>$id])->order(['list_order'=>'asc'])->select()->toArray();
         $result = [];
         $result['info'] = $exam_info;

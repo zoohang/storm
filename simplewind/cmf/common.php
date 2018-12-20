@@ -1882,7 +1882,7 @@ function cmf_api_request($url, $params = [])
 
     $token = session('token');
 
-    curl_setopt($curl, CURLOPT_HTTPHEADER, ["XX-Token: $token"]);
+    curl_setopt($curl, CURLOPT_HTTPHEADER, ["Token: $token"]);
     //设置post数据
     curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
     //执行命令
