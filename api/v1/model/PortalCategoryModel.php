@@ -7,12 +7,22 @@
 // | Author: pl125 <xskjs888@163.com>
 // +----------------------------------------------------------------------
 
-namespace api\portal\model;
+namespace api\V1\model;
 
 use api\common\model\CommonModel;
 
 class PortalCategoryModel extends CommonModel
 {
+    private static $instance = null;
+
+    public static function instance()
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new static();
+        }
+        return self::$instance;
+    }
+
     //类型转换
     protected $type = [
         'more' => 'array',

@@ -8,12 +8,22 @@
 // +----------------------------------------------------------------------
 // | Author: wuwu <15093565100@163.com>
 // +----------------------------------------------------------------------
-namespace api\portal\model;
+namespace api\v1\model;
 
 use think\Model;
 
 class PortalCategoryPostModel extends Model
 {
+    private static $instance = null;
+
+    public static function instance()
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new static();
+        }
+        return self::$instance;
+    }
+
     /**
      * 基础查询
      */

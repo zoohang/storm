@@ -2,4 +2,4 @@
 
 use think\Route;
 
-Route::resource('v1/news','v1/News');
+//Route::resource('v1/news','v1/News');
