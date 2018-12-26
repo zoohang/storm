@@ -403,4 +403,18 @@ class VodModel {
             return false;
         }
     }
+
+    /**
+     * 获取图片上传凭证
+     * @param $imageExt
+     * @param string $imageType
+     * @return mixed|\SimpleXMLElement
+     */
+    public function create_upload_image($imageExt, $imageType='default') {
+        $request = new vod\CreateUploadImageRequest();
+        $request->setImageType($imageType);
+        $request->setImageExt($imageExt);
+        $request->setAcceptFormat('JSON');
+        return $this->client->getAcsResponse($request);
+    }
 }

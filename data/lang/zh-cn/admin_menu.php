@@ -3,6 +3,7 @@ return array (
   'ADMIN_CATEGORY_INDEX' => '综合分类',
   'ADMIN_COURSE_INDEX' => '在线课堂',
   'ADMIN_COURSE_TEACHER' => '课题讲师列表',
+  'ADMIN_DAKA_INDEX' => '打卡',
   'ADMIN_EXAM_DEFAULT' => '应用',
   'ADMIN_EXAM_INDEX' => '刷题试卷',
   'ADMIN_HOOK_INDEX' => '钩子管理',

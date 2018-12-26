@@ -29,7 +29,7 @@ class CaptchaController
             // 验证码字体大小(px)
             'useCurve' => true,
             // 是否画混淆曲线
-            'useNoise' => true,
+            'useNoise' => false,
             // 验证码图片高度
             'imageH'   => 0,
             // 验证码图片宽度

@@ -82,7 +82,6 @@ class CourseController extends AdminBaseController
         $this->assign(['keyword' => $keyword, 'category' => $category]);
         $this->assign("page", $page);
         $this->assign("list", $list);
-        //dump($list);die;
         return $this->fetch();
     }
 
