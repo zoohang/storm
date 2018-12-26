@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地连接
+Source Server         : localhost
 Source Server Version : 50553
-Source Host           : 127.0.0.1:3306
+Source Host           : localhost:3306
 Source Database       : storm
 
 Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-12-18 00:23:27
+Date: 2018-12-26 20:37:05
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -36,7 +36,7 @@ CREATE TABLE `st_admin_menu` (
   KEY `status` (`status`),
   KEY `parent_id` (`parent_id`),
   KEY `controller` (`controller`)
-) ENGINE=InnoDB AUTO_INCREMENT=180 DEFAULT CHARSET=utf8mb4 COMMENT='后台菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=181 DEFAULT CHARSET=utf8mb4 COMMENT='后台菜单表';
 
 -- ----------------------------
 -- Records of st_admin_menu
@@ -214,6 +214,7 @@ INSERT INTO `st_admin_menu` VALUES ('176', '175', '1', '1', '2', 'admin', 'Exam'
 INSERT INTO `st_admin_menu` VALUES ('177', '175', '1', '1', '1', 'admin', 'Category', 'index', '', '综合分类', 'book', '');
 INSERT INTO `st_admin_menu` VALUES ('178', '175', '1', '1', '3', 'admin', 'Course', 'index', '', '在线课堂', '', '');
 INSERT INTO `st_admin_menu` VALUES ('179', '175', '1', '1', '10', 'admin', 'Course', 'teacher', '', '课题讲师列表', '', '');
+INSERT INTO `st_admin_menu` VALUES ('180', '175', '1', '1', '10000', 'Admin', 'daka', 'index', '', '打卡', '', '');
 
 -- ----------------------------
 -- Table structure for st_asset
@@ -234,7 +235,7 @@ CREATE TABLE `st_asset` (
   `suffix` varchar(10) NOT NULL DEFAULT '' COMMENT '文件后缀名,不包括点',
   `more` text COMMENT '其它详细信息,JSON格式',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COMMENT='资源表';
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COMMENT='资源表';
 
 -- ----------------------------
 -- Records of st_asset
@@ -260,6 +261,13 @@ INSERT INTO `st_asset` VALUES ('18', '1', '346', '1542522013', '1', '0', '7eebfb
 INSERT INTO `st_asset` VALUES ('19', '1', '6183', '1543242798', '1', '0', 'f60fe48dc8634b553bd559402f4f44dea399b9e07d6c3968d380bdbd1a68830a', '3283ae7880157e3cdd1f82c4e55cf915.jpg', 'admin/20181126/ade2fe33d0b9d48f3798428e2c6755cd.jpg', 'f60fe48dc8634b553bd559402f4f44de', '99da888eecf1f2cbc373f2b702fe8541bde5b816', 'jpg', null);
 INSERT INTO `st_asset` VALUES ('20', '1', '22291', '1543242846', '1', '0', '759f8d04167324fb6273bbedd0910b55979d9ffc96c061e307ce5b184e82a263', '23e0c3073c3f868036ea7169b72e59fa.jpg', 'admin/20181126/f98a5c314b0331510fe9d835c8f72e72.jpg', '759f8d04167324fb6273bbedd0910b55', '4d3fa428edb64cde000cf4806b094f9a3d6382ae', 'jpg', null);
 INSERT INTO `st_asset` VALUES ('21', '1', '19308', '1544972380', '1', '0', '516ff3afabb6b65856549130d5f460f32f1ded5249fcbc96e46410a3f0638805', '1b8f2113c0cf3de6150416bce8f8a52c.jpg', 'admin/20181216/f966c57f8fb54b31b1c8307a6b503273.jpg', '516ff3afabb6b65856549130d5f460f3', '97d351890c42bc5a9e8dce6b0a16f8ccb72e7fb0', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('22', '1', '12162', '1545825332', '1', '0', '58b15b5fd2875a438669e8cc57f2195e692aaee7a992dac8c3213b060b017b7a', '20170928091436.gif', 'admin/20181226/b32af4e438b781eb7d890a96c5e40761.gif', '58b15b5fd2875a438669e8cc57f2195e', 'ae5c84102f0cfb2c477e231f18a39dd1b6edb19d', 'gif', null);
+INSERT INTO `st_asset` VALUES ('23', '1', '40887', '1545825332', '1', '0', '32b0b6ca716c7116d4062171a3d01e3fe4e8d45e220fa89d1c28d14bedd0f97a', '8efb32f20ec8ad588a52295353dbcfa2.gif', 'admin/20181226/9a3e409b6c42468e513590dfa48c492d.gif', '32b0b6ca716c7116d4062171a3d01e3f', 'f6f2444b3e23897c7187fa46c9c94ddb4eaed7cb', 'gif', null);
+INSERT INTO `st_asset` VALUES ('24', '1', '45928', '1545825332', '1', '0', '7fcfd28dc361e129a6b44ae5f4aa0663cc40829b3dcc80e03a3617ebb63e0f1a', '84a6e74da2341315697de2d53c9a6e00.gif', 'admin/20181226/d53b9a22b3f869fca0b552dd1cab9019.gif', '7fcfd28dc361e129a6b44ae5f4aa0663', 'd5d6a2e2b417d6a1d2f68d9ba8b91ba9066f3d6d', 'gif', null);
+INSERT INTO `st_asset` VALUES ('25', '1', '2364', '1545826037', '1', '0', '21a5de0242463ee6c042a50757a7c6a89e54ef8ac8b7649a2c0d8da212f61ab2', '20171122160952.gif', 'admin/20181226/774a14e7c4b18958743e863bb5ab9b54.gif', '21a5de0242463ee6c042a50757a7c6a8', 'f514735f6a579dbbfbe640ab58e0c2b27ed2a26a', 'gif', null);
+INSERT INTO `st_asset` VALUES ('26', '1', '3421', '1545826038', '1', '0', '7692ccb3aa886c3f9fe36d979eafaf77487a8e447156aaaab57b5103322d6120', '20171122161123.gif', 'admin/20181226/5f89d7abe759574d93675c6cd1bec25f.gif', '7692ccb3aa886c3f9fe36d979eafaf77', 'd040851851599e7deef3de346cb06357f6dea58d', 'gif', null);
+INSERT INTO `st_asset` VALUES ('27', '1', '3480', '1545826038', '1', '0', 'cd1b8402acecf1ca445cfa4101b4f46aab72202e39dd6708cb9f137f76304fd3', '20171124165331.gif', 'admin/20181226/e3a87efdfc1b9030b743ead1150e2ec4.gif', 'cd1b8402acecf1ca445cfa4101b4f46a', '44fa127fc5ac878e26883d6577541d448183074f', 'gif', null);
+INSERT INTO `st_asset` VALUES ('28', '1', '4568', '1545826048', '1', '0', '9d12b4dfdc73e2eb4f1507d6137011b0b7f745d86df548e4feb6e63287fd8d09', '9d12b4dfdc73e2eb4f1507d6137011b0_5_8.docx', 'admin/20181226/fda845bee3022b0cdfe9e7255e374fda.docx', '9d12b4dfdc73e2eb4f1507d6137011b0', 'edd9a65eaf7fd369fc30afe9387d2a804250d5f9', 'docx', null);
 
 -- ----------------------------
 -- Table structure for st_auth_access
@@ -295,7 +303,7 @@ CREATE TABLE `st_auth_rule` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`) USING BTREE,
   KEY `module` (`app`,`status`,`type`)
-) ENGINE=InnoDB AUTO_INCREMENT=180 DEFAULT CHARSET=utf8mb4 COMMENT='权限规则表';
+) ENGINE=InnoDB AUTO_INCREMENT=181 DEFAULT CHARSET=utf8mb4 COMMENT='权限规则表';
 
 -- ----------------------------
 -- Records of st_auth_rule
@@ -473,6 +481,7 @@ INSERT INTO `st_auth_rule` VALUES ('176', '1', 'admin', 'admin_url', 'admin/Exam
 INSERT INTO `st_auth_rule` VALUES ('177', '1', 'admin', 'admin_url', 'admin/Category/index', '', '综合分类', '');
 INSERT INTO `st_auth_rule` VALUES ('178', '1', 'admin', 'admin_url', 'admin/Course/index', '', '在线课堂', '');
 INSERT INTO `st_auth_rule` VALUES ('179', '1', 'admin', 'admin_url', 'admin/Course/teacher', '', '课题讲师列表', '');
+INSERT INTO `st_auth_rule` VALUES ('180', '1', 'Admin', 'admin_url', 'Admin/daka/index', '', '打卡', '');
 
 -- ----------------------------
 -- Table structure for st_category
@@ -492,7 +501,7 @@ CREATE TABLE `st_category` (
   `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '服务类型 1-刷题 2-打卡 3在线课堂 4-线下课堂',
   `more` text COMMENT '扩展属性',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COMMENT='admin服务分类表[]';
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COMMENT='admin服务分类表[]';
 
 -- ----------------------------
 -- Records of st_category
@@ -507,6 +516,10 @@ INSERT INTO `st_category` VALUES ('7', '0', '0', '1', '0', '10000', '园林', ''
 INSERT INTO `st_category` VALUES ('8', '0', '0', '1', '0', '10000', '前端', '前端', '前端', '0-8', '3', '{\"thumbnail\":\"\"}');
 INSERT INTO `st_category` VALUES ('9', '0', '0', '1', '0', '10000', '后端', '后端', '后端', '0-9', '3', '{\"thumbnail\":\"\"}');
 INSERT INTO `st_category` VALUES ('10', '0', '0', '1', '0', '10000', '服务端', '服务端', '服务端', '0-10', '3', '{\"thumbnail\":\"\"}');
+INSERT INTO `st_category` VALUES ('11', '0', '0', '1', '0', '10000', '打卡分类一', '', '打卡分类一 打卡分类一', '0-11', '2', '{\"thumbnail\":\"\"}');
+INSERT INTO `st_category` VALUES ('12', '0', '0', '1', '0', '10000', '打卡分类二', '', '打卡分类二打卡分类二', '0-12', '2', '{\"thumbnail\":\"\"}');
+INSERT INTO `st_category` VALUES ('13', '11', '0', '1', '0', '10000', '打卡分类一一', '', '打卡分类一一打卡分类一一', '0-11-13', '2', '{\"thumbnail\":\"\"}');
+INSERT INTO `st_category` VALUES ('14', '11', '0', '1', '0', '10000', '打卡下班咯', '', '打卡下班咯打卡下班咯', '0-11-14', '2', '{\"thumbnail\":\"\"}');
 
 -- ----------------------------
 -- Table structure for st_comment
@@ -655,6 +668,45 @@ INSERT INTO `st_course_teacher_relation` VALUES ('3', '6', '1', '1');
 INSERT INTO `st_course_teacher_relation` VALUES ('4', '6', '2', '1');
 INSERT INTO `st_course_teacher_relation` VALUES ('36', '7', '1', '1');
 INSERT INTO `st_course_teacher_relation` VALUES ('41', '8', '2', '1');
+
+-- ----------------------------
+-- Table structure for st_daka
+-- ----------------------------
+DROP TABLE IF EXISTS `st_daka`;
+CREATE TABLE `st_daka` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `category_id` int(11) NOT NULL DEFAULT '0' COMMENT '分类id',
+  `category_name` varchar(50) NOT NULL DEFAULT '' COMMENT '分类名称',
+  `parent_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '父级id',
+  `user_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '发表者用户id',
+  `post_status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '状态;1:已发布;0:未发布;',
+  `comment_status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '评论状态;1:允许;0:不允许',
+  `is_top` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否置顶;1:置顶;0:不置顶',
+  `recommended` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '是否推荐;1:推荐;0:不推荐',
+  `post_hits` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '查看数',
+  `post_favorites` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '收藏数',
+  `post_like` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '点赞数',
+  `comment_count` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '评论数',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `published_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '发布时间',
+  `end_time` int(10) NOT NULL DEFAULT '0' COMMENT '结束时间',
+  `delete_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '删除时间',
+  `post_title` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT 'post标题',
+  `thumbnail` varchar(100) NOT NULL DEFAULT '' COMMENT '缩略图',
+  `post_content` text COMMENT '文章内容',
+  `post_content_filtered` text COMMENT '处理过的文章内容',
+  `list_order` int(11) NOT NULL DEFAULT '100' COMMENT '排序值, 越小越靠前',
+  `more` text COMMENT '扩展属性,如缩略图;格式为json',
+  PRIMARY KEY (`id`),
+  KEY `parent_id` (`parent_id`),
+  KEY `user_id` (`user_id`),
+  KEY `create_time` (`create_time`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='portal应用 文章表';
+
+-- ----------------------------
+-- Records of st_daka
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for st_exam
