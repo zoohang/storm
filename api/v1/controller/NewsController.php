@@ -8,6 +8,10 @@
 // +----------------------------------------------------------------------
 namespace api\v1\controller;
 
+use api\v1\model\PortalPostModel;
+use app\portal\model\PortalCategoryModel;
+use api\v1\model\SlideItemModel;
+use app\portal\service\PostService;
 use cmf\controller\RestBaseController;
 use think\Request;
 
@@ -20,22 +24,46 @@ use think\Request;
  */
 class NewsController extends RestBaseController
 {
-    // 获取一条新闻信息
-    public function read(Request $request)
-    {
-        return json(['message'=>'新闻详情页', 'path'=>'news/read', 'id'=>$request->param('id')]);
-    }
 
     public function index() {
-        return json(['message'=>'新闻首页', 'path'=>'news/index']);
+        //新闻首页
+        //banner
+        $slide = SlideItemModel::instance()->getOne(2);
+        //新闻分类
+        $categoryId = $this->request->param('category', 0, 'abs,intval');
+        $portalCategoryModel = new PortalCategoryModel();
+        $category       = $portalCategoryModel->adminCategorySampleArray($categoryId);
+        //默认全部的列表
+        $this->success('ok', [
+            'banner' => $slide,
+            'category' => $category,
+            'newsList' => $this->CaregoryNewsList(0),
+        ]);
     }
 
-    public function edit(Request $request)
+    public function CaregoryNewsList($cid = null) {
+        $categoryId = $cid !==null ? $cid : $this->request->param('category', 0, 'abs,intval');
+        $portalCategoryModel = new PortalCategoryModel();
+        $category       = $portalCategoryModel->adminCategorySampleArray($categoryId);
+        $ids = $portalCategoryModel->getArrayId($category);
+        $param = [
+            'category' => ['IN', $ids]
+        ];
+        $postService = new PostService();
+        $data        = $postService->getPostList($param)->toArray();
+        if ($cid !==null) {
+            return $data;
+        } else {
+            $this->success('ok', $data);
+        }
+    }
+
+    // 获取一条新闻信息
+    public function read()
     {
-        return json(['message'=>'新闻编辑页', 'path'=>'news/edit', 'id'=>$request->param('id')]);
-    }
-
-    public function delete(Request $request) {
-        return json(['message'=>'删除新闻', 'path'=>'news/delete', 'id'=>$request->param('id')]);
+        $id = $this->request->param('id', 0, 'abs,intval');
+        if (!$id) $this->error('文章的ID必填');
+        $info = $post =  PortalPostModel::instance()->where('id', $id)->find()->toArray();
+        $this->success('ok', $info);
     }
 }

@@ -34,6 +34,9 @@ define('VENDOR_PATH', __DIR__ . '/../../simplewind/vendor/');
 // 定义应用的运行时目录
 define('RUNTIME_PATH',__DIR__.'/../../data/runtime/api/');
 
+//自定义的常量
+define('NOW_TIME', $_SERVER['REQUEST_TIME']);
+
 // 加载框架基础文件
 require __DIR__ . '/../../simplewind/thinkphp/base.php';
 

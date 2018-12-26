@@ -42,7 +42,7 @@ class PublicController extends RestBaseController
         $code          = $data['code'];
         $wxappSettings = cmf_get_option('wxapp_settings');
 
-        $appId = $this->request->header('XX-Wxapp-AppId');
+        $appId = $this->request->header('Wxapp-AppId');
         if (empty($appId)) {
             if (empty($wxappSettings['default'])) {
                 $this->error('没有设置默认小程序！');

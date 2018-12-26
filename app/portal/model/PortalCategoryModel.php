@@ -211,4 +211,44 @@ class PortalCategoryModel extends Model
     }
 
 
+    public function adminCategoryArray($parentId=0)
+    {
+        $where = ['delete_time' => 0];
+        if (!empty($parentId)) {
+            $where['parent_id'] = $parentId;
+        }
+        $categories = $this->order("list_order ASC")->where($where)->select()->toArray();
+
+        $tree       = new Tree();
+        $tree->init($categories);
+        $treeStr = $tree->getTreeArray(0);
+        return $treeStr;
+    }
+
+    public function adminCategorySampleArray($parentId=0)
+    {
+        $where = ['delete_time' => 0];
+        if (!empty($parentId)) {
+            $where['parent_id'] = $parentId;
+        }
+        $categories = $this->field(['id','parent_id','name'])->order("list_order ASC")->where($where)->select()->toArray();
+
+        $tree       = new Tree();
+        $tree->init($categories);
+        $treeStr = $tree->getTreeArray($parentId);
+        return $treeStr;
+    }
+
+    public function getArrayId($arr) {
+        static $ids = [];
+        if ($arr && is_array($arr)) {
+            foreach($arr as $item) {
+                $ids[] = $item['id'];
+                if ($item['children']) {
+                    $this->getArrayId($item['children']);
+                }
+            }
+        }
+        return $ids;
+    }
 }

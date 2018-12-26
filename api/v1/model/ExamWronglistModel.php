@@ -12,7 +12,7 @@ namespace api\v1\model;
 
 use think\Model;
 
-class PortalCategoryPostModel extends Model
+class ExamWronglistModel extends Model
 {
     private static $instance = null;
 

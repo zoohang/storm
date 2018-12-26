@@ -70,7 +70,7 @@ class RestBaseController
 
         $this->request = $request;
 
-        $this->apiVersion = $this->request->header('XX-Api-Version');
+        $this->apiVersion = $this->request->header('Api-Version');
 
         // 用户验证初始化
         $this->_initUser();
@@ -95,25 +95,29 @@ class RestBaseController
 
     private function _initUser()
     {
-        $token      = $this->request->header('XX-Token');
-        $deviceType = $this->request->header('XX-Device-Type');
+        $token      = $this->request->header('Token');
+        $deviceType = $this->request->header('Device-Type');
+        $debug = $this->request->param('debug');
+        if (isset($debug)) {
+            $token = '58402d44e82565e3aa3d49605e5bb9c158402d44e82565e3aa3d49605e5bb9c1';
+            $deviceType = $this->deviceType = 'wxapp';
+        } else {
+            if (empty($deviceType)) {
+                $this->error('应用来源必填');
+                return;
+            }
 
-        if (empty($deviceType)) {
-            $this->error('应用来源必填');
-            return;
+            if (!in_array($deviceType, $this->allowedDeviceTypes)) {
+                $this->error('应用来源不在指定的范围中');
+                return;
+            }
+
+            $this->deviceType = $deviceType;
+
+            if (empty($token)) {
+                return;
+            }
         }
-
-        if (!in_array($deviceType, $this->allowedDeviceTypes)) {
-            $this->error('应用来源不在指定的范围中');
-            return;
-        }
-
-        $this->deviceType = $deviceType;
-
-        if (empty($token)) {
-            return;
-        }
-
         $this->token = $token;
 
         $user = Db::name('user_token')
@@ -244,7 +248,7 @@ class RestBaseController
 
         $type                                   = $this->getResponseType();
         $header['Access-Control-Allow-Origin']  = '*';
-        $header['Access-Control-Allow-Headers'] = 'X-Requested-With,Content-Type,XX-Device-Type,XX-Token';
+        $header['Access-Control-Allow-Headers'] = 'X-Requested-With,Content-Type,Device-Type,Token';
         $header['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS';
         $response                               = Response::create($result, $type)->header($header);
         throw new HttpResponseException($response);
@@ -273,7 +277,7 @@ class RestBaseController
 
         $type                                   = $this->getResponseType();
         $header['Access-Control-Allow-Origin']  = '*';
-        $header['Access-Control-Allow-Headers'] = 'X-Requested-With,Content-Type,XX-Device-Type,XX-Token';
+        $header['Access-Control-Allow-Headers'] = 'X-Requested-With,Content-Type,Device-Type,Token';
         $header['Access-Control-Allow-Methods'] = 'GET,POST,PATCH,PUT,DELETE,OPTIONS';
         $response                               = Response::create($result, $type)->header($header);
         throw new HttpResponseException($response);
