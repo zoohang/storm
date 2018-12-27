@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-12-26 20:37:05
+Date: 2018-12-27 18:05:13
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -235,7 +235,7 @@ CREATE TABLE `st_asset` (
   `suffix` varchar(10) NOT NULL DEFAULT '' COMMENT '文件后缀名,不包括点',
   `more` text COMMENT '其它详细信息,JSON格式',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8mb4 COMMENT='资源表';
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COMMENT='资源表';
 
 -- ----------------------------
 -- Records of st_asset
@@ -268,6 +268,12 @@ INSERT INTO `st_asset` VALUES ('25', '1', '2364', '1545826037', '1', '0', '21a5d
 INSERT INTO `st_asset` VALUES ('26', '1', '3421', '1545826038', '1', '0', '7692ccb3aa886c3f9fe36d979eafaf77487a8e447156aaaab57b5103322d6120', '20171122161123.gif', 'admin/20181226/5f89d7abe759574d93675c6cd1bec25f.gif', '7692ccb3aa886c3f9fe36d979eafaf77', 'd040851851599e7deef3de346cb06357f6dea58d', 'gif', null);
 INSERT INTO `st_asset` VALUES ('27', '1', '3480', '1545826038', '1', '0', 'cd1b8402acecf1ca445cfa4101b4f46aab72202e39dd6708cb9f137f76304fd3', '20171124165331.gif', 'admin/20181226/e3a87efdfc1b9030b743ead1150e2ec4.gif', 'cd1b8402acecf1ca445cfa4101b4f46a', '44fa127fc5ac878e26883d6577541d448183074f', 'gif', null);
 INSERT INTO `st_asset` VALUES ('28', '1', '4568', '1545826048', '1', '0', '9d12b4dfdc73e2eb4f1507d6137011b0b7f745d86df548e4feb6e63287fd8d09', '9d12b4dfdc73e2eb4f1507d6137011b0_5_8.docx', 'admin/20181226/fda845bee3022b0cdfe9e7255e374fda.docx', '9d12b4dfdc73e2eb4f1507d6137011b0', 'edd9a65eaf7fd369fc30afe9387d2a804250d5f9', 'docx', null);
+INSERT INTO `st_asset` VALUES ('29', '1', '116651', '1545891706', '1', '0', '1ba517b606691b2fa55b41b6b2440fdd2c0f27c848f3ea9ba30ea776d9630589', '20180708140354.gif', 'admin/20181227/a0dc4fb9a4517f5b231c6d5cdc2bc80d.gif', '1ba517b606691b2fa55b41b6b2440fdd', 'faf90d0460a5745feb4526f743e22bd58aad0c63', 'gif', null);
+INSERT INTO `st_asset` VALUES ('30', '1', '15194', '1545891721', '1', '0', '69bc1d351fac1080043e090546b2934884561ab0cc9c588dda09ac75b7ae9a39', '051aa6cf60573f408ba2ca1fc2ac69dc_t.gif', 'admin/20181227/6776dee3c6e0de549ad8f33147b6f135.gif', '69bc1d351fac1080043e090546b29348', 'fd707293dcb1ef7a76d97364a962f8fb0c6e302a', 'gif', null);
+INSERT INTO `st_asset` VALUES ('31', '1', '13218', '1545891733', '1', '0', '8cf6bd955f6e298647c78c143a54b8b60d126d9cbcae4cda67bbf70be06df96c', '89e5bad671d5e05ea81a1703ef34bee4_t.gif', 'admin/20181227/cc9699075e2333d961d4d8c5c3a3ed93.gif', '8cf6bd955f6e298647c78c143a54b8b6', 'f0623935633c9162b6162dfcd955c9702109b627', 'gif', null);
+INSERT INTO `st_asset` VALUES ('32', '1', '10732', '1545891733', '1', '0', 'e84e8c24a5177de884788bb8af959e56fa7441c45aa5d7ed227c018703c7612c', '445bf4d333be46239bd431ff7627176e_t.gif', 'admin/20181227/b4298c559cb45eb09c18f6c32dbe3c21.gif', 'e84e8c24a5177de884788bb8af959e56', '2357dafd28d148e46a446705076ff0a5e8cf5f6e', 'gif', null);
+INSERT INTO `st_asset` VALUES ('33', '1', '12724', '1545891756', '1', '0', '733358571ad232ad33b90984d9487acb61d4f99670a3692cd13c272a3f172ee5', '733358571ad232ad33b90984d9487acb_4_8.docx', 'admin/20181227/67d9bc1b4c06d69602f0189a80707903.docx', '733358571ad232ad33b90984d9487acb', 'b47e56e00ddd98e7d4ed80d8f8675c963b8108fa', 'docx', null);
+INSERT INTO `st_asset` VALUES ('34', '1', '25270', '1545905075', '1', '0', 'a08ff580c40db9368cd732b571dbbc33deabb50fbbc2da236602da79c2a89f96', '0a535005e4fa60c45fa40309417eae6f_t.jpg', 'admin/20181227/94abc0e13291f0796a36acc1471c1362.jpg', 'a08ff580c40db9368cd732b571dbbc33', '8114a4ab65e2b46d00b7132855f2dbf78156de9c', 'jpg', null);
 
 -- ----------------------------
 -- Table structure for st_auth_access
@@ -519,7 +525,7 @@ INSERT INTO `st_category` VALUES ('10', '0', '0', '1', '0', '10000', '服务端'
 INSERT INTO `st_category` VALUES ('11', '0', '0', '1', '0', '10000', '打卡分类一', '', '打卡分类一 打卡分类一', '0-11', '2', '{\"thumbnail\":\"\"}');
 INSERT INTO `st_category` VALUES ('12', '0', '0', '1', '0', '10000', '打卡分类二', '', '打卡分类二打卡分类二', '0-12', '2', '{\"thumbnail\":\"\"}');
 INSERT INTO `st_category` VALUES ('13', '11', '0', '1', '0', '10000', '打卡分类一一', '', '打卡分类一一打卡分类一一', '0-11-13', '2', '{\"thumbnail\":\"\"}');
-INSERT INTO `st_category` VALUES ('14', '11', '0', '1', '0', '10000', '打卡下班咯', '', '打卡下班咯打卡下班咯', '0-11-14', '2', '{\"thumbnail\":\"\"}');
+INSERT INTO `st_category` VALUES ('14', '11', '2', '1', '0', '10000', '打卡下班咯', '', '打卡下班咯打卡下班咯', '0-11-14', '2', '{\"thumbnail\":\"\"}');
 
 -- ----------------------------
 -- Table structure for st_comment
@@ -702,11 +708,14 @@ CREATE TABLE `st_daka` (
   KEY `parent_id` (`parent_id`),
   KEY `user_id` (`user_id`),
   KEY `create_time` (`create_time`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='portal应用 文章表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='portal应用 文章表';
 
 -- ----------------------------
 -- Records of st_daka
 -- ----------------------------
+INSERT INTO `st_daka` VALUES ('1', '14', '', '0', '1', '1', '1', '1', '1', '0', '0', '0', '0', '1545881537', '1545905088', '1545840000', '1546185600', '0', '12312312355555112', 'admin/20181226/d53b9a22b3f869fca0b552dd1cab9019.gif', '\n&lt;p&gt;1231231312312321&lt;/p&gt;\n&lt;p&gt;4444411111&lt;/p&gt;\n&lt;p&gt;&lt;br&gt;&lt;/p&gt;\n&lt;p&gt;&lt;br&gt;&lt;/p&gt;\n&lt;p&gt;2&lt;/p&gt;\n&lt;p&gt;3&lt;/p&gt;\n', null, '100', '{\"audio\":\"\",\"video\":\"\",\"thumbnail\":\"admin/20181226/d53b9a22b3f869fca0b552dd1cab9019.gif\",\"photos\":[{\"url\":\"admin/20181226/5f89d7abe759574d93675c6cd1bec25f.gif\",\"name\":\"20171122161123.gif\"},{\"url\":\"admin/20181226/e3a87efdfc1b9030b743ead1150e2ec4.gif\",\"name\":\"20171124165331.gif\"},{\"url\":\"admin/20181227/94abc0e13291f0796a36acc1471c1362.jpg\",\"name\":\"0a535005e4fa60c45fa40309417eae6f_t.jpg\"}],\"files\":[{\"url\":\"admin/20181226/fda845bee3022b0cdfe9e7255e374fda.docx\",\"name\":\"9d12b4dfdc73e2eb4f1507d6137011b0_5_8.docx\"}]}');
+INSERT INTO `st_daka` VALUES ('2', '14', '', '0', '1', '0', '1', '0', '0', '0', '0', '0', '0', '1545891764', '1545891764', '0', '2018', '0', '好像下班了', 'admin/20181227/6776dee3c6e0de549ad8f33147b6f135.gif', '&lt;p&gt;好想下班&lt;img src=&quot;https://img.baidu.com/hi/jx2/j_0002.gif&quot;&gt;&lt;/p&gt;', null, '100', '{\"thumbnail\":\"admin/20181227/6776dee3c6e0de549ad8f33147b6f135.gif\",\"photos\":[{\"url\":\"admin/20181227/a0dc4fb9a4517f5b231c6d5cdc2bc80d.gif\",\"name\":\"20180708140354.gif\"},{\"url\":\"admin/20181227/cc9699075e2333d961d4d8c5c3a3ed93.gif\",\"name\":\"89e5bad671d5e05ea81a1703ef34bee4_t.gif\"},{\"url\":\"admin/20181227/b4298c559cb45eb09c18f6c32dbe3c21.gif\",\"name\":\"445bf4d333be46239bd431ff7627176e_t.gif\"}],\"files\":[{\"url\":\"admin/20181227/67d9bc1b4c06d69602f0189a80707903.docx\",\"name\":\"733358571ad232ad33b90984d9487acb_4_8.docx\"}]}');
+INSERT INTO `st_daka` VALUES ('3', '14', '打卡下班咯', '0', '1', '0', '1', '0', '0', '0', '0', '0', '0', '1545892203', '1545892203', '0', '2018', '0', '好像下班了', 'admin/20181227/6776dee3c6e0de549ad8f33147b6f135.gif', '&lt;p&gt;好想下班&lt;img src=&quot;https://img.baidu.com/hi/jx2/j_0002.gif&quot;&gt;&lt;/p&gt;', null, '100', '{\"thumbnail\":\"admin/20181227/6776dee3c6e0de549ad8f33147b6f135.gif\",\"photos\":[{\"url\":\"admin/20181227/a0dc4fb9a4517f5b231c6d5cdc2bc80d.gif\",\"name\":\"20180708140354.gif\"},{\"url\":\"admin/20181227/cc9699075e2333d961d4d8c5c3a3ed93.gif\",\"name\":\"89e5bad671d5e05ea81a1703ef34bee4_t.gif\"},{\"url\":\"admin/20181227/b4298c559cb45eb09c18f6c32dbe3c21.gif\",\"name\":\"445bf4d333be46239bd431ff7627176e_t.gif\"}],\"files\":[{\"url\":\"admin/20181227/67d9bc1b4c06d69602f0189a80707903.docx\",\"name\":\"733358571ad232ad33b90984d9487acb_4_8.docx\"}]}');
 
 -- ----------------------------
 -- Table structure for st_exam
@@ -740,7 +749,7 @@ CREATE TABLE `st_exam` (
 -- ----------------------------
 -- Records of st_exam
 -- ----------------------------
-INSERT INTO `st_exam` VALUES ('1', '5', '建筑', '1', '3', '重大', '2018', '1', 'admin', '重大密卷', '三年模拟五年高考', '三年模拟五年高考, 你怕不怕?', 'admin/20181216/f966c57f8fb54b31b1c8307a6b503273.jpg', '0', '1', '1', '1544933431', '1541262925', '1544972383', '1544933425', '1');
+INSERT INTO `st_exam` VALUES ('1', '5', '建筑', '1', '3', '重大', '2018', '1', 'admin', '重大密卷', '三年模拟五年高考', '三年模拟五年高考, 你怕不怕?', 'admin/20181216/f966c57f8fb54b31b1c8307a6b503273.jpg', '0', '1', '1', '1545891487', '1541262925', '1544972383', '1544933425', '1');
 INSERT INTO `st_exam` VALUES ('2', '6', '规划', '1', '3', '重大', '2008', '1', 'admin', '西南大学2009研究生真题', '西南大学2009研究生真题1', '西南大学2009研究生真题211', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '0', '1', '1', '1544933431', '1541602937', '1541606440', '1544933425', '1');
 
 -- ----------------------------

@@ -35,16 +35,16 @@
         </li>
         <li class="active"><a href="#">编辑文章</a></li>
     </ul>
-    <form action="{:url('AdminArticle/editPost')}" method="post" class="form-horizontal js-ajax-form margin-top-20">
+    <form action="{:url('Daka/editPost')}" method="post" class="form-horizontal js-ajax-form margin-top-20">
         <div class="row">
             <div class="col-md-9">
                 <table class="table table-bordered">
                     <tr>
                         <th width="100">分类<span class="form-required">*</span></th>
                         <td>
-                            <select name="post[categories]" id=""  class="form-control">
+                            <select name="post[category_id]" id=""  class="form-control">
                                 <option value="">请选择文章分类</option>
-                                {$category}
+                                {$category_tree}
                             </select>
                         </td>
                     </tr>
@@ -54,28 +54,6 @@
                             <input id="post-id" type="hidden" name="post[id]" value="{$post.id}">
                             <input class="form-control" type="text" name="post[post_title]"
                                    required value="{$post.post_title}" placeholder="请输入标题"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>关键词</th>
-                        <td>
-                            <input class="form-control" type="text" name="post[post_keywords]"
-                                   value="{$post['post_keywords']}" placeholder="请输入关键字">
-                            <p class="help-block">多关键词之间用英文逗号隔开</p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>文章来源</th>
-                        <td>
-                            <input class="form-control" type="text" name="post[post_source]"
-                                   value="{$post['post_source']}" placeholder="请输入文章来源">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>摘要</th>
-                        <td>
-                            <textarea class="form-control" name="post[post_excerpt]" style="height: 50px;"
-                                      placeholder="请填写摘要">{$post.post_excerpt}</textarea>
                         </td>
                     </tr>
                     <tr>
@@ -199,6 +177,15 @@
                         </td>
                     </tr>
                     <tr>
+                        <th>结束时间</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input class="form-control js-bootstrap-datetime" type="text" name="post[end_time]"
+                                   value="{:date('Y-m-d H:i',$post['end_time'])}">
+                        </td>
+                    </tr>
+                    <tr>
                         <th>状态</th>
                         <php>
                             $status_yes=$post['post_status']==1?"checked":"";
@@ -276,12 +263,12 @@
 
 <script>
 
-    var publishYesUrl   = "{:url('AdminArticle/publish',array('yes'=>1))}";
-    var publishNoUrl    = "{:url('AdminArticle/publish',array('no'=>1))}";
-    var topYesUrl       = "{:url('AdminArticle/top',array('yes'=>1))}";
-    var topNoUrl        = "{:url('AdminArticle/top',array('no'=>1))}";
-    var recommendYesUrl = "{:url('AdminArticle/recommend',array('yes'=>1))}";
-    var recommendNoUrl  = "{:url('AdminArticle/recommend',array('no'=>1))}";
+    var publishYesUrl   = "{:url('Daka/publish',array('yes'=>1))}";
+    var publishNoUrl    = "{:url('Daka/publish',array('no'=>1))}";
+    var topYesUrl       = "{:url('Daka/top',array('yes'=>1))}";
+    var topNoUrl        = "{:url('Daka/top',array('no'=>1))}";
+    var recommendYesUrl = "{:url('Daka/recommend',array('yes'=>1))}";
+    var recommendNoUrl  = "{:url('Daka/recommend',array('no'=>1))}";
 
     var postId = $('#post-id').val();
 

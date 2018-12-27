@@ -79,88 +79,100 @@ class DakaController extends AdminBaseController
      */
     public function addPost()
     {
-        $data = $this->request->param();
+        if ($this->request->isPost()) {
+            $data = $this->request->param();
 
-        //状态只能设置默认值。未发布、未置顶、未推荐
-        $data['post']['post_status'] = 0;
-        $data['post']['is_top']      = 0;
-        $data['post']['recommended'] = 0;
+            //需要抹除发布、置顶、推荐的修改。
+            unset($data['post']['post_status']);
+            unset($data['post']['is_top']);
+            unset($data['post']['recommended']);
 
-        $post = $data['post'];
+            $post   = $data['post'];
+            /*$result = $this->validate($post, 'Daka');
+            if ($result !== true) {
+                $this->error($result);
+            }*/
 
-        /*$result = $this->validate($post, 'AdminArticle');
-        if ($result !== true) {
-            $this->error($result);
-        }*/
+            $model = new DakaModel();
 
-        $portalPostModel = new PortalPostModel();
-
-        if (!empty($data['photo_names']) && !empty($data['photo_urls'])) {
-            $data['post']['more']['photos'] = [];
-            foreach ($data['photo_urls'] as $key => $url) {
-                $photoUrl = cmf_asset_relative_url($url);
-                array_push($data['post']['more']['photos'], ["url" => $photoUrl, "name" => $data['photo_names'][$key]]);
+            if (!empty($data['photo_names']) && !empty($data['photo_urls'])) {
+                $data['post']['more']['photos'] = [];
+                foreach ($data['photo_urls'] as $key => $url) {
+                    $photoUrl = cmf_asset_relative_url($url);
+                    array_push($data['post']['more']['photos'], ["url" => $photoUrl, "name" => $data['photo_names'][$key]]);
+                }
             }
-        }
 
-        if (!empty($data['file_names']) && !empty($data['file_urls'])) {
-            $data['post']['more']['files'] = [];
-            foreach ($data['file_urls'] as $key => $url) {
-                $fileUrl = cmf_asset_relative_url($url);
-                array_push($data['post']['more']['files'], ["url" => $fileUrl, "name" => $data['file_names'][$key]]);
+            if (!empty($data['file_names']) && !empty($data['file_urls'])) {
+                $data['post']['more']['files'] = [];
+                foreach ($data['file_urls'] as $key => $url) {
+                    $fileUrl = cmf_asset_relative_url($url);
+                    array_push($data['post']['more']['files'], ["url" => $fileUrl, "name" => $data['file_names'][$key]]);
+                }
             }
+
+            $model->adminEditArticle($data['post'], $data['post']['category_id']);
+
+            $this->success('保存成功!');
+
         }
-
-        //todo 做到这里了
-        $portalPostModel->adminAddArticle($data['post'], $data['post']['categories']);
-
-        $data['post']['id'] = $portalPostModel->id;
-        $hookParam          = [
-            'is_add'  => true,
-            'article' => $data['post']
-        ];
-        $this->success('添加成功!', url('Exam/index'));
     }
 
     /**
-     * 试卷编辑
+     * 编辑
      * @return mixed
      */
     public function edit()
     {
         $id    = $this->request->param('id', 0, 'intval');
-        $info = DB::name('exam')->where(["id" => $id])->find();
+        //$info = DB::name('daka')->where(["id" => $id])->find();
+        $info = DakaModel::instance()->where(["id" => $id])->find();
         $CategoryModel = new CategoryModel();
-        $categoryTree = $CategoryModel->categoryTree($info['cid'], '', $this->type);
+        $categoryTree = $CategoryModel->categoryTree($info['category_id'], '', $this->type);
         $this->assign('category_tree', $categoryTree);
-        $college = $CategoryModel->field(['id','name'])->where(['type'=>11, 'status'=>1])->select()->toArray();
-        $this->assign('college', $college);
-        $this->assign($info);
+        $this->assign('post', $info);
         return $this->fetch();
     }
 
     /**
-     * 试卷保存
+     * 保存
      */
     public function editPost()
     {
         if ($this->request->isPost()) {
-            $ExamModel = new ExamModel();
+            $model = new DakaModel();
             $data = $this->request->param();
-            $data['cid'] = $data['parent_id'];
-            $category_info = Db::name('Category')->where(['id'=>$data['cid']])->find();
-            $data['cname'] = $category_info['name'];
-            unset($data['parent_id']);
-            $result = $this->validate($data, 'Exam');
 
+            $post   = $data['post'];
+            $result = $this->validate($post, 'Daka');
             if ($result !== true) {
                 $this->error($result);
             }
-            $result = $ExamModel->allowField(true)->isUpdate(true)->save($data);
+
+            $category_info = Db::name('Category')->where(['id'=>$post['category_id']])->find();
+            $post['category_name'] = $category_info['name'];
+
+            if (!empty($data['photo_names']) && !empty($data['photo_urls'])) {
+                $data['post']['more']['photos'] = [];
+                foreach ($data['photo_urls'] as $key => $url) {
+                    $photoUrl = cmf_asset_relative_url($url);
+                    array_push($data['post']['more']['photos'], ["url" => $photoUrl, "name" => $data['photo_names'][$key]]);
+                }
+            }
+
+            if (!empty($data['file_names']) && !empty($data['file_urls'])) {
+                $data['post']['more']['files'] = [];
+                foreach ($data['file_urls'] as $key => $url) {
+                    $fileUrl = cmf_asset_relative_url($url);
+                    array_push($data['post']['more']['files'], ["url" => $fileUrl, "name" => $data['file_names'][$key]]);
+                }
+            }
+
+            $result =  $model->adminEditArticle($data['post'], $data['post']['category_id']);
             if ($result === false) {
                 $this->error('编辑失败!');
             }
-            $this->success('编辑成功!', url('Exam/index'));
+            $this->success('编辑成功!', url('Daka/edit', ['id'=> $data['post']['id']]));
 
         }
     }
@@ -255,12 +267,12 @@ class DakaController extends AdminBaseController
     public function publish()
     {
         $param           = $this->request->param();
-        $ExamModel = new ExamModel();
+        $model = new DakaModel();
 
         if (isset($param['ids']) && isset($param["yes"])) {
             $ids = $this->request->param('ids/a');
 
-            $ExamModel->where(['id' => ['in', $ids]])->update(['status' => 1, 'published_time' => time()]);
+            $model->where(['id' => ['in', $ids]])->update(['post_status' => 1, 'published_time' => time()]);
 
             $this->success("发布成功！", '');
         }
@@ -268,7 +280,7 @@ class DakaController extends AdminBaseController
         if (isset($param['ids']) && isset($param["no"])) {
             $ids = $this->request->param('ids/a');
 
-            $ExamModel->where(['id' => ['in', $ids]])->update(['status' => 0]);
+            $model->where(['id' => ['in', $ids]])->update(['post_status' => 0]);
 
             $this->success("取消发布成功！", '');
         }
@@ -278,12 +290,12 @@ class DakaController extends AdminBaseController
     public function top()
     {
         $param           = $this->request->param();
-        $ExamModel = new ExamModel();
+        $model = new DakaModel();
 
         if (isset($param['ids']) && isset($param["yes"])) {
             $ids = $this->request->param('ids/a');
 
-            $ExamModel->where(['id' => ['in', $ids]])->update(['is_top' => 1]);
+            $model->where(['id' => ['in', $ids]])->update(['is_top' => 1]);
 
             $this->success("置顶成功！", '');
 
@@ -292,7 +304,7 @@ class DakaController extends AdminBaseController
         if (isset($_POST['ids']) && isset($param["no"])) {
             $ids = $this->request->param('ids/a');
 
-            $ExamModel->where(['id' => ['in', $ids]])->update(['is_top' => 0]);
+            $model->where(['id' => ['in', $ids]])->update(['is_top' => 0]);
 
             $this->success("取消置顶成功！", '');
         }
@@ -301,12 +313,12 @@ class DakaController extends AdminBaseController
     public function recommend()
     {
         $param           = $this->request->param();
-        $ExamModel = new ExamModel();
+        $model = new DakaModel();
 
         if (isset($param['ids']) && isset($param["yes"])) {
             $ids = $this->request->param('ids/a');
 
-            $ExamModel->where(['id' => ['in', $ids]])->update(['recommended' => 1]);
+            $model->where(['id' => ['in', $ids]])->update(['recommended' => 1]);
 
             $this->success("推荐成功！", '');
 
@@ -314,7 +326,7 @@ class DakaController extends AdminBaseController
         if (isset($param['ids']) && isset($param["no"])) {
             $ids = $this->request->param('ids/a');
 
-            $ExamModel->where(['id' => ['in', $ids]])->update(['recommended' => 0]);
+            $model->where(['id' => ['in', $ids]])->update(['recommended' => 0]);
 
             $this->success("取消推荐成功！", '');
 
@@ -323,7 +335,8 @@ class DakaController extends AdminBaseController
 
     public function listOrder()
     {
-        parent::listOrders(Db::name('exam_item'));
+        $model = new DakaModel();
+        parent::listOrders($model);
         $this->success("排序更新成功！", '');
     }
 
@@ -335,13 +348,13 @@ class DakaController extends AdminBaseController
 
         if (isset($data['ids']) && !empty($data["display"])) {
             $ids = $this->request->param('ids/a');
-            $examItemModel->where(['id' => ['in', $ids]])->update(['status' => 1]);
+            $examItemModel->where(['id' => ['in', $ids]])->update(['post_status' => 1]);
             $this->success("更新成功！");
         }
 
         if (isset($data['ids']) && !empty($data["hide"])) {
             $ids = $this->request->param('ids/a');
-            $examItemModel->where(['id' => ['in', $ids]])->update(['status' => 0]);
+            $examItemModel->where(['id' => ['in', $ids]])->update(['post_status' => 0]);
             $this->success("更新成功！");
         }
 

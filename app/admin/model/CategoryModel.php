@@ -29,6 +29,16 @@ class CategoryModel extends Model
         11=>'大学',
     ];
 
+    private static $instance = null;
+
+    public static function instance()
+    {
+        if (is_null(self::$instance)) {
+            self::$instance = new static();
+        }
+        return self::$instance;
+    }
+
     /**
      * 生成分类 select树形结构
      * @param int $selectId 需要选中的分类 id

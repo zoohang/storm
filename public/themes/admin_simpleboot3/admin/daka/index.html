@@ -58,7 +58,6 @@
                 <th>图片</th>
                 <th>所属分类</th>
                 <th>标题</th>
-                <th>描述</th>
                 <th>更新时间	</th>
                 <th>发布时间</th>
                 <th width="70">状态</th>
@@ -70,29 +69,28 @@
                 <tr>
                     <td>
                         <input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
-                               value="{$vo.cid}" title="ID:{$vo.cid}">
+                               value="{$vo.id}" title="ID:{$vo.id}">
                     </td>
-                    <td><input name="list_orders[{$vo.cid}]" type="text" size="3" value="{$vo.list_order}" class="input-order valid" aria-invalid="false"></td>
-                    <td>{$vo.cid}</td>
-                    <td><img src="{:cmf_get_image_preview_url($vo.image)}" id="thumb-preview"
-                             height="50" style="cursor: hand" onclick="javascript:imagePreviewDialog('{:cmf_get_image_preview_url($vo.image)}');"/></td>
-                    <td>{$vo.pname}</td>
-                    <td>{$vo.ctitle}</td>
-                    <td>{$vo.description|mb_substr=0,20,'utf8'}</td>
+                    <td><input name="list_orders[{$vo.id}]" type="text" size="3" value="{$vo.list_order}" class="input-order valid" aria-invalid="false"></td>
+                    <td>{$vo.id}</td>
+                    <td><img src="{:cmf_get_image_preview_url($vo.thumbnail)}" id="thumb-preview"
+                             height="50" style="cursor: hand" onclick="javascript:imagePreviewDialog('{:cmf_get_image_preview_url($vo.thumbnail)}');"/></td>
+                    <td>{$vo.category_name}</td>
+                    <td>{$vo.post_title}</td>
                     <td>
                         <notempty name="vo.update_time">
-                            {:date('Y-m-d H:i',$vo['update_time'])}
+                            {:date('Y-m-d H:i:s',$vo['update_time'])}
                         </notempty>
                     </td>
                     <td>
                         <empty name="vo.published_time">
                             未发布
                             <else/>
-                            {:date('Y-m-d H:i',$vo['published_time'])}
+                            {:date('Y-m-d H:i:s',$vo['published_time'])}
                         </empty>
                     </td>
                     <td>
-                        <switch name="vo.status">
+                        <switch name="vo.post_status">
                             <case value="0"><a data-toggle="tooltip" title="已删除"><i class="fa fa-close"></i></a></case>
                             <case value="1"><a data-toggle="tooltip" title="已发布"><i class="fa fa-check"></i></a></case>
                             <case value="2"><a data-toggle="tooltip" title="未发布"><i class="fa fa-close"></i></a></case>
@@ -109,9 +107,9 @@
                         </notempty>
                     </td>
                     <td>
-                        <a href="{:url('daka/detail',['cid'=>$vo.cid])}">章节详情</a>
-                        <a href="{:url('daka/edit',['cid'=>$vo.cid])}">编辑</a>
-                        <a class="js-ajax-delete" href="{:url('daka/delete',['id'=>$vo.cid])}">删除</a>
+                        <a href="{:url('daka/detail',['id'=>$vo.id])}">章节详情</a>
+                        <a href="{:url('daka/edit',['id'=>$vo.id])}">编辑</a>
+                        <a class="js-ajax-delete" href="{:url('daka/delete',['id'=>$vo.id])}">删除</a>
                     </td>
                 </tr>
             </foreach>
