@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2018-12-27 18:05:13
+Date: 2018-12-29 18:08:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -524,7 +524,7 @@ INSERT INTO `st_category` VALUES ('9', '0', '0', '1', '0', '10000', '后端', '�
 INSERT INTO `st_category` VALUES ('10', '0', '0', '1', '0', '10000', '服务端', '服务端', '服务端', '0-10', '3', '{\"thumbnail\":\"\"}');
 INSERT INTO `st_category` VALUES ('11', '0', '0', '1', '0', '10000', '打卡分类一', '', '打卡分类一 打卡分类一', '0-11', '2', '{\"thumbnail\":\"\"}');
 INSERT INTO `st_category` VALUES ('12', '0', '0', '1', '0', '10000', '打卡分类二', '', '打卡分类二打卡分类二', '0-12', '2', '{\"thumbnail\":\"\"}');
-INSERT INTO `st_category` VALUES ('13', '11', '0', '1', '0', '10000', '打卡分类一一', '', '打卡分类一一打卡分类一一', '0-11-13', '2', '{\"thumbnail\":\"\"}');
+INSERT INTO `st_category` VALUES ('13', '11', '1', '1', '0', '10000', '打卡分类一一', '', '打卡分类一一打卡分类一一', '0-11-13', '2', '{\"thumbnail\":\"\"}');
 INSERT INTO `st_category` VALUES ('14', '11', '2', '1', '0', '10000', '打卡下班咯', '', '打卡下班咯打卡下班咯', '0-11-14', '2', '{\"thumbnail\":\"\"}');
 
 -- ----------------------------
@@ -708,14 +708,15 @@ CREATE TABLE `st_daka` (
   KEY `parent_id` (`parent_id`),
   KEY `user_id` (`user_id`),
   KEY `create_time` (`create_time`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='portal应用 文章表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 ROW_FORMAT=COMPACT COMMENT='portal应用 文章表';
 
 -- ----------------------------
 -- Records of st_daka
 -- ----------------------------
-INSERT INTO `st_daka` VALUES ('1', '14', '', '0', '1', '1', '1', '1', '1', '0', '0', '0', '0', '1545881537', '1545905088', '1545840000', '1546185600', '0', '12312312355555112', 'admin/20181226/d53b9a22b3f869fca0b552dd1cab9019.gif', '\n&lt;p&gt;1231231312312321&lt;/p&gt;\n&lt;p&gt;4444411111&lt;/p&gt;\n&lt;p&gt;&lt;br&gt;&lt;/p&gt;\n&lt;p&gt;&lt;br&gt;&lt;/p&gt;\n&lt;p&gt;2&lt;/p&gt;\n&lt;p&gt;3&lt;/p&gt;\n', null, '100', '{\"audio\":\"\",\"video\":\"\",\"thumbnail\":\"admin/20181226/d53b9a22b3f869fca0b552dd1cab9019.gif\",\"photos\":[{\"url\":\"admin/20181226/5f89d7abe759574d93675c6cd1bec25f.gif\",\"name\":\"20171122161123.gif\"},{\"url\":\"admin/20181226/e3a87efdfc1b9030b743ead1150e2ec4.gif\",\"name\":\"20171124165331.gif\"},{\"url\":\"admin/20181227/94abc0e13291f0796a36acc1471c1362.jpg\",\"name\":\"0a535005e4fa60c45fa40309417eae6f_t.jpg\"}],\"files\":[{\"url\":\"admin/20181226/fda845bee3022b0cdfe9e7255e374fda.docx\",\"name\":\"9d12b4dfdc73e2eb4f1507d6137011b0_5_8.docx\"}]}');
+INSERT INTO `st_daka` VALUES ('1', '13', '', '0', '1', '1', '1', '1', '1', '0', '0', '0', '0', '1545881537', '1546063609', '1545840000', '1546185600', '0', '12312312355555112', 'admin/20181226/d53b9a22b3f869fca0b552dd1cab9019.gif', '\n&lt;p&gt;1231231312312321&lt;/p&gt;\n&lt;p&gt;4444411111&lt;/p&gt;\n&lt;p&gt;&lt;br&gt;&lt;/p&gt;\n&lt;p&gt;&lt;br&gt;&lt;/p&gt;\n&lt;p&gt;2&lt;/p&gt;\n&lt;p&gt;3&lt;/p&gt;\n', null, '100', '{\"audio\":\"\",\"video\":\"\",\"thumbnail\":\"admin/20181226/d53b9a22b3f869fca0b552dd1cab9019.gif\",\"photos\":[{\"url\":\"admin/20181226/5f89d7abe759574d93675c6cd1bec25f.gif\",\"name\":\"20171122161123.gif\"},{\"url\":\"admin/20181226/e3a87efdfc1b9030b743ead1150e2ec4.gif\",\"name\":\"20171124165331.gif\"},{\"url\":\"admin/20181227/94abc0e13291f0796a36acc1471c1362.jpg\",\"name\":\"0a535005e4fa60c45fa40309417eae6f_t.jpg\"}],\"files\":[{\"url\":\"admin/20181226/fda845bee3022b0cdfe9e7255e374fda.docx\",\"name\":\"9d12b4dfdc73e2eb4f1507d6137011b0_5_8.docx\"}]}');
 INSERT INTO `st_daka` VALUES ('2', '14', '', '0', '1', '0', '1', '0', '0', '0', '0', '0', '0', '1545891764', '1545891764', '0', '2018', '0', '好像下班了', 'admin/20181227/6776dee3c6e0de549ad8f33147b6f135.gif', '&lt;p&gt;好想下班&lt;img src=&quot;https://img.baidu.com/hi/jx2/j_0002.gif&quot;&gt;&lt;/p&gt;', null, '100', '{\"thumbnail\":\"admin/20181227/6776dee3c6e0de549ad8f33147b6f135.gif\",\"photos\":[{\"url\":\"admin/20181227/a0dc4fb9a4517f5b231c6d5cdc2bc80d.gif\",\"name\":\"20180708140354.gif\"},{\"url\":\"admin/20181227/cc9699075e2333d961d4d8c5c3a3ed93.gif\",\"name\":\"89e5bad671d5e05ea81a1703ef34bee4_t.gif\"},{\"url\":\"admin/20181227/b4298c559cb45eb09c18f6c32dbe3c21.gif\",\"name\":\"445bf4d333be46239bd431ff7627176e_t.gif\"}],\"files\":[{\"url\":\"admin/20181227/67d9bc1b4c06d69602f0189a80707903.docx\",\"name\":\"733358571ad232ad33b90984d9487acb_4_8.docx\"}]}');
 INSERT INTO `st_daka` VALUES ('3', '14', '打卡下班咯', '0', '1', '0', '1', '0', '0', '0', '0', '0', '0', '1545892203', '1545892203', '0', '2018', '0', '好像下班了', 'admin/20181227/6776dee3c6e0de549ad8f33147b6f135.gif', '&lt;p&gt;好想下班&lt;img src=&quot;https://img.baidu.com/hi/jx2/j_0002.gif&quot;&gt;&lt;/p&gt;', null, '100', '{\"thumbnail\":\"admin/20181227/6776dee3c6e0de549ad8f33147b6f135.gif\",\"photos\":[{\"url\":\"admin/20181227/a0dc4fb9a4517f5b231c6d5cdc2bc80d.gif\",\"name\":\"20180708140354.gif\"},{\"url\":\"admin/20181227/cc9699075e2333d961d4d8c5c3a3ed93.gif\",\"name\":\"89e5bad671d5e05ea81a1703ef34bee4_t.gif\"},{\"url\":\"admin/20181227/b4298c559cb45eb09c18f6c32dbe3c21.gif\",\"name\":\"445bf4d333be46239bd431ff7627176e_t.gif\"}],\"files\":[{\"url\":\"admin/20181227/67d9bc1b4c06d69602f0189a80707903.docx\",\"name\":\"733358571ad232ad33b90984d9487acb_4_8.docx\"}]}');
+INSERT INTO `st_daka` VALUES ('4', '13', '打卡分类一一', '0', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546073876', '1546073876', '1546073867', '1546073867', '0', '23432423432', '', '&lt;p&gt;423423423423423432&lt;/p&gt;', null, '100', '\"{\\\"thumbnail\\\":\\\"\\\"}\"');
 
 -- ----------------------------
 -- Table structure for st_exam
