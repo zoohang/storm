@@ -88,10 +88,10 @@ class DakaController extends AdminBaseController
             unset($data['post']['recommended']);
 
             $post   = $data['post'];
-            /*$result = $this->validate($post, 'Daka');
+            $result = $this->validate($post, 'Daka');
             if ($result !== true) {
                 $this->error($result);
-            }*/
+            }
 
             $model = new DakaModel();
 
@@ -110,8 +110,7 @@ class DakaController extends AdminBaseController
                     array_push($data['post']['more']['files'], ["url" => $fileUrl, "name" => $data['file_names'][$key]]);
                 }
             }
-
-            $model->adminEditArticle($data['post'], $data['post']['category_id']);
+            $model->adminAddArticle($data['post'], $data['post']['category_id']);
 
             $this->success('保存成功!');
 
