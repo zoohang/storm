@@ -92,14 +92,14 @@ class DakaModel extends Model
             $data['more']['video'] = cmf_asset_relative_url($data['more']['video']);
         }
         if ($data['more']) $data['more'] = json_encode($data['more'], JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
-        if ($data['category_id']) $data['category_name'] = $this->setCategoryNameAttr();
+        if ($category_id) $data['category_name'] = $this->setCategoryNameAttr();
         $this->allowField(true)->data($data, true)->isUpdate(false)->save();
         CategoryModel::instance()->where(['id'=>$category_id])->setInc('count', 1);
         return $this;
 
     }
 
-    public function adminEditArticle($data, $categories)
+    public function adminEditArticle($data, $category_id)
     {
 
         unset($data['user_id']);
@@ -116,7 +116,7 @@ class DakaModel extends Model
         if (!empty($data['more']['video'])) {
             $data['more']['video'] = cmf_asset_relative_url($data['more']['video']);
         }
-
+        if ($category_id) $data['category_name'] = $this->setCategoryNameAttr();
         $this->allowField(true)->isUpdate(true)->data($data, true)->save();
 
         return $this;

@@ -52,6 +52,7 @@ class DakaController extends AdminBaseController
         //所属分类 end
         $list = DakaModel::instance()
             ->where($where)
+            ->order(['list_order'=>'asc', 'id'=>'desc'])
             ->paginate();
         // 分页注入搜索条件
         $list->appends(['keyword' => $keyword, 'category' => $category]);
@@ -110,9 +111,8 @@ class DakaController extends AdminBaseController
                     array_push($data['post']['more']['files'], ["url" => $fileUrl, "name" => $data['file_names'][$key]]);
                 }
             }
-            $model->adminAddArticle($data['post'], $data['post']['category_id']);
-
-            $this->success('保存成功!');
+            $res = $model->adminAddArticle($data['post'], $data['post']['category_id']);
+            $this->success('保存成功!', url('Daka/edit', ['id'=> $res->id]));
 
         }
     }
@@ -124,7 +124,6 @@ class DakaController extends AdminBaseController
     public function edit()
     {
         $id    = $this->request->param('id', 0, 'intval');
-        //$info = DB::name('daka')->where(["id" => $id])->find();
         $info = DakaModel::instance()->where(["id" => $id])->find();
         $CategoryModel = new CategoryModel();
         $categoryTree = $CategoryModel->categoryTree($info['category_id'], '', $this->type);
@@ -180,16 +179,17 @@ class DakaController extends AdminBaseController
      * 详细题目列表
      */
     public function detail() {
+
         $id = $this->request->param('id', 0, 'intval');
-        if (!$id) $this->error('请选择一套试卷');
-        $where = ['exam_id'=>$id, 'status'=>1];
-        $exams_items = DB::name('Exam_item')
+        if (!$id) $this->error('请选择一套打卡内容');
+        $where = ['parent_id'=>$id, 'post_status'=>1];
+        $list = DakaModel::instance()
             ->where($where)
             ->order("list_order ASC,id ASC")
             ->select();
-        $this->assign('list' , $exams_items);
-        //获取试卷信息
-        $info = DB::name('exam')->where(['id'=>$id])->find();
+        $this->assign('list' , $list);
+        //获取信息
+        $info = DakaModel::instance()->where(['id'=>$id])->find();
         $this->assign('info', $info);
         return $this->fetch();
     }
@@ -198,68 +198,78 @@ class DakaController extends AdminBaseController
      * 编辑题目
      */
     public function editItem() {
-        $type = $this->request->param('item_type', 0, 'intval');
-        $exam_id = $this->request->param('exam_id', 0, 'intval');
-        $item_id = $this->request->param('item_id', 0, 'intval');
-        if (!$exam_id) $this->error('试卷id不能为空');
-        switch ($type) {
-            case 1 :
-                $template_name = 'edit_item_xuanze';
-                break;
-            case 2 :
-                $template_name = 'edit_item_tiankong';
-                break;
-            case 3 :
-                $template_name = 'edit_item_lunshu';
-                break;
-            default :
-                $cookie_type_name = $this->request->cookie('item_template_name');
-                if ($cookie_type_name) {
-                    $template_name = $cookie_type_name;
-                } else {
-                    $template_name = 'edit_item_xuanze';
-                }
-        }
-        Cookie::set('item_template_name', $template_name, 86400);
+        $parent_id = $this->request->param('parent_id', 0, 'intval');
+        $id = $this->request->param('id', 0, 'intval');
+        if (!$parent_id) $this->error('父级id不能为空');
         //题目信息
+        $parent_info = DakaModel::instance()->where(['id'=>$parent_id])->find();
         $info = [];
-        if ($item_id) {
-            $info = DB::name('exam_item')->where(['id'=>$item_id])->find();
-            if ($info['option']) $info['option'] = json_decode($info['option'], true);
+        if ($id) {
+            $info = DakaModel::instance()->where(['id'=>$id])->find();
         }
-        $this->assign('info', $info);
-        return $this->fetch($template_name);
+        $this->assign('parent_info', $parent_info);
+        $this->assign('post', $info);
+        return $this->fetch();
     }
 
     /**
      * 保存题目
      */
     public function saveItem() {
-        $id = $this->request->param('item_id');
-        $data = $this->request->param()['post'];
-        $result = $this->validate($data, 'ExamItem');
+        $id = $this->request->param('id');
+        $parent_id = $this->request->param("parent_id");
+        $model = new DakaModel();
+        $data = $this->request->param();
+        if ($id) {
+            $info = DakaModel::instance()->where(['id'=>$id])->find();
+        } elseif($parent_id) {
+            $info = DakaModel::instance()->where(['id'=>$parent_id])->find();
+            $data['post']['parent_id'] = $info['id'];
+        } else {
+            $this->error('缺少关键数据');
+        }
+
+        $data['post']['category_id'] = $info['category_id'];
+        $post   = $data['post'];
+        $result = $this->validate($post, 'Daka');
         if ($result !== true) {
             $this->error($result);
         }
-        $ExamItemModel = new ExamItemModel();
-        if (isset($data['option']) && $data['option']) $data['option'] = json_encode($data['option'], 64|256);
+
+        if (!empty($data['photo_names']) && !empty($data['photo_urls'])) {
+            $data['post']['more']['photos'] = [];
+            foreach ($data['photo_urls'] as $key => $url) {
+                $photoUrl = cmf_asset_relative_url($url);
+                array_push($data['post']['more']['photos'], ["url" => $photoUrl, "name" => $data['photo_names'][$key]]);
+            }
+        }
+
+        if (!empty($data['file_names']) && !empty($data['file_urls'])) {
+            $data['post']['more']['files'] = [];
+            foreach ($data['file_urls'] as $key => $url) {
+                $fileUrl = cmf_asset_relative_url($url);
+                array_push($data['post']['more']['files'], ["url" => $fileUrl, "name" => $data['file_names'][$key]]);
+            }
+        }
+
         if ($id) {
             //save
-            $data['id'] = $id;
-            $result = $ExamItemModel->allowField(true)->isUpdate(true)->save($data);
+            $result =  $model->adminEditArticle($data['post'], $data['post']['category_id']);
             if ($result === false) {
                 $this->error('编辑失败!');
-            } else {
-                $this->success('编辑成功!', url('exam/editItem', ['item_id'=>$id, 'item_type'=>$data['type'], 'exam_id'=>$data['exam_id']]));
             }
+            $this->success('编辑成功!', url('Daka/editItem', ['id'=> $data['post']['id'], 'parent_id'=>$parent_id]));
         } else {
             //add
-            unset($data['id']);
-            $result = $ExamItemModel->allowField(true)->save($data);
-            if ($result === false) {
-                $this->error('添加失败!');
-            }
-            $this->success('添加成功!', url('exam/editItem', ['item_id'=>$result, 'item_type'=>$data['type'], 'exam_id'=>$data['exam_id']]));
+            //需要抹除发布、置顶、推荐的修改。
+            unset($data['post']['post_status']);
+            unset($data['post']['is_top']);
+            unset($data['post']['recommended']);
+            unset($data['post']['id']);
+            $data['post']['parent_id'] =  $parent_id;
+            //var_dump($data['post'], $data['post']['category_id']);die;
+            $res = $model->adminAddArticle($data['post'], $data['post']['category_id']);
+            $this->success('编辑成功!', url('Daka/editItem', ['id'=> $res->id, 'parent_id'=>$parent_id]));
         }
     }
 

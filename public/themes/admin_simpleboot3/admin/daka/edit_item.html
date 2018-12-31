@@ -35,31 +35,30 @@
         </li>
         <li class="active"><a href="#">编辑文章</a></li>
     </ul>
-    <form action="{:url('Daka/editPost')}" method="post" class="form-horizontal js-ajax-form margin-top-20">
+    <form action="{:url('Daka/saveItem',['parent_id'=>$parent_info['id'],'id'=>isset($post['id'])?$post['id']:''])}" method="post" class="form-horizontal js-ajax-form margin-top-20">
         <div class="row">
             <div class="col-md-9">
                 <table class="table table-bordered">
                     <tr>
-                        <th width="100">分类<span class="form-required">*</span></th>
+                        <th width="100">打卡课程<span class="form-required">*</span></th>
                         <td>
-                            <select name="post[category_id]" id=""  class="form-control">
-                                <option value="">请选择文章分类</option>
-                                {$category_tree}
-                            </select>
+                            {$parent_info.post_title}
+                            <input type="hidden" name="post[parent_id]" value="{$post.parent_id|default=$parent_info['id']}">
+                            <input type="hidden" name="post[category_id]" value="{$post.category_id|default=$parent_info['category_id']}">
                         </td>
                     </tr>
                     <tr>
                         <th>标题<span class="form-required">*</span></th>
                         <td>
-                            <input id="post-id" type="hidden" name="post[id]" value="{$post.id}">
+                            <input id="post-id" type="hidden" name="post[id]" value="{$post.id|default=''}">
                             <input class="form-control" type="text" name="post[post_title]"
-                                   required value="{$post.post_title}" placeholder="请输入标题"/>
+                                   required value="{$post.post_title|default=''}" placeholder="请输入标题"/>
                         </td>
                     </tr>
                     <tr>
                         <th>内容</th>
                         <td>
-                            <script type="text/plain" id="content" name="post[post_content]">{$post.post_content}</script>
+                            <script type="text/plain" id="content" name="post[post_content]">{$post.post_content|default=''}</script>
                         </td>
                     </tr>
                     <tr>
@@ -168,29 +167,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>开始时间</th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input class="form-control js-bootstrap-datetime" type="text" name="post[published_time]"
-                                   value="{:date('Y-m-d H:i',$post['published_time'])}">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>结束时间</th>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input class="form-control js-bootstrap-datetime" type="text" name="post[end_time]"
-                                   value="{:date('Y-m-d H:i',$post['end_time'])}">
-                        </td>
-                    </tr>
-                    <tr>
                         <th>状态</th>
                         <php>
-                            $status_yes=$post['post_status']==1?"checked":"";
-                            $is_top_yes=$post['is_top']==1?"checked":"";
-                            $recommended_yes=$post['recommended']==1?"checked":"";
+                            $status_yes=isset($post['post_status'])&&$post['post_status']==1?"checked":"";
                         </php>
                     </tr>
                     <tr>
@@ -200,26 +179,6 @@
                                     <input type="checkbox" id="post-status-checkbox" name="post[post_status]" value="1"
                                            {$status_yes}>发布
                                     <span id="post-status-error" style="color: red;display: none"></span>
-                                </label>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="checkbox">
-                                <label><input type="checkbox" id="is-top-checkbox" name="post[is_top]" value="1"
-                                              {$is_top_yes}>置顶</label>
-                                <span id="is-top-error" style="color: red;display: none"></span>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" id="recommended-checkbox" name="post[recommended]" value="1"
-                                           {$recommended_yes}>推荐
-                                    <span id="recommended-error" style="color: red;display: none"></span>
                                 </label>
                             </div>
                         </td>

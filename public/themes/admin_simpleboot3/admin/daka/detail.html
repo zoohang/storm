@@ -4,8 +4,17 @@
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
         <li class="active"><a href="{:url('daka/index')}">打卡列表</a></li>
-        <li><a href="{:url('daka/add',[''])}">添加</a></li>
+        <li><a href="{:url('daka/editItem',['parent_id'=>$info['id']])}">添加</a></li>
     </ul>
+
+    <form class="well form-inline margin-top-20" method="post">
+        <strong class="lead">{$info.post_title}</strong>
+        <h5>{$info.category_name}</h5>
+        <blockquote>
+            <footer>{$info.post_content|strip_tags|mb_substr=0,20,'utf8'}</footer>
+        </blockquote>
+    </form>
+
     <form class="js-ajax-form" action="{:url('daka/listOrder')}" method="post">
         <div class="table-actions">
             <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
@@ -16,18 +25,6 @@
             </button>
             <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
                     data-action="{:url('daka/publish',array('no'=>1))}" data-subcheck="true">取消发布
-            </button>
-            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
-                    data-action="{:url('daka/top',array('yes'=>1))}" data-subcheck="true">置顶
-            </button>
-            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
-                    data-action="{:url('daka/top',array('no'=>1))}" data-subcheck="true">取消置顶
-            </button>
-            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
-                    data-action="{:url('daka/recommend',array('yes'=>1))}" data-subcheck="true">推荐
-            </button>
-            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
-                    data-action="{:url('daka/recommend',array('no'=>1))}" data-subcheck="true">取消推荐
             </button>
             <button class="btn btn-danger btn-sm js-ajax-submit" type="submit"
                     data-action="{:url('daka/delete')}" data-subcheck="true" data-msg="您确定删除吗？">
@@ -44,8 +41,6 @@
                 </th>
                 <th width="80">{:lang('SORT')}</th>
                 <th width="50">ID</th>
-                <th>图片</th>
-                <th>所属分类</th>
                 <th>标题</th>
                 <th>更新时间	</th>
                 <th>发布时间</th>
@@ -62,9 +57,6 @@
                     </td>
                     <td><input name="list_orders[{$vo.id}]" type="text" size="3" value="{$vo.list_order}" class="input-order valid" aria-invalid="false"></td>
                     <td>{$vo.id}</td>
-                    <td><img src="{:cmf_get_image_preview_url($vo.thumbnail)}" id="thumb-preview"
-                             height="50" style="cursor: hand" onclick="javascript:imagePreviewDialog('{:cmf_get_image_preview_url($vo.thumbnail)}');"/></td>
-                    <td>{$vo.category_name}</td>
                     <td>{$vo.post_title}</td>
                     <td>
                         <notempty name="vo.update_time">
@@ -84,20 +76,9 @@
                             <case value="1"><a data-toggle="tooltip" title="已发布"><i class="fa fa-check"></i></a></case>
                             <case value="2"><a data-toggle="tooltip" title="未发布"><i class="fa fa-close"></i></a></case>
                         </switch>
-                        <notempty name="vo.is_top">
-                            <a data-toggle="tooltip" title="已置顶"><i class="fa fa-arrow-up"></i></a>
-                            <else/>
-                            <a data-toggle="tooltip" title="未置顶"><i class="fa fa-arrow-down"></i></a>
-                        </notempty>
-                        <notempty name="vo.recommended">
-                            <a data-toggle="tooltip" title="已推荐"><i class="fa fa-thumbs-up"></i></a>
-                            <else/>
-                            <a data-toggle="tooltip" title="未推荐"><i class="fa fa-thumbs-down"></i></a>
-                        </notempty>
                     </td>
                     <td>
-                        <a href="{:url('daka/detail',['id'=>$vo.id])}">章节详情</a>
-                        <a href="{:url('daka/edit',['id'=>$vo.id])}">编辑</a>
+                        <a href="{:url('daka/editItem',['id'=>$vo.id, 'parent_id'=>$vo.parent_id])}">编辑</a>
                         <a class="js-ajax-delete" href="{:url('daka/delete',['id'=>$vo.id])}">删除</a>
                     </td>
                 </tr>
@@ -110,22 +91,5 @@
     </form>
 </div>
 <script src="__STATIC__/js/admin.js"></script>
-<script>
-    $('body').on('click', '.js-categories-name-input', function() {
-        var item_id = $(this).data('id');
-        var item_type = $(this).data('type');
-        openIframeLayer("{:url('daka/editItem')}?item_id=" + item_id + '&item_type=' + item_type + '&daka_id=' + daka_id, '题目编辑', {
-            area: ['1000px', '600px'],
-            btn: ['确定', '取消'],
-            yes: function (index, layero) {
-                //do something
-                var iframeWin          = window[layero.find('iframe')[0]['name']];
-                //var selectedCategories = iframeWin.confirm();
-                layer.close(index); //如果设定了yes回调，需进行手工关闭
-                location.reload()
-            }
-        });
-    })
-</script>
 </body>
 </html>
