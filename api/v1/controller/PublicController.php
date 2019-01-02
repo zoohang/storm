@@ -22,16 +22,16 @@ class PublicController extends RestBaseController
             'code'           => 'require',
             'encrypted_data' => 'require',
             'iv'             => 'require',
-            'raw_data'       => 'require',
-            'signature'      => 'require',
+            #'raw_data'       => 'require',
+            #'signature'      => 'require',
         ]);
 
         $validate->message([
             'code.require'           => '缺少参数code!',
             'encrypted_data.require' => '缺少参数encrypted_data!',
             'iv.require'             => '缺少参数iv!',
-            'raw_data.require'       => '缺少参数raw_data!',
-            'signature.require'      => '缺少参数signature!',
+            #'raw_data.require'       => '缺少参数raw_data!',
+            #'signature.require'      => '缺少参数signature!',
         ]);
 
         $data = $this->request->param();

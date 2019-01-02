@@ -122,13 +122,18 @@ class RestBaseController
 
         $user = Db::name('user_token')
             ->alias('a')
-            ->field('b.*')
+            ->field('a.expire_time,b.*')
             ->where(['token' => $token, 'device_type' => $deviceType])
             ->join('__USER__ b', 'a.user_id = b.id')
             ->find();
 
         if (!empty($user)) {
             unset($user['user_pass']);
+            //过期返回 10000 通知client重新拉取token
+            if ($user['expire_time'] < NOW_TIME) {
+                $this->error(['code'=>10000, 'msg'=>'token验证失败, 请重新拉取授权']);
+            }
+            if ($user['more']) $user['more'] = json_decode($user['more'], true);
             $this->user     = $user;
             $this->userId   = $user['id'];
             $this->userType = $user['user_type'];
