@@ -11,5 +11,7 @@ return [
         'SignName' => '风暴教育',
         'dayLimit' => 5, //24H最大发送数量
         'exception' => '', //例外手机号[测试用]
-    ]
+    ],
+    //静态文件url前缀
+    'statis_url_prefix' => 'http://www.storm.com/',
 ];

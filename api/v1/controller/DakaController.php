@@ -66,9 +66,28 @@ class DakaController extends RestUserBaseController
         $id = $this->request->param('id', 0, 'intval,abs');
         if (!$id) $this->error('id必填');
         $info = DakaModel::instance()->where(['id'=>$id])->find()->toArray();
-        $field = [];
+        $field = ['id','post_title'];
         $child = DakaModel::instance()->field($field)->where(['parent_id'=>$id])->select()->toArray();
         $this->success('ok', ['info'=>$info, 'child'=>$child]);
+    }
+
+    // 打卡详情-小节
+    public function item() {
+        $id = $this->request->param('id', 0, 'intval,abs');
+        if (!$id) $this->error('id必填');
+        $info = DakaModel::instance()->where(['id'=>$id])->find()->toArray();
+        // todo 用户的作业
+        // todo 老师点评
+        $this->success('ok', $info);
+    }
+
+    public function submitHomeWork()
+    {
+        // 打卡 小节id 上传文件地址  追加的文字描述
+        $id = $this->request->param('id', 0, 'intval,abs');
+        if (!$id) $this->error('id必填');
+
+        Db::name('')->where();
     }
 
     /**

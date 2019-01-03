@@ -24,7 +24,7 @@ class ExamController extends RestUserBaseController
     public function index()
     {
         $field = ['id', 'parent_id', 'name'];
-        $cate = CategoryModel::instance()->field($field)->select()->toArray();
+        $cate = CategoryModel::instance($this->ctype)->field($field)->select()->toArray();
 
         //参考书籍 todo
 
@@ -51,6 +51,7 @@ class ExamController extends RestUserBaseController
         if (!$exam_info) {
             $this->error('该试卷不存在, 或已经下架了');
         }
+        //todo 是否为错题 is_wrong 1是 0不是
         $exam_info = $exam_info->toArray();
         $data = ExamItemModel::instance()->where(['exam_id'=>$id])->order(['list_order'=>'asc'])->select()->toArray();
         $result = [];
@@ -60,6 +61,8 @@ class ExamController extends RestUserBaseController
         if ($data) {
             $result['count'] = count($data);
             foreach ($data as $item) {
+                $item['show'] = 0;
+                $item['is_wrong'] = 0;
                 if ($item['type'] == 1) {
                     $result['chooseQusList'][] = $item;
                 } elseif($item['type'] == 2) {
@@ -97,9 +100,11 @@ class ExamController extends RestUserBaseController
         $page = $this->request->param('page', 1, 'intval,abs');
         $limit = $this->request->param('limit', config('paginate.list_rows'), 'intval,abs');
         $where = ['user_id'=> $this->userId];
-        $order = ['update_time' => 'desc'];
+        $order = ['id' => 'desc'];
         $list = ExamUserlogModel::instance()->where($where)->order($order)->paginate($limit)->toArray();
-        $this->success('ok', $list);
+        //我的错题数量[分组]
+        $wrong_types = ExamWronglistModel::instance()->getWrongCountGroupType($this->userId);
+        $this->success('ok', ['list'=>$list, 'wrong_types' => $wrong_types]);
     }
 
     /**
@@ -114,8 +119,8 @@ class ExamController extends RestUserBaseController
             'user_id' => $this->userId,
             'exam_id' => $exam['id'],
             'exam_name' => $exam['title'],
-            'item_id' => $exam['item_id'],
-            'item_id' => $exam['item_title'],
+            'exam_item_id' => $exam['item_id'],
+            'exam_item_name' => $exam['item_title'],
             'type' => $exam['type'],
             'create_time' => NOW_TIME
         ];
@@ -124,6 +129,23 @@ class ExamController extends RestUserBaseController
             $this->success('成功!');
         } else {
             $this->error('加入失败, 请重试!');
+        }
+    }
+
+    // 移除出题本
+    public function removeWrongList()
+    {
+        $id = $this->request->param('id', 0, 'intval,abs');
+        if (!$id) $this->error('题目的id必填');
+        $where = [
+            'user_id' => $this->userId,
+            'exam_item_id' => $id,
+        ];
+        $res = Db::name('exam_wronglist')->where($where)->delete();
+        if ($res !== false) {
+            $this->success('移除成功!');
+        } else {
+            $this->error('移除失败, 请重试!');
         }
     }
 

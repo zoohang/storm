@@ -31,4 +31,10 @@ class ExamWronglistModel extends Model
     {
         $query->where('status', 1);
     }
+
+
+    public function getWrongCountGroupType($user_id)
+    {
+        return $this->field("type,count(`type`) ct")->where(['user_id'=>$user_id])->group('type')->select();
+    }
 }

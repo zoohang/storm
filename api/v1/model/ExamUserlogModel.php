@@ -24,11 +24,18 @@ class ExamUserlogModel extends Model
         return self::$instance;
     }
 
-    /**
-     * 基础查询
-     */
-    protected function base($query)
+    public function getPropertyAttr($value)
     {
-        $query->where('status', 1);
+        switch ($value) {
+            case 1:
+                $name='真题';
+                break;
+            case 2:
+                $name='模拟';
+                break;
+            default:
+                $name='其他';
+        }
+        return $name;
     }
 }

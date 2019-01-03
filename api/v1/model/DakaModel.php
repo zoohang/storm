@@ -33,10 +33,26 @@ class DakaModel extends Model
      * @param $value
      * @return array
      */
-    public function getImageAttr($value)
+    public function getThumbnailAttr($value)
     {
         return cmf_get_image_url($value);
     }
 
+    public function getMoreAttr($value)
+    {
+        if (empty($value)) return [];
+        $temp = json_decode($value, true);
+        if (isset($temp['photos']) && $temp['photos']) {
+            foreach($temp['photos'] as &$item) {
+                $item['url'] = cmf_get_image_url($item['url']);
+            }
+        }
+        if (isset($temp['files']) && $temp['files']) {
+            foreach($temp['files'] as &$item) {
+                $item['url'] = cmf_get_image_url($item['url']);
+            }
+        }
+        return $temp;
+    }
 }
 
