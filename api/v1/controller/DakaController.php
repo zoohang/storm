@@ -8,37 +8,67 @@
 // +----------------------------------------------------------------------
 namespace api\v1\controller;
 
+use api\v1\model\DakaModel;
 use api\v1\model\ExamUserlogModel;
 use api\v1\model\ExamWronglistModel;
 use api\v1\model\CategoryModel;
-use api\v1\model\ExamItemModel;
-use api\v1\model\ExamModel;
 use cmf\controller\RestUserBaseController;
 use think\Db;
 use think\Validate;
 
-class ExamController extends RestUserBaseController
+class DakaController extends RestUserBaseController
 {
-    protected $ctype = 1;
+    protected $ctype = 2;
     // 首页信息
     public function index()
     {
-        $field = ['id', 'parent_id', 'name'];
-        $cate = CategoryModel::instance()->field($field)->select()->toArray();
-
-        //参考书籍 todo
-
         //获取题目
-
+        $category = $this->getDakaCategory();
+        //获取全部的内容 列表
+        $list = $this->getCategoryList();
+        $this->success('ok', ['category'=>$category, 'list'=>$list]);
     }
 
-    public function getCategoryExam() {
-        $id = $this->request->param('id', 0, 'intval,abs');
+    // 获取分类
+    public function getDakaCategory()
+    {
+        //分类信息
+        $field = ['id', 'parent_id', 'name'];
+        $data = CategoryModel::instance($this->ctype)->getCategoryTreeArray();
+        if ($this->request->action() !== __FUNCTION__) {
+            return $data;
+        } else {
+            $this->success('ok', $data);
+        }
+    }
+
+    // 获取分类下的视频列表
+    public function getCategoryList() {
+        $category_id = $this->request->param('category_id', 0, 'intval,abs');
         $limit = $this->request->param('limit', 10, 'intval,abs');
         $where = [];
-        if ($id) $where['cid'] = $id;
-        $list = ExamModel::instance()->where($where)->paginate($limit)->toArray();
-        $this->success('ok', $list);
+        $data = CategoryModel::instance($this->ctype)->getCategoryTreeArray($category_id);
+        $ids = CategoryModel::instance($this->ctype)->getCategoryIds($data);
+        $list = [];
+        if ($ids) {
+            $where['category_id'] = ['in', $ids];
+            $list = DakaModel::instance()->where($where)->order(['list_order'=>'asc','id'=>'desc'])->paginate($limit)->toArray();
+        }
+        if ($this->request->action() !== __FUNCTION__) {
+            return $list;
+        } else {
+            $this->success('ok', $list);
+        }
+    }
+
+    // 打卡详情
+    public function detail() {
+        $id = $this->request->param('id', 0, 'intval,abs');
+        if (!$id) $this->error('id必填');
+        $info = DakaModel::instance()->where(['id'=>$id])->find()->toArray();
+        $field = [];
+        $child = DakaModel::instance()->field($field)->where(['parent_id'=>$id])->select()->toArray();
+        $this->success('ok', ['info'=>$info, 'child'=>$child]);
     }
 
     /**

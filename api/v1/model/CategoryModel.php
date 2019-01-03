@@ -9,6 +9,7 @@
 
 namespace api\v1\model;
 
+use think\Db;
 use think\Model;
 
 class CategoryModel extends Model
@@ -18,7 +19,7 @@ class CategoryModel extends Model
     public static function instance($ctype)
     {
         if (is_null(self::$instance)) {
-            self::$instance = new self([], $ctype);
+            self::$instance = new self($ctype);
         }
         return self::$instance;
     }
@@ -28,9 +29,9 @@ class CategoryModel extends Model
         'more' => 'array',
     ];
 
-    public function __construct($data = [], $ctype=0)
+    public function __construct($ctype)
     {
-        parent::__construct($data);
+        parent::__construct();
         $this->ctype = $ctype;
     }
 
@@ -43,5 +44,26 @@ class CategoryModel extends Model
             ->where('status', 1);
     }
 
+    public function getCategoryTreeArray($parent_id=0) {
+        $where['type'] = $this->ctype;
+        $categoryList = Db::name('Category')->where($where)->select()->toArray();
+        $tree = new \tree\Tree();
+        $tree->init($categoryList);
+        $data = $tree->getTreeArray($parent_id);
+        return $data;
+    }
 
+    public function getCategoryIds($data) {
+        if (!$data) return [];
+        static $ids = [];
+        if ($data && is_array($data)) {
+            foreach ($data as $item) {
+                $ids[] = $item['id'];
+                if ($item['children']) {
+                    $this->getCategoryIds($item['children']);
+                }
+            }
+        }
+        return $ids;
+    }
 }
