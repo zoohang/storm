@@ -137,6 +137,7 @@ class RestBaseController
             $this->user     = $user;
             $this->userId   = $user['id'];
             $this->userType = $user['user_type'];
+            $this->request->post(['user_id'=>$this->userId]);
         } else {
             //todo token不存在 验证失败
             $this->error('token验证失败, 请重新拉取授权');

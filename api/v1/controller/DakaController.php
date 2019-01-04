@@ -8,6 +8,7 @@
 // +----------------------------------------------------------------------
 namespace api\v1\controller;
 
+use api\v1\model\DakaHomeworkModel;
 use api\v1\model\DakaModel;
 use api\v1\model\ExamUserlogModel;
 use api\v1\model\ExamWronglistModel;
@@ -22,7 +23,7 @@ class DakaController extends RestUserBaseController
     // 首页信息
     public function index()
     {
-        //获取题目
+        //初始化内容 获取分类
         $category = $this->getDakaCategory();
         //获取全部的内容 列表
         $list = $this->getCategoryList();
@@ -75,127 +76,35 @@ class DakaController extends RestUserBaseController
     public function item() {
         $id = $this->request->param('id', 0, 'intval,abs');
         if (!$id) $this->error('id必填');
-        $info = DakaModel::instance()->where(['id'=>$id])->find()->toArray();
-        // todo 用户的作业
-        // todo 老师点评
-        $this->success('ok', $info);
+        $info = DakaModel::instance()->where(['id'=>$id])->find();
+        if (!$info) $this->error('该课程已经下架或不存在');
+        $user_data = DakaHomeworkModel::instance()->where(['user_id'=>$this->userId, 'daka_id'=>$id])->select();
+        $this->success('ok', ['info'=>$info->toArray(), 'user_data'=>$user_data]);
     }
 
-    public function submitHomeWork()
-    {
-        // 打卡 小节id 上传文件地址  追加的文字描述
-        $id = $this->request->param('id', 0, 'intval,abs');
-        if (!$id) $this->error('id必填');
-
-        Db::name('')->where();
-    }
-
-    /**
-     * 获取试卷的题目列表
-     */
-    public function getExamItemList() {
-        $id = $this->request->param('id', 0, 'intval,abs');
-        if (!$id) $this->error('试卷的id必填');
-        $exam_info = ExamModel::instance()->where(['id'=>$id])->find();
-        if (!$exam_info) {
-            $this->error('该试卷不存在, 或已经下架了');
+    //提交打卡作业
+    // 打卡 小节id 上传文件地址  追加的文字描述
+    // ['daka_id'=>1, 'images'=>[1,2,3],'message'=>'111']
+    public function submitHomeWork() {
+        $data = $this->request->post();
+        $result = $this->validate($data, 'DakaHomework');
+        if ($result !== true) {
+            $this->error($result);
         }
-        $exam_info = $exam_info->toArray();
-        $data = ExamItemModel::instance()->where(['exam_id'=>$id])->order(['list_order'=>'asc'])->select()->toArray();
-        $result = [];
-        $result['info'] = $exam_info;
-        $result['count'] = 0;
-        $result['chooseQusList'] = $result['blankQusList'] = $result['discusseQusList'] = [];
-        if ($data) {
-            $result['count'] = count($data);
-            foreach ($data as $item) {
-                if ($item['type'] == 1) {
-                    $result['chooseQusList'][] = $item;
-                } elseif($item['type'] == 2) {
-                    $result['blankQusList'][] = $item;
-                } elseif($item['type'] == 3) {
-                    $result['discusseQusList'][] = $item;
-                }
-            }
-        }
-        //记录到我的刷题记录
-        $exists = ExamUserlogModel::instance()->get(['user_id'=>$this->userId,'exam_id'=>$id]);
-        if ($exists) {
-            $exists->update_time    = NOW_TIME;
-            $exists->save();
-        } else {
-            $add = [
-                'user_id' => $this->userId,
-                'exam_id' => $id,
-                'title' => $exam_info['title'],
-                'subtitle' => $exam_info['subtitle'],
-                'property' => $exam_info['property'],
-                'create_time' => NOW_TIME,
-                'update_time' => NOW_TIME
-            ];
-            ExamUserlogModel::instance()->allowField(true)->isUpdate(false)->save($add);
-        }
-        //记录到我的刷题记录
-        $this->success('ok', $result);
-    }
-
-    /**
-     * 我的刷题记录
-     */
-    public function myExamLog() {
-        $page = $this->request->param('page', 1, 'intval,abs');
-        $limit = $this->request->param('limit', config('paginate.list_rows'), 'intval,abs');
-        $where = ['user_id'=> $this->userId];
-        $order = ['update_time' => 'desc'];
-        $list = ExamUserlogModel::instance()->where($where)->order($order)->paginate($limit)->toArray();
-        $this->success('ok', $list);
-    }
-
-    /**
-     * 加入错题列表
-     */
-    public function addWrongList() {
-        $id = $this->request->param('id', 0, 'intval,abs');
-        if (!$id) $this->error('题目的id必填');
-        //查询该题目所在的试卷
-        $exam = ExamModel::instance()->getExamInfoByItemId($id);
-        $info = [
-            'user_id' => $this->userId,
-            'exam_id' => $exam['id'],
-            'exam_name' => $exam['title'],
-            'item_id' => $exam['item_id'],
-            'item_id' => $exam['item_title'],
-            'type' => $exam['type'],
-            'create_time' => NOW_TIME
-        ];
-        $res = Db::name('exam_wronglist')->insert($info);
+        $res = DakaHomeworkModel::instance()->allowField(true)->isUpdate(false)->save($data);
         if ($res !== false) {
-            $this->success('成功!');
+            $this->success('ok');
         } else {
-            $this->error('加入失败, 请重试!');
+            $this->error('上传失败, 请重试');
         }
     }
 
-    /**
-     * 查看我的错题本[列表]
-     */
-    public function checkMyWrongListByType() {
-        $type = $this->request->param('type', 0, 'intval,abs');
-        $limit = $this->request->param('type', config('paginate.list_rows'), 'intval,abs');
-        $validate = new Validate([
-            'type'   => 'number|between:1,3',
-        ], [
-            'type.number'=>'type必须是数字',
-            'type.between'=>'type只能在1-3之间',
-        ]);
-        if (!$validate->check(['type'=>$type])) {
-            $this->error($validate->getError());
-        }
-        $list = ExamWronglistModel::instance()
-            ->where(['user_id'=>$this->userId, 'type'=>$type])
-            ->order(['id'=>'desc'])
-            ->paginate($limit)
-            ->toArray();
-        $this->success('ok', $list);
+    //添加收藏 打卡
+    public function addCollect() {
+
+    }
+
+    public function bugDaka() {
+
     }
 }
