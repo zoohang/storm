@@ -26,6 +26,18 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="input-parent"><span class="form-required">*</span>关联学校</label>
+                            <div>
+                                <input class="form-control" type="text" style="width:400px;" required
+                                       value="{:implode(' ',[])}"
+                                       placeholder="请选择学校" onclick="doSelectCategory();" id="js-categories-name-input"
+                                       readonly/>
+                                <input class="form-control" type="hidden" value=""
+                                       name="post[categories]"
+                                       id="js-categories-id-input"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="input-parent"><span class="form-required">*</span>刷题类型</label>
                             <input type="hidden" name="property" value="1" alt="性质 1-真题 2-模拟 3-其他">
                             <ul id="myTab" class="nav nav-tabs">
@@ -119,6 +131,27 @@
         var type = $(this).index() + 1;
         $('input[name=property]').val(type);
     })
+    function doSelectCategory() {
+        var selectedCategoriesId = $('#js-categories-id-input').val();
+        openIframeLayer("{:url('exam/select')}?ids=" + selectedCategoriesId, '请选择学校', {
+            area: ['700px', '400px'],
+            btn: ['确定', '取消'],
+            yes: function (index, layero) {
+                //do something
+
+                var iframeWin          = window[layero.find('iframe')[0]['name']];
+                var selectedCategories = iframeWin.confirm();
+                if (selectedCategories.selectedCategoriesId.length == 0) {
+                    layer.msg('请选择学校');
+                    return;
+                }
+                $('#js-categories-id-input').val(selectedCategories.selectedCategoriesId.join(','));
+                $('#js-categories-name-input').val(selectedCategories.selectedCategoriesName.join(' '));
+                //console.log(layer.getFrameIndex(index));
+                layer.close(index); //如果设定了yes回调，需进行手工关闭
+            }
+        });
+    }
 </script>
 </body>
 </html>

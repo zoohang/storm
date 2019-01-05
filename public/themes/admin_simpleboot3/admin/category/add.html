@@ -29,6 +29,7 @@
 				<input type="hidden" name="type" value="{$type|default=0}">
 				<div class="tab-content">
 					<div class="tab-pane active" id="A">
+						<if condition="!in_array(input('type'), [11])">
 						<div class="form-group">
 							<label for="input-parent"><span class="form-required">*</span>上级</label>
 							<div>
@@ -38,6 +39,7 @@
 								</select>
 							</div>
 						</div>
+						</if>
 						<div class="form-group">
 							<label for="input-name"><span class="form-required">*</span>分类名称</label>
 							<div>

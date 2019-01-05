@@ -350,4 +350,32 @@ class ExamController extends AdminBaseController
             $this->error("删除失败！");
         }
     }
+
+    public function select()
+    {
+        //todo
+        $ids                 = $this->request->param('ids');
+        $selectedIds         = explode(',', $ids);
+
+        $tpl = <<<tpl
+<tr class='data-item-tr'>
+    <td>
+        <input type='checkbox' class='js-check' data-yid='js-check-y' data-xid='js-check-x' name='ids[]'
+               value='\$id' data-name='\$name' \$checked>
+    </td>
+    <td>\$id</td>
+    <td>\$spacer \$name</td>
+</tr>
+tpl;
+
+        $categoryTree = CategoryModel::instance()->categoryTableTree($selectedIds, $tpl, 11);
+
+        $where      = ['delete_time' => 0, 'type'=>11];
+        $categories = CategoryModel::instance()->where($where)->select();
+
+        $this->assign('categories', $categories);
+        $this->assign('selectedIds', $selectedIds);
+        $this->assign('categories_tree', $categoryTree);
+        return $this->fetch('category/select');
+    }
 }
