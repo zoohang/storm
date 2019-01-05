@@ -10,6 +10,8 @@
 // +----------------------------------------------------------------------
 namespace cmf\controller;
 
+use think\Db;
+
 class RestUserBaseController extends RestBaseController
 {
 
@@ -20,6 +22,58 @@ class RestUserBaseController extends RestBaseController
             $this->error(['code' => 401, 'msg' => '登录已失效!']);
         }
 
+    }
+
+    /**
+     * 用户取消收藏
+     */
+    public function deleteCollect()
+    {
+        $id                = $this->request->param("id", 0, "intval");
+        $userFavoriteModel = new UserFavoriteModel();
+        $data              = $userFavoriteModel->deleteFavorite($id);
+        if ($data) {
+            $this->success("取消收藏成功！");
+        } else {
+            $this->error("取消收藏失败！");
+        }
+    }
+
+    /**
+     * 用户收藏 type [2=>'daka']
+     */
+    public function collect($data)
+    {
+        $id    = $data['id'];
+        $table = $data['table'];
+
+        $findFavoriteCount = Db::name("user_favorite")->where([
+            'object_id'  => $id,
+            'table_name' => $table,
+            'user_id'    => $this->userId
+        ])->count();
+
+        if ($findFavoriteCount > 0) {
+            $this->error("您已收藏过啦");
+        }
+
+        $type       = $data['type'];
+        $title       = $data['title'];
+        $url         = $data['url'];
+        $description = isset($data['description']) ? $data['description'] : '';
+        $description = empty($description) ? $title : $description;
+        Db::name("user_favorite")->insert([
+            'user_id'     => $this->userId,
+            'title'       => $title,
+            'description' => $description,
+            'url'         => $url,
+            'object_id'   => $id,
+            'table_name'  => $table,
+            'create_time' => time(),
+            'type'        => $type
+        ]);
+
+        $this->success('收藏成功');
     }
 
 }

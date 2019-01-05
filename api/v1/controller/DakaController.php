@@ -101,10 +101,26 @@ class DakaController extends RestUserBaseController
 
     //添加收藏 打卡
     public function addCollect() {
-
+        //拼接好数据 调用公共收藏方法
+        $id = $this->request->param('id', 0, 'intval,abs');
+        $info = DakaModel::get($id);
+        $url = cmf_url_encode('v1/daka/detail', ['id'=>$id]);
+        $data = [
+            'id' => $id,
+            'title' => $info['post_title'],
+            'table' => 'daka',
+            'url'   => $url,
+            'type'  => 2
+        ];
+        $result = $this->validate($data, 'Favorite');
+        if ($result !== true) {
+            $this->error($result);
+        }
+        $this->collect($data);
     }
 
-    public function bugDaka() {
 
+    public function bugDaka() {
+        //todo 购买打卡课程
     }
 }
