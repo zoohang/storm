@@ -36,7 +36,7 @@ class DakaController extends RestUserBaseController
         //分类信息
         $field = ['id', 'parent_id', 'name'];
         $data = CategoryModel::instance($this->ctype)->getCategoryTreeArray();
-        if ($this->request->action() !== __FUNCTION__) {
+        if ($this->request->action() != strtolower(__FUNCTION__)) {
             return $data;
         } else {
             $this->success('ok', $data);
@@ -44,18 +44,20 @@ class DakaController extends RestUserBaseController
     }
 
     // 获取分类下的视频列表
+    // todo 加入人数(购买课程的人数) 打卡次数(作业提交次数) 费用
     public function getCategoryList() {
         $category_id = $this->request->param('category_id', 0, 'intval,abs');
         $limit = $this->request->param('limit', 10, 'intval,abs');
         $where = [];
         $data = CategoryModel::instance($this->ctype)->getCategoryTreeArray($category_id);
         $ids = CategoryModel::instance($this->ctype)->getCategoryIds($data);
+        $ids[] = $category_id;
         $list = [];
         if ($ids) {
             $where['category_id'] = ['in', $ids];
             $list = DakaModel::instance()->where($where)->order(['list_order'=>'asc','id'=>'desc'])->paginate($limit)->toArray();
         }
-        if ($this->request->action() !== __FUNCTION__) {
+        if ($this->request->action() != strtolower(__FUNCTION__)) {
             return $list;
         } else {
             $this->success('ok', $list);
@@ -69,6 +71,13 @@ class DakaController extends RestUserBaseController
         $info = DakaModel::instance()->where(['id'=>$id])->find()->toArray();
         $field = ['id','post_title'];
         $child = DakaModel::instance()->field($field)->where(['parent_id'=>$id])->select()->toArray();
+        //判断是否收藏成功
+        $findFavoriteCount = Db::name("user_favorite")->where([
+            'object_id'  => $id,
+            'table_name' => 'daka',
+            'user_id'    => $this->userId
+        ])->count();
+        $info['is_collect'] = $findFavoriteCount ? 1 : 0;
         $this->success('ok', ['info'=>$info, 'child'=>$child]);
     }
 
@@ -117,6 +126,15 @@ class DakaController extends RestUserBaseController
             $this->error($result);
         }
         $this->collect($data);
+    }
+
+    public function deleteCollect() {
+        $id = $this->request->param('id', 0, 'intval,abs');
+        $data = [
+            'id' => $id,
+            'table' => 'daka',
+        ];
+        $this->delCollect($data);
     }
 
 

@@ -35,7 +35,7 @@ class DakaModel extends Model
      */
     public function getThumbnailAttr($value)
     {
-        return cmf_get_image_url($value);
+        return get_image_url($value);
     }
 
     public function getMoreAttr($value)
@@ -44,15 +44,25 @@ class DakaModel extends Model
         $temp = json_decode($value, true);
         if (isset($temp['photos']) && $temp['photos']) {
             foreach($temp['photos'] as &$item) {
-                $item['url'] = cmf_get_image_url($item['url']);
+                $item['url'] = get_image_url($item['url']);
             }
         }
         if (isset($temp['files']) && $temp['files']) {
             foreach($temp['files'] as &$item) {
-                $item['url'] = cmf_get_image_url($item['url']);
+                $item['url'] = get_image_url($item['url']);
             }
         }
         return $temp;
+    }
+
+    /**
+     * post_content 自动转化
+     * @param $value
+     * @return string
+     */
+    public function getPostContentAttr($value)
+    {
+        return replace_content_file_url(htmlspecialchars_decode($value));
     }
 }
 

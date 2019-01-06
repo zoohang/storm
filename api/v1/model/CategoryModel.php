@@ -50,6 +50,7 @@ class CategoryModel extends Model
         $tree = new \tree\Tree();
         $tree->init($categoryList);
         $data = $tree->getTreeArray($parent_id);
+        sort($data);
         return $data;
     }
 

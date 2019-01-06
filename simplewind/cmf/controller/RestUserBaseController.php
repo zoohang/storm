@@ -27,12 +27,13 @@ class RestUserBaseController extends RestBaseController
     /**
      * 用户取消收藏
      */
-    public function deleteCollect()
+    public function delCollect($data)
     {
-        $id                = $this->request->param("id", 0, "intval");
-        $userFavoriteModel = new UserFavoriteModel();
-        $data              = $userFavoriteModel->deleteFavorite($id);
-        if ($data) {
+        $where['object_id'] = $data['id'];
+        $where['table_name']      = $data['table'];
+        $where['user_id'] = $this->userId;
+        $data             = Db::name("UserFavorite")->where($where)->delete();
+        if ($data !== false) {
             $this->success("取消收藏成功！");
         } else {
             $this->error("取消收藏失败！");
