@@ -113,7 +113,7 @@ class CategoryModel extends Model
             $item['checked']        = in_array($item['id'], $currentIds) ? "checked" : "";
             $item['url']            = cmf_url('portal/List/index', ['id' => $item['id']]);
             $item['str_action']     = '';
-            if (!in_array($item['type'], [11])) $item['str_action']     .= '<a href="' . url("Category/add", ["parent" => $item['id'],"type" => $item['type']]) . '">添加子分类</a>  ';
+            $item['str_action']     .= '<a href="' . url("Category/add", ["parent" => $item['id'],"type" => $item['type']]) . '">添加子分类</a>  ';
             $item['str_action']     .= '<a href="' . url("Category/edit", ["id" => $item['id']]) . '">' . lang('EDIT') . '</a>  <a class="js-ajax-delete" href="' . url("Category/delete", ["id" => $item['id']]) . '">' . lang('DELETE') . '</a> ';
             if ($item['status']) {
                 $item['str_action'] .= '<a class="js-ajax-dialog-btn" data-msg="您确定隐藏此分类吗" href="' . url('Category/toggle', ['ids' => $item['id'], 'hide' => 1]) . '">隐藏</a>';

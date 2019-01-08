@@ -12,6 +12,7 @@ namespace app\admin\controller;
 
 use app\admin\model\ExamItemModel;
 use app\admin\model\ExamModel;
+use app\admin\model\SchoolModel;
 use cmf\controller\AdminBaseController;
 use app\admin\model\CategoryModel;
 use think\Cookie;
@@ -89,8 +90,21 @@ class ExamController extends AdminBaseController
         $data['cname'] = $category_info['name'];
         $data['create_uid'] = session('ADMIN_ID');
         $data['create_name'] = session('name');
-        $result = $ExamModel->allowField(true)->save($data);
-        if ($result === false) {
+
+        Db::startTrans();
+        try{
+            $ExamModel->allowField(true)->isUpdate(false)->save($data);
+            $exam_id = $ExamModel->id;
+            $school_ids = explode(',', $data['school_id']);
+            $school_data = array_map(function($id) use ($exam_id){
+                return ['school_id'=>$id, 'exam_id'=>$exam_id];
+            }, $school_ids);
+            Db::name('exam_school_relation')->insertAll($school_data);
+            // 提交事务
+            Db::commit();
+        } catch (\Exception $e) {
+            // 回滚事务
+            Db::rollback();
             $this->error('添加失败!');
         }
         $this->success('添加成功!', url('Exam/index'));
@@ -107,8 +121,13 @@ class ExamController extends AdminBaseController
         $CategoryModel = new CategoryModel();
         $categoryTree = $CategoryModel->categoryTree($info['cid'], '', $this->type);
         $this->assign('category_tree', $categoryTree);
-        $college = $CategoryModel->field(['id','name'])->where(['type'=>11, 'status'=>1])->select()->toArray();
-        $this->assign('college', $college);
+        $school_info = Db::name('exam_school_relation a')
+            ->join('__SCHOOL__ b', 'a.school_id=b.id')
+            ->field(['b.id','b.name'])
+            ->where(['exam_id'=>$id])
+            ->select()->toArray();
+        $this->assign('school_id', array_column($school_info, 'id'));
+        $this->assign('school_name', array_column($school_info, 'name'));
         $this->assign($info);
         return $this->fetch();
     }
@@ -130,9 +149,20 @@ class ExamController extends AdminBaseController
             if ($result !== true) {
                 $this->error($result);
             }
-            $result = $ExamModel->allowField(true)->isUpdate(true)->save($data);
-            if ($result === false) {
-                $this->error('编辑失败!');
+            Db::startTrans();
+            try{
+                $result = $ExamModel->allowField(true)->isUpdate(true)->save($data);
+                $exam_id = $data['id'];
+                Db::name('exam_school_relation')->where(['exam_id'=>$exam_id])->delete();
+                $ins_data = array_map(function($id) use ($exam_id){
+                    return ['school_id'=>$id, 'exam_id'=>$exam_id];
+                }, explode(',', $data['school_id']));
+                Db::name('exam_school_relation')->insertAll($ins_data);
+                Db::commit();
+            } catch (\Exception $e) {
+                // 回滚事务
+                Db::rollback();
+                $this->error('添加失败!');
             }
             $this->success('编辑成功!', url('Exam/index'));
 
@@ -353,29 +383,18 @@ class ExamController extends AdminBaseController
 
     public function select()
     {
-        //todo
         $ids                 = $this->request->param('ids');
         $selectedIds         = explode(',', $ids);
 
-        $tpl = <<<tpl
-<tr class='data-item-tr'>
-    <td>
-        <input type='checkbox' class='js-check' data-yid='js-check-y' data-xid='js-check-x' name='ids[]'
-               value='\$id' data-name='\$name' \$checked>
-    </td>
-    <td>\$id</td>
-    <td>\$spacer \$name</td>
-</tr>
-tpl;
-
-        $categoryTree = CategoryModel::instance()->categoryTableTree($selectedIds, $tpl, 11);
-
-        $where      = ['delete_time' => 0, 'type'=>11];
-        $categories = CategoryModel::instance()->where($where)->select();
-
-        $this->assign('categories', $categories);
-        $this->assign('selectedIds', $selectedIds);
-        $this->assign('categories_tree', $categoryTree);
+        $list = SchoolModel::instance()->field(['id','name'])->where(['status'=>1])->order(['list_order'=>'asc'])->select()->toArray();
+        foreach ($list as &$item) {
+            $item['check'] = '';
+            if (in_array($item['id'], $selectedIds)) {
+                $item['check'] = 'checked';
+            }
+        }
+        unset($item);
+        $this->assign('list', $list);
         return $this->fetch('category/select');
     }
 }

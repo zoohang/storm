@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-01 23:54:56
+Date: 2019-01-09 00:42:17
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -36,7 +36,7 @@ CREATE TABLE `st_admin_menu` (
   KEY `status` (`status`),
   KEY `parent_id` (`parent_id`),
   KEY `controller` (`controller`)
-) ENGINE=InnoDB AUTO_INCREMENT=181 DEFAULT CHARSET=utf8mb4 COMMENT='后台菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=182 DEFAULT CHARSET=utf8mb4 COMMENT='后台菜单表';
 
 -- ----------------------------
 -- Records of st_admin_menu
@@ -215,6 +215,7 @@ INSERT INTO `st_admin_menu` VALUES ('177', '175', '1', '1', '1', 'admin', 'Categ
 INSERT INTO `st_admin_menu` VALUES ('178', '175', '1', '1', '3', 'admin', 'Course', 'index', '', '在线课堂', '', '');
 INSERT INTO `st_admin_menu` VALUES ('179', '175', '1', '1', '10', 'admin', 'Course', 'teacher', '', '课题讲师列表', '', '');
 INSERT INTO `st_admin_menu` VALUES ('180', '175', '1', '1', '10000', 'Admin', 'daka', 'index', '', '打卡', '', '');
+INSERT INTO `st_admin_menu` VALUES ('181', '175', '1', '1', '10000', 'admin', 'school', 'index', '', '学校列表', '', '');
 
 -- ----------------------------
 -- Table structure for st_asset
@@ -235,7 +236,7 @@ CREATE TABLE `st_asset` (
   `suffix` varchar(10) NOT NULL DEFAULT '' COMMENT '文件后缀名,不包括点',
   `more` text COMMENT '其它详细信息,JSON格式',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COMMENT='资源表';
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COMMENT='资源表';
 
 -- ----------------------------
 -- Records of st_asset
@@ -282,6 +283,11 @@ INSERT INTO `st_asset` VALUES ('39', '1', '302359', '1546247284', '1', '0', '1d0
 INSERT INTO `st_asset` VALUES ('40', '1', '4440', '1546247351', '1', '0', 'a6965c4c90ed0c8fa770ced404b78e568fa0f4b9fcc2b3ffeb3c2f5c62c70e4d', '3d0fd2242cf6c22f60b7d350a1f2af6b.jpg', 'admin/20181231/1e1c27236205ece3163481ccf28f2a31.jpg', 'a6965c4c90ed0c8fa770ced404b78e56', '5c561c43897eb88aaefafd874c32ec224cbfd5e4', 'jpg', null);
 INSERT INTO `st_asset` VALUES ('41', '1', '4479', '1546247440', '1', '0', 'c3258116052216699931db020b3c48e9fab5eba5c9a722760ef4ca470181dfc4', '3f7e6a92169817e1bd736895062d7b58.jpg', 'admin/20181231/2e8406f7a5efb8d0631d849920a09eb1.jpg', 'c3258116052216699931db020b3c48e9', '5ff0282ec7f74cfad3c7ac8f3c4991dbbc70a477', 'jpg', null);
 INSERT INTO `st_asset` VALUES ('42', '1', '5110', '1546247450', '1', '0', 'f1dc9c62a1c9bb76d453cbb39e1a2b10b06e9a67ddc2f0f5417a40712a7e2fb5', '1ad2479990bfd5848520bd01ba53063d.jpg', 'admin/20181231/add1b6feb250f815ca828927806bf621.jpg', 'f1dc9c62a1c9bb76d453cbb39e1a2b10', 'c0c1840c3182907792edf329311d245edc77d3a0', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('43', '1', '11714', '1546525405', '1', '0', '97220b11b874824c04e57c254b206edb3467de06ddab7ffd5bedfdcbf34482bc', '技术团队事务跟踪管理-20180914.xlsx', 'admin/20190103/ca0dd15e571ec7b3b48562f1e574a6f5.xlsx', '97220b11b874824c04e57c254b206edb', 'f4b6be3d4fdbe5c4cf2d1196d7756e78549546ea', 'xlsx', null);
+INSERT INTO `st_asset` VALUES ('44', '1', '233685', '1546957213', '1', '0', '3c4b66eed204bdfee39428b418d09560bf47577e8c0d26a015a3119238ead090', 'ff8e07dfd0ca9174abf80774ea75a9fe.jpg', 'admin/20190108/514cc2a5debf2d4acdfc51b3381b46a9.jpg', '3c4b66eed204bdfee39428b418d09560', 'df2eba04044182f69ff8945c87c99c16c04a9388', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('45', '1', '261387', '1546958708', '1', '0', 'b6b6131485d40d048189f7cc197e7be0a0ff2cb53cfc14a9b1e8bebda2fc8f38', 'image.png', 'admin/20190108/4371be76e8b9136b12c5869382b0ae97.png', 'b6b6131485d40d048189f7cc197e7be0', 'cdad6a43810d7abae9402be6567a885617b41f1d', 'png', null);
+INSERT INTO `st_asset` VALUES ('46', '1', '1513783', '1546958732', '1', '0', '168aacf4eaa0ba062f196aa6678752cc54fa8b294a6908a4e651ee6dc8d8eccb', 'image.png', 'admin/20190108/67a6f3ac1aebf8894d960b37d91623ba.png', '168aacf4eaa0ba062f196aa6678752cc', 'bc0b3005435ba2c87fa5a3c534842fd9c0ba60a8', 'png', null);
+INSERT INTO `st_asset` VALUES ('47', '1', '64453', '1546965610', '1', '0', 'f2dab1e47560b05abc76bd3bb944e29bd8f069268e72d9c993c5f306efad7263', 'cbbcbcc04843982effa8ae171416212e.jpg', 'admin/20190109/b6684c15b5fec63956534d4ba5ff5c86.jpg', 'f2dab1e47560b05abc76bd3bb944e29b', '03d781d6f163a43bf822b1289464c41f50c95a58', 'jpg', null);
 
 -- ----------------------------
 -- Table structure for st_auth_access
@@ -317,7 +323,7 @@ CREATE TABLE `st_auth_rule` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`) USING BTREE,
   KEY `module` (`app`,`status`,`type`)
-) ENGINE=InnoDB AUTO_INCREMENT=181 DEFAULT CHARSET=utf8mb4 COMMENT='权限规则表';
+) ENGINE=InnoDB AUTO_INCREMENT=182 DEFAULT CHARSET=utf8mb4 COMMENT='权限规则表';
 
 -- ----------------------------
 -- Records of st_auth_rule
@@ -496,6 +502,7 @@ INSERT INTO `st_auth_rule` VALUES ('177', '1', 'admin', 'admin_url', 'admin/Cate
 INSERT INTO `st_auth_rule` VALUES ('178', '1', 'admin', 'admin_url', 'admin/Course/index', '', '在线课堂', '');
 INSERT INTO `st_auth_rule` VALUES ('179', '1', 'admin', 'admin_url', 'admin/Course/teacher', '', '课题讲师列表', '');
 INSERT INTO `st_auth_rule` VALUES ('180', '1', 'Admin', 'admin_url', 'Admin/daka/index', '', '打卡', '');
+INSERT INTO `st_auth_rule` VALUES ('181', '1', 'admin', 'admin_url', 'admin/school/index', '', '学校列表', '');
 
 -- ----------------------------
 -- Table structure for st_category
@@ -729,8 +736,8 @@ INSERT INTO `st_daka` VALUES ('5', '13', '打卡分类一一', '1', '1', '1', '1
 INSERT INTO `st_daka` VALUES ('6', '13', '打卡分类一一', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546246121', '1546246121', '0', '0', '0', '111111111111111111111111', 'admin/20181231/71aababa309a3ff75716677e802041a9.jpg', '&lt;p&gt;222222222222222222222222&lt;/p&gt;', null, '100', '\"{\\\"audio\\\":\\\"\\\",\\\"video\\\":\\\"\\\",\\\"thumbnail\\\":\\\"admin/20181231/71aababa309a3ff75716677e802041a9.jpg\\\"}\"');
 INSERT INTO `st_daka` VALUES ('7', '13', '打卡分类一一', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546246446', '1546246686', '0', '0', '0', '3333333333333333', '', '\n&lt;p&gt;222222222222222222222222&lt;/p&gt;\n&lt;p&gt;3333333333333333333333333333&lt;/p&gt;\n', null, '100', '{\"audio\":\"\",\"video\":\"\",\"thumbnail\":\"\"}');
 INSERT INTO `st_daka` VALUES ('8', '14', '打卡下班咯', '0', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546247015', '1546247355', '1546246920', '1546246920', '0', '今天是2018年最后一天咯', 'admin/20181231/5340d43f7b1eecdb25a81e8fe4d15d3b.jpg', '&lt;p&gt;测试获取最后的新增id 获取失败了1&lt;/p&gt;', null, '5', '{\"audio\":\"\",\"video\":\"\",\"photos\":[{\"url\":\"admin/20181231/3c12b2c9c864ffd44f7e9ef20918d00d.jpg\",\"name\":\"2f6b374950d828643a98260306c33d14.jpg\"},{\"url\":\"admin/20181231/1e1c27236205ece3163481ccf28f2a31.jpg\",\"name\":\"3d0fd2242cf6c22f60b7d350a1f2af6b.jpg\"}]}');
-INSERT INTO `st_daka` VALUES ('9', '14', '打卡下班咯', '8', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546247456', '1546247613', '0', '0', '0', '第一章', 'admin/20181231/2e8406f7a5efb8d0631d849920a09eb1.jpg', '\n&lt;p&gt;第一章第一章&lt;/p&gt;\n&lt;p style=&quot;white-space: normal;&quot;&gt;第一章第一章&lt;/p&gt;\n&lt;p&gt;&lt;br&gt;&lt;/p&gt;\n', null, '2', '{\"audio\":\"\",\"video\":\"\"}');
-INSERT INTO `st_daka` VALUES ('10', '14', '打卡下班咯', '8', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546247633', '1546247675', '0', '0', '0', '第二章', 'admin/20181231/71aababa309a3ff75716677e802041a9.jpg', '&lt;p&gt;第二章第二章第二章第二章&lt;/p&gt;', null, '3', '{\"audio\":\"\",\"video\":\"\"}');
+INSERT INTO `st_daka` VALUES ('9', '14', '打卡下班咯', '8', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546247456', '1546525410', '1546524095', '0', '0', '第一章', 'admin/20181231/2e8406f7a5efb8d0631d849920a09eb1.jpg', '\n&lt;p&gt;第一章第一章&lt;/p&gt;\n&lt;p style=&quot;white-space: normal;&quot;&gt;第一章第一章&lt;/p&gt;\n&lt;p&gt;&lt;br&gt;&lt;/p&gt;\n', null, '2', '{\"files\":[{\"url\":\"admin/20190103/ca0dd15e571ec7b3b48562f1e574a6f5.xlsx\",\"name\":\"技术团队事务跟踪管理-20180914.xlsx\"}]}');
+INSERT INTO `st_daka` VALUES ('10', '14', '打卡下班咯', '8', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546247633', '1546247675', '1546524095', '0', '0', '第二章', 'admin/20181231/71aababa309a3ff75716677e802041a9.jpg', '&lt;p&gt;第二章第二章第二章第二章&lt;/p&gt;', null, '3', '{\"audio\":\"\",\"video\":\"\"}');
 
 -- ----------------------------
 -- Table structure for st_exam
@@ -741,8 +748,6 @@ CREATE TABLE `st_exam` (
   `cid` int(11) NOT NULL DEFAULT '0' COMMENT '分类id',
   `cname` varchar(10) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '分类名称',
   `property` tinyint(1) NOT NULL DEFAULT '0' COMMENT '性质 1-真题 2-模拟 3-其他',
-  `vendor_id` int(11) NOT NULL DEFAULT '0' COMMENT '来源id',
-  `vendor_name` varchar(32) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '来源名称',
   `vendor_year` varchar(10) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '来源年代',
   `create_uid` int(11) NOT NULL DEFAULT '0' COMMENT '编辑id',
   `create_name` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '编辑名称',
@@ -759,13 +764,15 @@ CREATE TABLE `st_exam` (
   `delete_time` int(10) NOT NULL DEFAULT '0' COMMENT '删除时间',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态;1:已发布;0:未发布;-1:删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='试卷表[刷题]';
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COMMENT='试卷表[刷题]';
 
 -- ----------------------------
 -- Records of st_exam
 -- ----------------------------
-INSERT INTO `st_exam` VALUES ('1', '5', '建筑', '1', '3', '重大', '2018', '1', 'admin', '重大密卷', '三年模拟五年高考', '三年模拟五年高考, 你怕不怕?', 'admin/20181216/f966c57f8fb54b31b1c8307a6b503273.jpg', '0', '1', '1', '1545891487', '1541262925', '1544972383', '1544933425', '1');
-INSERT INTO `st_exam` VALUES ('2', '6', '规划', '1', '3', '重大', '2008', '1', 'admin', '西南大学2009研究生真题', '西南大学2009研究生真题1', '西南大学2009研究生真题211', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '0', '1', '1', '1544933431', '1541602937', '1541606440', '1544933425', '1');
+INSERT INTO `st_exam` VALUES ('1', '5', '建筑', '1', '2018', '1', 'admin', '重大密卷', '三年模拟五年高考', '三年模拟五年高考, 你怕不怕?', 'admin/20181216/f966c57f8fb54b31b1c8307a6b503273.jpg', '0', '1', '1', '1545891487', '1541262925', '1544972383', '1544933425', '1');
+INSERT INTO `st_exam` VALUES ('2', '6', '规划', '1', '2008', '1', 'admin', '西南大学2009研究生真题', '西南大学2009研究生真题1', '西南大学2009研究生真题211', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '0', '1', '1', '1544933431', '1541602937', '1541606440', '1544933425', '1');
+INSERT INTO `st_exam` VALUES ('14', '5', '建筑', '2', '2011', '1', 'admin', '2008年黄冈密卷高考题', '2008年黄冈密卷高考题', '2008年黄冈密卷高考题\r\n2008年黄冈密卷高考题', '', '0', '0', '0', '0', '1546963893', '1546963893', '0', '0');
+INSERT INTO `st_exam` VALUES ('15', '6', '规划', '2', '2018', '1', 'admin', '2008年黄冈密卷高考题111', '2008年黄冈密卷高考题222', '2008年黄冈密卷高考题333\r\n2008年黄冈密卷高考题444', 'admin/20190109/b6684c15b5fec63956534d4ba5ff5c86.jpg', '0', '0', '0', '0', '1546964165', '1546965712', '0', '0');
 
 -- ----------------------------
 -- Table structure for st_exam_item
@@ -804,6 +811,24 @@ INSERT INTO `st_exam_item` VALUES ('10', '2', '2', '3', '', '2', '22', '2', '154
 INSERT INTO `st_exam_item` VALUES ('11', '1', '111111', '1', '{\"A\":\"1\",\"B\":\"2\",\"C\":\"3\",\"D\":\"4\"}', 'AB', '22', '33', '1544450805', '1544450805', '100', '1');
 
 -- ----------------------------
+-- Table structure for st_exam_school_relation
+-- ----------------------------
+DROP TABLE IF EXISTS `st_exam_school_relation`;
+CREATE TABLE `st_exam_school_relation` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `school_id` int(11) NOT NULL DEFAULT '0' COMMENT '学校id',
+  `exam_id` int(11) NOT NULL DEFAULT '0' COMMENT '试卷id(刷题题目id)',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='学校-刷题-关联表';
+
+-- ----------------------------
+-- Records of st_exam_school_relation
+-- ----------------------------
+INSERT INTO `st_exam_school_relation` VALUES ('1', '1', '14');
+INSERT INTO `st_exam_school_relation` VALUES ('2', '2', '14');
+INSERT INTO `st_exam_school_relation` VALUES ('9', '2', '15');
+
+-- ----------------------------
 -- Table structure for st_exam_userlog
 -- ----------------------------
 DROP TABLE IF EXISTS `st_exam_userlog`;
@@ -811,6 +836,11 @@ CREATE TABLE `st_exam_userlog` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
   `exam_id` int(11) NOT NULL DEFAULT '0' COMMENT '试卷id',
+  `title` varchar(255) NOT NULL DEFAULT '' COMMENT '题目名称',
+  `subtitle` varchar(255) NOT NULL DEFAULT '' COMMENT '副标题',
+  `property` tinyint(1) NOT NULL DEFAULT '0' COMMENT '题目类型',
+  `create_time` int(10) NOT NULL DEFAULT '0',
+  `update_time` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户的刷题记录';
 
@@ -826,8 +856,9 @@ CREATE TABLE `st_exam_wronglist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
   `exam_id` int(11) NOT NULL DEFAULT '0' COMMENT '试卷id',
-  `exam_name` varchar(255) NOT NULL DEFAULT '' COMMENT '试卷名称',
+  `exam_name` varchar(1024) NOT NULL DEFAULT '' COMMENT '试卷名称',
   `exam_item_id` int(11) NOT NULL,
+  `exam_item_name` varchar(1024) NOT NULL,
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '题目类型 1-选择题 2-填空题 3-论述题',
   `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '添加时间',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态 1-正常 0-已删除',
@@ -1241,7 +1272,7 @@ CREATE TABLE `st_recycle_bin` (
   `name` varchar(255) DEFAULT '' COMMENT '删除内容名称',
   `user_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT=' 回收站';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT=' 回收站';
 
 -- ----------------------------
 -- Records of st_recycle_bin
@@ -1306,6 +1337,28 @@ CREATE TABLE `st_route` (
 -- ----------------------------
 -- Records of st_route
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for st_school
+-- ----------------------------
+DROP TABLE IF EXISTS `st_school`;
+CREATE TABLE `st_school` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '分类id',
+  `name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '分类名称',
+  `alias` varchar(200) NOT NULL DEFAULT '' COMMENT '别名',
+  `description` text COMMENT '分类描述',
+  `image` varchar(200) NOT NULL DEFAULT '' COMMENT '图片',
+  `status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '状态,1:发布,0:不发布',
+  `list_order` float NOT NULL DEFAULT '10000' COMMENT '排序',
+  `delete_time` int(10) NOT NULL DEFAULT '0' COMMENT '删除时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='学校表';
+
+-- ----------------------------
+-- Records of st_school
+-- ----------------------------
+INSERT INTO `st_school` VALUES ('1', '重庆大学', '重大', '重庆大学（Chongqing University），简称重大（CQU），位于中央直辖市重庆，是中共中央直管、教育部直属的副部级全国重点大学，由教育部和重庆市共同建设。重大早在民国时期就是中国最杰出的国立大学之一，建国后以“建筑老八校”闻名。现是国家“双一流”、“211工程”和”985工程”首批重点建设的高水平研究型综合性大学；“卓越大学联盟”、“中俄工科大学联盟”成员高校；入选“2011计划”、“111计划”、“卓越工程师教育培养计划”、“卓越法律人才教育培养计划”、“海外高层次人才引进计划”；设有研究生院和国家大学科技园。\r\n    1929年刘湘创办重庆大学；1935年批准为省立大学；抗战期间和西迁的中央大学合作办学。1942年更名为国立重庆大学，成为有文、理、工、商、法、医6个学院的国立综合性大学，1960年成为全国重点大学。改革开放后，学校大力发展人文、经管、艺术、教育等学科专业。2000年，原重庆大学、重庆建筑大学、重庆建筑高等专科学校三校合并组建成新重庆大学，使得一直以机电、能源、材料、信息、生物、经管等学科优势著称的重庆大学，在建筑、土木、环保等学科方面也处于全国较高水平。\r\n    截至2018年9月，重大设36个学院，本科专业96个，覆盖理、工、经、管、法、文、史、哲、教育、艺术10个学科门类。在校生47000余人，其中研究生19000余人，本科生25000余人，留学生1800余人。校园占地面积5200余亩，有A、B、C、虎溪四个校区，校舍建筑面积近160万平方米。 [1]', 'admin/20190108/67a6f3ac1aebf8894d960b37d91623ba.png', '1', '10000', '0');
+INSERT INTO `st_school` VALUES ('2', '西南大学', '西大', '西南大学（Southwest University）简称西大，坐落于重庆市，是中华人民共和国教育部直属高校，由教育部、农业部与重庆市人民政府共建，是“双一流”世界一流学科建设高校，位列国家“211工程” 、“985工程优势学科创新平台”，入选“111计划”、“2011计划”、卓越农林人才教育培养计划、卓越教师培养计划、国家建设高水平大学公派研究生项目，是开办师范生免费教育的7所高校之一，全国自主选拔录取改革试点高校，中国政府奖学金来华留学生接收院校之一，重庆市大学联盟创始学校之一。\r\n西南大学由原教育部直属西南师范大学与原农业部直属西南农业大学于2005年合并而成。原两校毗邻而建，同根同源，均溯源于1906年建立的川东师范学堂。1936年更名为四川省立教育学院。1950年，四川省立教育学院师范、农学相关系科分别与1940年创办的国立女子师范学院、1946年创办的私立相辉文法学院等合并建立西南师范学院、西南农学院。1985年，两校分别更名为西南师范大学、西南农业大学。此后，重庆轻工业职工大学、四川畜牧兽医学院、中国农业科学院柑桔研究所相继并入。 [1-2] \r\n截至2018年12月，学校占地9000余亩，建有北碚校区、荣昌校区、西塔学院；拥有11个学部，3个附属医院，下设36个学院，共有105个本科专业；有22个博士后科研流动站、28个一级学科博士学位授权点、51个一级学科硕士学位授权点；专任教师2968人；在校学生5万余人，其中普通本科生近4万人，硕士、博士研究生11000余人，留学生2000余人。 [1]  [3]', 'admin/20190108/4371be76e8b9136b12c5869382b0ae97.png', '1', '10000', '0');
 
 -- ----------------------------
 -- Table structure for st_slide
@@ -1633,7 +1686,8 @@ CREATE TABLE `st_user_token` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `token` varchar(64) NOT NULL DEFAULT '' COMMENT 'token',
   `device_type` varchar(10) NOT NULL DEFAULT '' COMMENT '设备类型;mobile,android,iphone,ipad,web,pc,mac,wxapp',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `token` (`token`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='用户客户端登录 token 表';
 
 -- ----------------------------

@@ -74,6 +74,7 @@ return array (
   'ADMIN_ROUTE_LISTORDER' => '路由规则排序',
   'ADMIN_ROUTE_OPEN' => '路由规则启用',
   'ADMIN_ROUTE_SELECT' => '选择URL',
+  'ADMIN_SCHOOL_INDEX' => '学校列表',
   'ADMIN_SETTING_CLEARCACHE' => '清除缓存',
   'ADMIN_SETTING_DEFAULT' => '设置',
   'ADMIN_SETTING_PASSWORD' => '密码修改',

@@ -25,40 +25,32 @@
                                 </select>
                             </div>
                         </div>
-
+						<div class="form-group">
+							<label for="input-parent"><span class="form-required">*</span>关联学校</label>
+							<div>
+								<input class="form-control" type="text" style="width:400px;" required
+									   value="{:implode(' ',[])}"
+									   placeholder="请选择学校" onclick="doSelectCategory();" id="js-categories-name-input"
+									   readonly/>
+								<input class="form-control" type="hidden" value=""
+									   name="school_id"
+									   id="js-categories-id-input"/>
+							</div>
+						</div>
                         <div class="form-group">
-                            <label for="input-parent"><span class="form-required">*</span>刷题类型</label>
-                            <input type="hidden" name="property" value="1" alt="性质 1-真题 2-模拟 3-其他">
-                            <ul id="myTab" class="nav nav-tabs">
-                                <li class="tabs-switch active">
-                                    <a href="#real_test" data-toggle="tab">
-                                        真题
-                                    </a>
-                                </li>
-                                <li class="tabs-switch"><a href="#simulation_test" data-toggle="tab">模拟</a></li>
-                            </ul>
-                            <div id="myTabContent" class="tab-content">
-                                <div class="tab-pane fade in active" id="real_test">
-									&nbsp;&nbsp;&nbsp;&nbsp;<code>真题需要选择学校和出版年份</code>
-									<blockquote>
-										学校:&nbsp;&nbsp;
-										<select name="vendor_id" id="vendor_id" class="format-item-container" style="width: 100px;">
-											<foreach name="college" item="item">
-											<option value="{$item.id}">{$item.name}</option>
-                                            </foreach>
-										</select>&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <input type="hidden" name="vendor_name" value="{$college[0]['name']}">
-										年份:&nbsp;&nbsp;
-										<input type="number" class="format-item-container" name="vendor_year" style="width: 70px;"
-											   value="2018" placeholder="年份">
-									</blockquote>
-                                </div>
-                                <div class="tab-pane fade" id="simulation_test">
-                                    &nbsp;&nbsp;&nbsp;&nbsp;<code>模拟题目: 不用填写学校和年份</code>
-                                </div>
+                            <label for="input-name"><span class="form-required">*</span>刷题类型</label>
+                            <div>
+                                <input type="radio" name="property" value="1" checked>真题
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="radio" name="property" value="2">模拟
                             </div>
                         </div>
-
+                        <div class="form-group">
+                            <label for="input-name"><span class="form-required">*</span>年份</label>
+                            <div>
+                                <input type="number" class="format-item-container" name="vendor_year" style="width: 70px;" value="2018"  placeholder="年份">
+                            </div>
+                        </div>
 						<div class="form-group">
 							<label for="input-name"><span class="form-required">*</span>试卷名称</label>
 							<div>
@@ -103,14 +95,27 @@
 </div>
 <script type="text/javascript" src="__STATIC__/js/admin.js"></script>
 <script>
-    $('.tabs-switch').on('click', function () {
-       var idx = $(this).index();
-       $('input[name=property]').val((parseInt(idx)+1));
-    });
-    $('#vendor_id').on('change',function () {
-        var vendor_name = $(this).find("option:selected").text();
-        $('input[name=vendor_name]').val(vendor_name);
-    })
+    function doSelectCategory() {
+        var selectedCategoriesId = $('#js-categories-id-input').val();
+        openIframeLayer("{:url('exam/select')}?ids=" + selectedCategoriesId, '请选择学校', {
+            area: ['700px', '400px'],
+            btn: ['确定', '取消'],
+            yes: function (index, layero) {
+                //do something
+
+                var iframeWin          = window[layero.find('iframe')[0]['name']];
+                var selectedCategories = iframeWin.confirm();
+                if (selectedCategories.selectedCategoriesId.length == 0) {
+                    layer.msg('请选择学校');
+                    return;
+                }
+                $('#js-categories-id-input').val(selectedCategories.selectedCategoriesId.join(','));
+                $('#js-categories-name-input').val(selectedCategories.selectedCategoriesName.join(' '));
+                //console.log(layer.getFrameIndex(index));
+                layer.close(index); //如果设定了yes回调，需进行手工关闭
+            }
+        });
+    }
 </script>
 </body>
 </html>

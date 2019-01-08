@@ -16,21 +16,16 @@
             </tr>
             </thead>
             <tbody>
-            <!--
-            <foreach name="categories" item="vo">
-                <tr>
-                    <td>
-                        <php>$checked = in_array($vo['id'],$selectedIds)?'checked':'';</php>
-                        <input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
-                               value="{$vo.id}" data-name="{$vo.name}" {$checked}>
-                    </td>
-                    <td>{$vo.id}</td>
-                    <td>{$vo.name}</td>
-                    <td>{$vo.description}</td>
-                </tr>
+            <foreach name="list" item="item">
+            <tr class='data-item-tr'>
+                <td>
+                    <input type='checkbox' class='js-check' data-yid='js-check-y' data-xid='js-check-x' name='ids[]'
+                           value='{$item.id}' data-name='{$item.name}' {$item.check}>
+                </td>
+                <td>{$item.id}</td>
+                <td>{$item.name}</td>
+            </tr>
             </foreach>
-            -->
-            {$categories_tree}
             </tbody>
         </table>
     </form>
