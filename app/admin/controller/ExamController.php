@@ -169,6 +169,63 @@ class ExamController extends AdminBaseController
         }
     }
 
+    public function section_list() {
+        $exam_id = $this->request->param('exam_id', 0, 'intval');
+        if (!$id) $this->error('请选择一套试卷');
+        $list = DB::name('exam_section')->where(['status'=>1, 'exam_id'=>$exam_id])->order()->select()->toArray();
+        if ($this->request->action() != strtolower(__FUNCTION__)) {
+            return $list;
+        } else {
+            $this->success('ok', $list);
+        }
+
+    }
+
+    public function section_edit() {
+        $exam_id = $this->request->param('exam_id', 0, 'intval');
+        if (!$exam_id) $this->error('请选择一套试卷');
+        $section_id = $this->request->param('section_id', 0, 'intval');
+        $info = [];
+        if ($section_id) {
+            $info = DB::name('exam_section')->where(['status'=>1, 'exam_id'=>$exam_id])->find();
+        }
+        $this->assign('info', $info);
+        return $this->fetch();
+    }
+
+    public function section_save() {
+        $exam_id = $this->request->param('exam_id', 0, 'intval');
+        if (!$exam_id) $this->error('请选择一套试卷');
+        $section_id = $this->request->param('section_id', 0, 'intval');
+        $data = $this->request->param();
+        if ($section_id) {
+            $res = DB::name('exam_section')->where(['id'=>$section_id])->update($data);
+        } else {
+            $res = DB::name('exam_section')->insert($data);
+        }
+        if ($res !== false) {
+            $this->success('编辑成功');
+        } else {
+            $this->error('编辑失败!');
+        }
+    }
+
+    public function section_delete() {
+        $section_id = $this->request->param('section_id', 0, 'intval');
+        if (!$section_id) $this->error('请选择一个章节');
+        $ExamItemModel = new ExamItemModel();
+        $count = $ExamItemModel->where()->count();
+        if ($count) {
+            $this->error('该分类下有题目, 请先清空题目在进行删除');
+        }
+        $res = DB::name('exam_section')->where(['id'=>$section_id])->update(['status'=>0, 'update_time'=>NOW_TIME]);
+        if ($res !== false) {
+            $this->success('删除成功!');
+        } else {
+            $this->error('删除失败!');
+        }
+    }
+
     /**
      * 详细题目列表
      */

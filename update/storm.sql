@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地连接
+Source Server         : localhost
 Source Server Version : 50553
-Source Host           : 127.0.0.1:3306
+Source Host           : localhost:3306
 Source Database       : storm
 
 Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-09 00:42:17
+Date: 2019-01-10 19:49:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -740,6 +740,34 @@ INSERT INTO `st_daka` VALUES ('9', '14', '打卡下班咯', '8', '1', '1', '1', 
 INSERT INTO `st_daka` VALUES ('10', '14', '打卡下班咯', '8', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546247633', '1546247675', '1546524095', '0', '0', '第二章', 'admin/20181231/71aababa309a3ff75716677e802041a9.jpg', '&lt;p&gt;第二章第二章第二章第二章&lt;/p&gt;', null, '3', '{\"audio\":\"\",\"video\":\"\"}');
 
 -- ----------------------------
+-- Table structure for st_daka_homework
+-- ----------------------------
+DROP TABLE IF EXISTS `st_daka_homework`;
+CREATE TABLE `st_daka_homework` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL DEFAULT '0',
+  `daka_parent_id` int(11) NOT NULL DEFAULT '0' COMMENT '打卡课程id',
+  `daka_id` int(11) NOT NULL DEFAULT '0' COMMENT '打卡项目id',
+  `images` text COMMENT '图集json',
+  `message` text COMMENT '留言,回复',
+  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `dtype` tinyint(1) NOT NULL DEFAULT '0' COMMENT '回复类型 1-用户上传作业 2-老师评图回复',
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='打卡-作业提交表';
+
+-- ----------------------------
+-- Records of st_daka_homework
+-- ----------------------------
+INSERT INTO `st_daka_homework` VALUES ('1', '2', '0', '1', '[1,2,3]', '111', '1546573318', '1546573318', '1');
+INSERT INTO `st_daka_homework` VALUES ('2', '2', '0', '1', '[1,2,3]', '111', '1546573345', '1546573345', '1');
+INSERT INTO `st_daka_homework` VALUES ('3', '2', '0', '1', '[1,2,3]', '111', '1546573400', '1546573400', '1');
+INSERT INTO `st_daka_homework` VALUES ('4', '2', '0', '1', '[1,2,3]', '111', '1546573573', '1546573573', '1');
+INSERT INTO `st_daka_homework` VALUES ('5', '2', '1', '7', '[\"1,23,4\"]', '222', '1546598766', '1546598766', '1');
+INSERT INTO `st_daka_homework` VALUES ('6', '2', '1', '7', '[\"1,23,4\"]', '222', '1546660016', '1546660016', '1');
+
+-- ----------------------------
 -- Table structure for st_exam
 -- ----------------------------
 DROP TABLE IF EXISTS `st_exam`;
@@ -769,10 +797,10 @@ CREATE TABLE `st_exam` (
 -- ----------------------------
 -- Records of st_exam
 -- ----------------------------
-INSERT INTO `st_exam` VALUES ('1', '5', '建筑', '1', '2018', '1', 'admin', '重大密卷', '三年模拟五年高考', '三年模拟五年高考, 你怕不怕?', 'admin/20181216/f966c57f8fb54b31b1c8307a6b503273.jpg', '0', '1', '1', '1545891487', '1541262925', '1544972383', '1544933425', '1');
-INSERT INTO `st_exam` VALUES ('2', '6', '规划', '1', '2008', '1', 'admin', '西南大学2009研究生真题', '西南大学2009研究生真题1', '西南大学2009研究生真题211', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '0', '1', '1', '1544933431', '1541602937', '1541606440', '1544933425', '1');
-INSERT INTO `st_exam` VALUES ('14', '5', '建筑', '2', '2011', '1', 'admin', '2008年黄冈密卷高考题', '2008年黄冈密卷高考题', '2008年黄冈密卷高考题\r\n2008年黄冈密卷高考题', '', '0', '0', '0', '0', '1546963893', '1546963893', '0', '0');
-INSERT INTO `st_exam` VALUES ('15', '6', '规划', '2', '2018', '1', 'admin', '2008年黄冈密卷高考题111', '2008年黄冈密卷高考题222', '2008年黄冈密卷高考题333\r\n2008年黄冈密卷高考题444', 'admin/20190109/b6684c15b5fec63956534d4ba5ff5c86.jpg', '0', '0', '0', '0', '1546964165', '1546965712', '0', '0');
+INSERT INTO `st_exam` VALUES ('1', '5', '建筑', '2', '2018', '1', 'admin', '重大密卷', '三年模拟五年高考', '三年模拟五年高考, 你怕不怕?', 'admin/20181216/f966c57f8fb54b31b1c8307a6b503273.jpg', '0', '1', '1', '1547111567', '1541262925', '1547111550', '1544933425', '1');
+INSERT INTO `st_exam` VALUES ('2', '6', '规划', '1', '2008', '1', 'admin', '西南大学2009研究生真题', '西南大学2009研究生真题1', '西南大学2009研究生真题211', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '0', '1', '1', '1547111567', '1541602937', '1547111562', '1544933425', '1');
+INSERT INTO `st_exam` VALUES ('14', '5', '建筑', '2', '2011', '1', 'admin', '2008年黄冈密卷高考题', '2008年黄冈密卷高考题', '2008年黄冈密卷高考题\r\n2008年黄冈密卷高考题', '', '0', '0', '0', '1547111567', '1546963893', '1546963893', '0', '1');
+INSERT INTO `st_exam` VALUES ('15', '6', '规划', '2', '2018', '1', 'admin', '2008年黄冈密卷高考题111', '2008年黄冈密卷高考题222', '2008年黄冈密卷高考题333\r\n2008年黄冈密卷高考题444', 'admin/20190109/b6684c15b5fec63956534d4ba5ff5c86.jpg', '0', '0', '0', '1547111567', '1546964165', '1546965712', '0', '1');
 
 -- ----------------------------
 -- Table structure for st_exam_item
@@ -819,7 +847,7 @@ CREATE TABLE `st_exam_school_relation` (
   `school_id` int(11) NOT NULL DEFAULT '0' COMMENT '学校id',
   `exam_id` int(11) NOT NULL DEFAULT '0' COMMENT '试卷id(刷题题目id)',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='学校-刷题-关联表';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COMMENT='学校-刷题-关联表';
 
 -- ----------------------------
 -- Records of st_exam_school_relation
@@ -827,6 +855,8 @@ CREATE TABLE `st_exam_school_relation` (
 INSERT INTO `st_exam_school_relation` VALUES ('1', '1', '14');
 INSERT INTO `st_exam_school_relation` VALUES ('2', '2', '14');
 INSERT INTO `st_exam_school_relation` VALUES ('9', '2', '15');
+INSERT INTO `st_exam_school_relation` VALUES ('11', '1', '1');
+INSERT INTO `st_exam_school_relation` VALUES ('12', '2', '2');
 
 -- ----------------------------
 -- Table structure for st_exam_userlog

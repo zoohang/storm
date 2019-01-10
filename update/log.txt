@@ -54,3 +54,28 @@ AppSecret(小程序密钥) 7005a84990e1f51ccc8e361cbcba12fc
 1.刷题首页上左右三块内容关系和加载顺序
 2.刷题-一套题-章节-题目类表 结果分析
 3.前端图片路径处理
+
+1.登录授权后需要短信验证码绑定手机号操作
+2.首页展示接口暂无
+3.在线课堂，课程详情接口暂无（与打卡相似）
+4.制图打卡展示接口需完善
+5.金币，权限操作暂无
+6.制图打卡作业详情需完善（学生回复，老师点评，任务书）
+7.上传作业需完善（配置oss）
+8.理论刷题专业分类，二级分类，书本列表（接口）暂无
+9.目录接口暂无
+10.搜索接口暂无
+11.我的 （在线课堂 制图打卡 理论刷题 线下课堂 接口暂无）
+12.我的消息接口暂无
+
+2019-1-10
+aliyun
+新建用户AccessKey AliyunOSSTokenGeneratorUser
+AccessKeyID ： LTAIU90nTl27cZNn
+AccessKeySecret ： 5uSTnQHh0O9VNlpVIvimmhqhy8aQGQ
+RoleArn: acs:ram::1316020317035687:role/aliyunosstokengeneratorrole
+RoleSessionName :  external-username
+DurationSeconds :  3600
+
+AccessKeyID ： LTAITi0IhXXUImZu
+AccessKeySecret ： ZAmO8sF2sYiSR9CXYSyrG8fjjZnl69
