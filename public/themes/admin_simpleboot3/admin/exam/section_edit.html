@@ -1,0 +1,69 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('Exam/index')}">试卷管理</a></li>
+        <li><a href="{:url('Exam/section_list',['exam_id'=>$params.exam_id])}">章节列表</a></li>
+        <li class="active"><a>编辑试卷</a></li>
+    </ul>
+    <div class="row margin-top-20">
+        <div class="col-md-2">
+            <div class="list-group">
+                <a class="list-group-item" href="#A" data-toggle="tab">章节属性</a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <form class="js-ajax-form" action="{:url('Exam/section_save')}" method="post">
+                <div class="tab-content">
+                    <div class="tab-pane active" id="A">
+                        <input type="hidden" name="exam_id" value="{$params.exam_id|default=$info['exam_id']}">
+                        <input type="hidden" name="section_id" value="{$params.section_id|default=$info['section_id']?:''}">
+                        <div class="form-group">
+                            <label for="input-name"><span class="form-required">*</span>章节序号</label>
+                            <div>
+                                <input type="text" class="form-control" id="input-idx" name="idx" value="{$info.idx|default=''}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-name"><span class="form-required">*</span>章节名称</label>
+                            <div>
+                                <input type="text" class="form-control" id="input-name" name="title" value="{$info.title|default=''}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary js-ajax-submit">保存</button>
+                    <a class="btn btn-default" href="{:url('Exam/index')}">返回</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script>
+    function doSelectCategory() {
+        var selectedCategoriesId = $('#js-categories-id-input').val();
+        openIframeLayer("{:url('exam/select')}?ids=" + selectedCategoriesId, '请选择学校', {
+            area: ['700px', '400px'],
+            btn: ['确定', '取消'],
+            yes: function (index, layero) {
+                //do something
+
+                var iframeWin          = window[layero.find('iframe')[0]['name']];
+                var selectedCategories = iframeWin.confirm();
+                if (selectedCategories.selectedCategoriesId.length == 0) {
+                    layer.msg('请选择学校');
+                    return;
+                }
+                $('#js-categories-id-input').val(selectedCategories.selectedCategoriesId.join(','));
+                $('#js-categories-name-input').val(selectedCategories.selectedCategoriesName.join(' '));
+                //console.log(layer.getFrameIndex(index));
+                layer.close(index); //如果设定了yes回调，需进行手工关闭
+            }
+        });
+    }
+</script>
+</body>
+</html>

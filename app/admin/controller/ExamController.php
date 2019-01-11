@@ -171,12 +171,13 @@ class ExamController extends AdminBaseController
 
     public function section_list() {
         $exam_id = $this->request->param('exam_id', 0, 'intval');
-        if (!$id) $this->error('请选择一套试卷');
-        $list = DB::name('exam_section')->where(['status'=>1, 'exam_id'=>$exam_id])->order()->select()->toArray();
+        if (!$exam_id) $this->error('请选择一套试卷');
+        $list = DB::name('exam_section')->where(['status'=>1, 'exam_id'=>$exam_id])->order(['list_order'=>'asc'])->select()->toArray();
         if ($this->request->action() != strtolower(__FUNCTION__)) {
             return $list;
         } else {
-            $this->success('ok', $list);
+            $this->assign('list', $list);
+            return $this->fetch();
         }
 
     }
@@ -187,7 +188,7 @@ class ExamController extends AdminBaseController
         $section_id = $this->request->param('section_id', 0, 'intval');
         $info = [];
         if ($section_id) {
-            $info = DB::name('exam_section')->where(['status'=>1, 'exam_id'=>$exam_id])->find();
+            $info = DB::name('exam_section')->where(['status'=>1, 'section_id'=>$section_id])->find();
         }
         $this->assign('info', $info);
         return $this->fetch();
@@ -199,12 +200,15 @@ class ExamController extends AdminBaseController
         $section_id = $this->request->param('section_id', 0, 'intval');
         $data = $this->request->param();
         if ($section_id) {
-            $res = DB::name('exam_section')->where(['id'=>$section_id])->update($data);
+            $data['update_time'] = NOW_TIME;
+            $res = DB::name('exam_section')->where(['section_id'=>$section_id])->update($data);
         } else {
-            $res = DB::name('exam_section')->insert($data);
+            $data['create_time'] = $data['update_time'] = NOW_TIME;
+            $res = DB::name('exam_section')->insertGetId($data);
+            $section_id = $res;
         }
         if ($res !== false) {
-            $this->success('编辑成功');
+            $this->success('编辑成功', url('exam/section_edit',['exam_id'=>$exam_id, 'section_id'=>$section_id]));
         } else {
             $this->error('编辑失败!');
         }
@@ -231,15 +235,28 @@ class ExamController extends AdminBaseController
      */
     public function detail() {
         $id = $this->request->param('id', 0, 'intval');
+        $section_id = $this->request->param('section_id', 0, 'intval');
         if (!$id) $this->error('请选择一套试卷');
-        $where = ['exam_id'=>$id, 'status'=>1];
-        $exams_items = DB::name('Exam_item')
+        $where = ['a.exam_id'=>$id, 'a.status'=>1];
+        if ($section_id) $where['a.section_id'] = $section_id;
+        $exams_items = DB::name('Exam_item a')
+            ->join('__EXAM_SECTION__ b', 'a.section_id=b.section_id', 'LEFT')
             ->where($where)
-            ->order("list_order ASC,id ASC")
+            ->field('b.*,a.*')
+            ->order("a.list_order ASC,a.id ASC")
             ->select();
         $this->assign('list' , $exams_items);
         //获取试卷信息
         $info = DB::name('exam')->where(['id'=>$id])->find();
+        //学校信息
+        $school = DB::name('exam_school_relation a')
+            ->join('__SCHOOL__ b','a.school_id=b.id')
+            ->where(['a.exam_id'=>$id])->select()->toArray();
+        //章节信息
+        $section = DB::name('exam_section')->where(['exam_id'=>$id])->select()->toArray();
+
+        $this->assign('section', $section ?: []);
+        $this->assign('school', $school ?: []);
         $this->assign('info', $info);
         return $this->fetch();
     }
@@ -385,6 +402,12 @@ class ExamController extends AdminBaseController
     public function listOrder()
     {
         parent::listOrders(Db::name('exam_item'));
+        $this->success("排序更新成功！", '');
+    }
+
+    public function listOrderSection()
+    {
+        parent::listOrders(Db::name('exam_section'));
         $this->success("排序更新成功！", '');
     }
 

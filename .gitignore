@@ -6,3 +6,6 @@
 composer.lock
 /data/runtime
 /simplewind/vendor
+/simplewind/extend/aliyun-php-sdk/config.json
+/update/log.txt
+/data/config/config.php

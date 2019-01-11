@@ -4,7 +4,7 @@
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
         <li><a href="{:url('Exam/index')}">试卷列表</a></li>
-        <li class="active"><a href="{:url('Exam/detail', ['id'=>$params['id']])}">题目列表</a></li>
+        <li class="active"><a href="{:url('Exam/section_list', ['exam_id'=>$params['exam_id']])}">章节列表</a></li>
         <li>
             <div class="dropdown">
                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -19,29 +19,9 @@
             </div>
         </li>
     </ul>
-    <form class="well form-inline margin-top-20" method="post" action="{:url('Exam/detail',['id'=>$params.id])}">
-        <strong class="lead">{$info.title}</strong>
-        <samll>
-            <foreach name="school" item="it">
-            <button type="button" class="btn btn-primary">{$it.name}</button>
-            </foreach>
-            <button type="button" class="btn btn-primary">{$info.vendor_year}</button>
-        </samll>
-        <h5>{$info.subtitle}</h5>
-        <blockquote>
-            <footer>{$info.description}</footer>
-        </blockquote>
-    </form>
-
-    <form method="post" class="js-ajax-form form-inline" action="{:url('Exam/listOrder')}">
+    <form method="post" class="js-ajax-form" action="{:url('Exam/listOrderSection')}">
         <div class="table-actions">
             <button type="submit" class="btn btn-primary btn-sm js-ajax-submit">{:lang('SORT')}</button>
-            <select name="" id="{$params.id}" class="form-control" style="width: 200px;" onchange="javascript:window.location.href='{:url(\'Exam/detail\')}?id='+this.id+'&section_id='+this.value">
-                <option value="">请选择章节</option>
-                <foreach name="section" item="item">
-                    <option value="{$item.section_id}" <if condition="isset($params['section_id']) && $params['section_id'] == $item['section_id']">selected</if>>{$item.idx}&nbsp;&nbsp;&nbsp;&nbsp;{$item.title}</option>
-                </foreach>
-            </select>
         </div>
         <table class="table table-hover table-bordered table-list">
             <thead>
@@ -50,11 +30,8 @@
                                              data-direction="x"
                                              data-checklist="js-check-x"></label></th>
                 <th width="50">排序</th>
-                <th width="50">ID</th>
-                <th>章节</th>
-                <th>类型</th>
-                <th>题目</th>
-                <th>答案</th>
+                <th>序号</th>
+                <th>名称</th>
                 <th width="200">操作</th>
             </tr>
             </thead>
@@ -63,17 +40,14 @@
                 <tr>
                     <td><input
                             type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x"
-                            name="ids[]" value="{$vo.id}"></td>
-                    <td><input name="list_orders[{$vo.id}]" type="text" size="3" value="{$vo.list_order}"
+                            name="ids[]" value="{$vo.section_id}"></td>
+                    <td><input name="list_orders[{$vo.section_id}]" type="text" size="3" value="{$vo.list_order}"
                                class="input-order"></td>
-                    <td>{$vo.id}</td>
-                    <td>{$vo.idx}&nbsp;&nbsp;&nbsp;&nbsp;{$vo.title}</td>
-                    <td>{$item_type[$vo['type']]}</td>
-                    <td>{$vo.item_title}</td>
-                    <td>{$vo.answer}</td>
+                    <td>{$vo.idx}</td>
+                    <td>{$vo.title}</td>
                     <td>
-                        <a alt="{:url('Exam/editItem',['item_id'=>$vo.id, 'exam_id'=>$vo.exam_id, 'item_type'=>$vo.type])}" class="js-categories-name-input" data-id="{$vo.id}" data-type="{$vo.type}">编辑</a>
-                        <a class="js-ajax-delete" href="{:url('Exam/delete_item',['id'=>$vo.id])}">删除</a>
+                        <a alt="{:url('Exam/section_edit',['exam_id'=>$vo.exam_id, 'section_id'=>$vo.section_id])}" class="js-categories-name-input" data-section_id="{$vo.section_id}">编辑</a>
+                        <a class="js-ajax-delete" href="{:url('Exam/section_delete',['section_id'=>$vo.section_id])}">删除</a>
                     </td>
                 </tr>
             </foreach>
@@ -86,11 +60,10 @@
 </div>
 <script src="__STATIC__/js/admin.js"></script>
 <script>
-    var exam_id = "{$params.id}";
+    var exam_id = "{$params.exam_id}";
     $('body').on('click', '.js-categories-name-input', function() {
-        var item_id = $(this).data('id');
-        var item_type = $(this).data('type');
-        openIframeLayer("{:url('Exam/editItem')}?item_id=" + item_id + '&item_type=' + item_type + '&exam_id=' + exam_id, '题目编辑', {
+        var section_id = $(this).data('section_id');
+        openIframeLayer("{:url('Exam/section_edit')}?section_id=" + section_id + '&exam_id=' + exam_id, '题目编辑', {
             area: ['1000px', '600px'],
             btn: ['确定', '取消'],
             yes: function (index, layero) {
