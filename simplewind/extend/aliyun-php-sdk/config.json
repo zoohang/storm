@@ -1,9 +1,0 @@
-{
-"AccessKeyID" : "LTAITi0IhXXUImZu",
-"AccessKeySecret" : "ZAmO8sF2sYiSR9CXYSyrG8fjjZnl69",
-"RoleArn" : "acs:ram::1316020317035687:role/aliyunosstokengeneratorrole",
-"BucketName" : "fengbaojy-static-resource",
-"Endpoint" : "oss-cn-shanghai.aliyuncs.com",
-"TokenExpireTime" : "900",
-"PolicyFile": "policy/all_policy.txt"
-}
