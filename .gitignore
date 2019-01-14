@@ -8,4 +8,5 @@ composer.lock
 /simplewind/vendor
 /simplewind/extend/aliyun-php-sdk/config.json
 /update/log.txt
-/data/config/config.php
+/data/conf/config.php
+/data/conf/database.php

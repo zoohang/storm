@@ -32,6 +32,7 @@ class ExamController extends RestUserBaseController
 
     }
 
+    // 获取刷题的分类
     public function getCategoryExam() {
         $id = $this->request->param('id', 0, 'intval,abs');
         $limit = $this->request->param('limit', 10, 'intval,abs');
@@ -39,6 +40,28 @@ class ExamController extends RestUserBaseController
         if ($id) $where['cid'] = $id;
         $list = ExamModel::instance()->where($where)->paginate($limit)->toArray();
         $this->success('ok', $list);
+    }
+
+    //获取分类下的学校
+    public function getSchool() {
+        $category_id = $this->request->param('category_id', 0, 'intval,abs');
+        $where = ['b.status'=>1];
+        if ($category_id) $where['a.category_id'] = $category_id;
+        $list = DB::name('exam_school_relation a')
+            ->join('__SCHOOL__ b', 'a.school_id=b.id')
+            ->distinct('b.id')
+            ->field('b.*')
+            ->where($where)
+            ->order(['b.list_order'=>'asc'])
+            ->select()
+            ->toArray();
+        $this->success('ok', $list);
+    }
+
+    //根据分类id和学校id获取刷题内容 TODO
+    public function getExamList() {
+        $category_id = $this->request->param('category_id', 0, 'intval,abs');
+        $school_id = $this->request->param('school_id', 0, 'intval,abs');
     }
 
     /**

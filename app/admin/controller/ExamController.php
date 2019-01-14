@@ -94,10 +94,10 @@ class ExamController extends AdminBaseController
         Db::startTrans();
         try{
             $ExamModel->allowField(true)->isUpdate(false)->save($data);
-            $exam_id = $ExamModel->id;
+            $data['exam_id'] = $ExamModel->id;
             $school_ids = explode(',', $data['school_id']);
-            $school_data = array_map(function($id) use ($exam_id){
-                return ['school_id'=>$id, 'exam_id'=>$exam_id];
+            $school_data = array_map(function($id) use ($data){
+                return ['school_id'=>$id, 'exam_id'=>$data['exam_id'], 'category_id'=>$data['cid']];
             }, $school_ids);
             Db::name('exam_school_relation')->insertAll($school_data);
             // 提交事务
@@ -153,9 +153,9 @@ class ExamController extends AdminBaseController
             try{
                 $result = $ExamModel->allowField(true)->isUpdate(true)->save($data);
                 $exam_id = $data['id'];
-                Db::name('exam_school_relation')->where(['exam_id'=>$exam_id])->delete();
-                $ins_data = array_map(function($id) use ($exam_id){
-                    return ['school_id'=>$id, 'exam_id'=>$exam_id];
+                Db::name('exam_school_relation')->where(['exam_id'=>$data['id']])->delete();
+                $ins_data = array_map(function($id) use ($data){
+                    return ['school_id'=>$id, 'exam_id'=>$data['id'], 'category_id'=>$data['cid']];
                 }, explode(',', $data['school_id']));
                 Db::name('exam_school_relation')->insertAll($ins_data);
                 Db::commit();
@@ -295,6 +295,9 @@ class ExamController extends AdminBaseController
             if ($info['option']) $info['option'] = json_decode($info['option'], true);
         }
         $this->assign('info', $info);
+        //章节信息
+        $section = DB::name('exam_section')->where(['exam_id'=>$exam_id])->select()->toArray();
+        $this->assign('section', $section);
         return $this->fetch($template_name);
     }
 

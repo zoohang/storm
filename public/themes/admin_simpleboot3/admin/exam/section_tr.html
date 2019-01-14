@@ -1,0 +1,11 @@
+<tr>
+    <th width="70"><span class="form-required">*</span>章节</th>
+    <td>
+        <select name="post[section_id]" id="" class="form-control">
+            <option value="">请选择章节</option>
+            <foreach name="section" item="item">
+                <option value="{$item.section_id}" {:isset($info['section_id'])&&$info['section_id']==$item['section_id']?'selected':''}>{$item.idx}&nbsp;&nbsp;&nbsp;&nbsp;{$item.title}</option>
+            </foreach>
+        </select>
+    </td>
+</tr>

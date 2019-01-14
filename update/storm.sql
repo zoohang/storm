@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
+Source Server         : 本地连接
 Source Server Version : 50553
-Source Host           : localhost:3306
+Source Host           : 127.0.0.1:3306
 Source Database       : storm
 
 Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-10 19:49:28
+Date: 2019-01-14 23:59:27
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -236,7 +236,7 @@ CREATE TABLE `st_asset` (
   `suffix` varchar(10) NOT NULL DEFAULT '' COMMENT '文件后缀名,不包括点',
   `more` text COMMENT '其它详细信息,JSON格式',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COMMENT='资源表';
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COMMENT='资源表';
 
 -- ----------------------------
 -- Records of st_asset
@@ -288,6 +288,7 @@ INSERT INTO `st_asset` VALUES ('44', '1', '233685', '1546957213', '1', '0', '3c4
 INSERT INTO `st_asset` VALUES ('45', '1', '261387', '1546958708', '1', '0', 'b6b6131485d40d048189f7cc197e7be0a0ff2cb53cfc14a9b1e8bebda2fc8f38', 'image.png', 'admin/20190108/4371be76e8b9136b12c5869382b0ae97.png', 'b6b6131485d40d048189f7cc197e7be0', 'cdad6a43810d7abae9402be6567a885617b41f1d', 'png', null);
 INSERT INTO `st_asset` VALUES ('46', '1', '1513783', '1546958732', '1', '0', '168aacf4eaa0ba062f196aa6678752cc54fa8b294a6908a4e651ee6dc8d8eccb', 'image.png', 'admin/20190108/67a6f3ac1aebf8894d960b37d91623ba.png', '168aacf4eaa0ba062f196aa6678752cc', 'bc0b3005435ba2c87fa5a3c534842fd9c0ba60a8', 'png', null);
 INSERT INTO `st_asset` VALUES ('47', '1', '64453', '1546965610', '1', '0', 'f2dab1e47560b05abc76bd3bb944e29bd8f069268e72d9c993c5f306efad7263', 'cbbcbcc04843982effa8ae171416212e.jpg', 'admin/20190109/b6684c15b5fec63956534d4ba5ff5c86.jpg', 'f2dab1e47560b05abc76bd3bb944e29b', '03d781d6f163a43bf822b1289464c41f50c95a58', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('48', '1', '34882', '1547479407', '1', '0', '5bdb23b45bfaf337ee488cd2c232a42431de55d3bb2219610d68c782e9eb4ee9', 'image.png', 'admin/20190114/ae9b343d74bb7e64a4da80f1aca16ca7.png', '5bdb23b45bfaf337ee488cd2c232a424', '88da9b98b0e0fd0e64c33b6821856109bef775b1', 'png', null);
 
 -- ----------------------------
 -- Table structure for st_auth_access
@@ -797,10 +798,10 @@ CREATE TABLE `st_exam` (
 -- ----------------------------
 -- Records of st_exam
 -- ----------------------------
-INSERT INTO `st_exam` VALUES ('1', '5', '建筑', '2', '2018', '1', 'admin', '重大密卷', '三年模拟五年高考', '三年模拟五年高考, 你怕不怕?', 'admin/20181216/f966c57f8fb54b31b1c8307a6b503273.jpg', '0', '1', '1', '1547111567', '1541262925', '1547111550', '1544933425', '1');
-INSERT INTO `st_exam` VALUES ('2', '6', '规划', '1', '2008', '1', 'admin', '西南大学2009研究生真题', '西南大学2009研究生真题1', '西南大学2009研究生真题211', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '0', '1', '1', '1547111567', '1541602937', '1547111562', '1544933425', '1');
+INSERT INTO `st_exam` VALUES ('1', '5', '建筑', '2', '2018', '1', 'admin', '重大和北大都能用到的模拟题', '三年模拟五年高考', '三年模拟五年高考, 你怕不怕?', 'admin/20181216/f966c57f8fb54b31b1c8307a6b503273.jpg', '0', '1', '1', '1547111567', '1541262925', '1547479505', '1544933425', '1');
+INSERT INTO `st_exam` VALUES ('2', '6', '规划', '1', '2008', '1', 'admin', '西南大学&amp;北京大学2009研究生真题', '西南大学2009研究生真题1', '西南大学2009研究生真题211', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '0', '1', '1', '1547111567', '1541602937', '1547479530', '1544933425', '1');
 INSERT INTO `st_exam` VALUES ('14', '5', '建筑', '2', '2011', '1', 'admin', '2008年黄冈密卷高考题', '2008年黄冈密卷高考题', '2008年黄冈密卷高考题\r\n2008年黄冈密卷高考题', '', '0', '0', '0', '1547111567', '1546963893', '1546963893', '0', '1');
-INSERT INTO `st_exam` VALUES ('15', '6', '规划', '2', '2018', '1', 'admin', '2008年黄冈密卷高考题111', '2008年黄冈密卷高考题222', '2008年黄冈密卷高考题333\r\n2008年黄冈密卷高考题444', 'admin/20190109/b6684c15b5fec63956534d4ba5ff5c86.jpg', '0', '0', '0', '1547111567', '1546964165', '1546965712', '0', '1');
+INSERT INTO `st_exam` VALUES ('15', '6', '规划', '2', '2018', '1', 'admin', '2008年黄冈密卷高考题111', '2008年黄冈密卷高考题222', '2008年黄冈密卷高考题333\r\n2008年黄冈密卷高考题444', 'admin/20190109/b6684c15b5fec63956534d4ba5ff5c86.jpg', '0', '0', '0', '1547111567', '1546964165', '1547481458', '0', '1');
 
 -- ----------------------------
 -- Table structure for st_exam_item
@@ -809,6 +810,7 @@ DROP TABLE IF EXISTS `st_exam_item`;
 CREATE TABLE `st_exam_item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `exam_id` int(11) NOT NULL DEFAULT '0' COMMENT '试卷id',
+  `section_id` int(11) NOT NULL DEFAULT '0' COMMENT '章节id',
   `item_title` varchar(200) NOT NULL DEFAULT '题目',
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '题目类型 1:选择题,2:填空题,3:论述题',
   `option` text NOT NULL COMMENT '选择题[选项][json]',
@@ -826,17 +828,17 @@ CREATE TABLE `st_exam_item` (
 -- ----------------------------
 -- Records of st_exam_item
 -- ----------------------------
-INSERT INTO `st_exam_item` VALUES ('1', '1', '啊啊啊', '1', '{\"A\":\"啊啊啊啊啊啊啊啊啊啊啊啊啊啊白斑病白斑病\",\"B\":\"白斑病白斑病吧\",\"C\":\"草草草草草草草草草\",\"D\":\"滴答滴答滴答滴答滴答的\"}', 'D', '反反复复发', '吱吱吱吱吱吱吱吱吱吱吱吱吱吱在', '1542039232', '1542039232', '2', '1');
-INSERT INTO `st_exam_item` VALUES ('2', '1', '啊啊啊1', '1', '{\"A\":\"啊啊啊啊啊啊啊啊啊啊啊啊啊啊白斑病白斑病2\",\"B\":\"白斑病白斑病吧\",\"C\":\"草草草草草草草草草\",\"D\":\"滴答滴答滴答滴答滴答的\"}', 'D', '反反复复发', '吱吱吱吱吱吱吱吱吱吱吱吱吱吱在', '1542039906', '1542039906', '3', '1');
-INSERT INTO `st_exam_item` VALUES ('3', '1', '初识PhpStorm', '2', '{\"A\":\"啊啊啊啊啊啊啊啊啊啊啊啊啊啊白斑病白斑病3\",\"B\":\"白斑病白斑病吧3\",\"C\":\"草草草草草草草草草3\",\"D\":\"滴答滴答滴答滴答滴答的3\"}', 'D', '反反复复发3', '吱吱吱吱吱吱吱吱吱吱吱吱吱吱在3', '1542039932', '1544349454', '4', '1');
-INSERT INTO `st_exam_item` VALUES ('4', '1', '1', '2', '', '1', '1', '1', '1542113284', '1542113284', '5', '1');
-INSERT INTO `st_exam_item` VALUES ('5', '2', 'lunshu1', '3', '', 'lunshu1', 'lunshu1', 'lunshu123', '1542120943', '1542122472', '1003', '1');
-INSERT INTO `st_exam_item` VALUES ('6', '2', '12', '3', '', '1', '1', '1', '1542122521', '1542122831', '1001', '-1');
-INSERT INTO `st_exam_item` VALUES ('7', '2', 'ttt', '2', '', 'ttt1', 'ttttt', 'ttttt', '1542122953', '1542123130', '100', '1');
-INSERT INTO `st_exam_item` VALUES ('8', '2', '44', '2', '', '44', '44', '44', '1542122986', '1542122986', '100', '1');
-INSERT INTO `st_exam_item` VALUES ('9', '2', '1', '2', '', '1', '11', '1', '1542123030', '1542123030', '100', '1');
-INSERT INTO `st_exam_item` VALUES ('10', '2', '2', '3', '', '2', '22', '2', '1542123141', '1542123141', '100', '1');
-INSERT INTO `st_exam_item` VALUES ('11', '1', '111111', '1', '{\"A\":\"1\",\"B\":\"2\",\"C\":\"3\",\"D\":\"4\"}', 'AB', '22', '33', '1544450805', '1544450805', '100', '1');
+INSERT INTO `st_exam_item` VALUES ('1', '1', '1', '啊啊啊', '1', '{\"A\":\"啊啊啊啊啊啊啊啊啊啊啊啊啊啊白斑病白斑病\",\"B\":\"白斑病白斑病吧\",\"C\":\"草草草草草草草草草\",\"D\":\"滴答滴答滴答滴答滴答的\"}', 'D', '反反复复发', '吱吱吱吱吱吱吱吱吱吱吱吱吱吱在', '1542039232', '1542039232', '1', '1');
+INSERT INTO `st_exam_item` VALUES ('2', '1', '2', '啊啊啊1', '1', '{\"A\":\"啊啊啊啊啊啊啊啊啊啊啊啊啊啊白斑病白斑病2\",\"B\":\"白斑病白斑病吧\",\"C\":\"草草草草草草草草草\",\"D\":\"滴答滴答滴答滴答滴答的\"}', 'D', '反反复复发', '吱吱吱吱吱吱吱吱吱吱吱吱吱吱在', '1542039906', '1542039906', '2', '1');
+INSERT INTO `st_exam_item` VALUES ('3', '1', '3', '初识PhpStorm', '2', '{\"A\":\"啊啊啊啊啊啊啊啊啊啊啊啊啊啊白斑病白斑病3\",\"B\":\"白斑病白斑病吧3\",\"C\":\"草草草草草草草草草3\",\"D\":\"滴答滴答滴答滴答滴答的3\"}', 'D', '反反复复发3', '吱吱吱吱吱吱吱吱吱吱吱吱吱吱在3', '1542039932', '1547461657', '3', '1');
+INSERT INTO `st_exam_item` VALUES ('4', '1', '3', '1', '2', '', '1', '1', '1', '1542113284', '1547461673', '4', '1');
+INSERT INTO `st_exam_item` VALUES ('5', '2', '7', 'lunshu1', '3', '', 'lunshu1', 'lunshu1', 'lunshu123', '1542120943', '1547479245', '1003', '1');
+INSERT INTO `st_exam_item` VALUES ('6', '2', '0', '12', '3', '', '1', '1', '1', '1542122521', '1542122831', '1001', '-1');
+INSERT INTO `st_exam_item` VALUES ('7', '2', '5', 'ttt', '2', '', 'ttt1', 'ttttt', 'ttttt', '1542122953', '1547479210', '100', '1');
+INSERT INTO `st_exam_item` VALUES ('8', '2', '5', '44', '2', '', '44', '44', '44', '1542122986', '1547479203', '100', '1');
+INSERT INTO `st_exam_item` VALUES ('9', '2', '6', '1', '2', '', '1', '11', '1', '1542123030', '1547479227', '100', '1');
+INSERT INTO `st_exam_item` VALUES ('10', '2', '7', '2', '3', '', '2', '22', '2', '1542123141', '1547479235', '100', '1');
+INSERT INTO `st_exam_item` VALUES ('11', '1', '4', '111111', '1', '{\"A\":\"1\",\"B\":\"2\",\"C\":\"3\",\"D\":\"4\"}', 'AB', '22', '33', '1544450805', '1547461703', '5', '1');
 
 -- ----------------------------
 -- Table structure for st_exam_school_relation
@@ -846,17 +848,50 @@ CREATE TABLE `st_exam_school_relation` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `school_id` int(11) NOT NULL DEFAULT '0' COMMENT '学校id',
   `exam_id` int(11) NOT NULL DEFAULT '0' COMMENT '试卷id(刷题题目id)',
+  `category_id` int(11) NOT NULL DEFAULT '0' COMMENT '刷题分类id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COMMENT='学校-刷题-关联表';
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COMMENT='学校-刷题-关联表';
 
 -- ----------------------------
 -- Records of st_exam_school_relation
 -- ----------------------------
-INSERT INTO `st_exam_school_relation` VALUES ('1', '1', '14');
-INSERT INTO `st_exam_school_relation` VALUES ('2', '2', '14');
-INSERT INTO `st_exam_school_relation` VALUES ('9', '2', '15');
-INSERT INTO `st_exam_school_relation` VALUES ('11', '1', '1');
-INSERT INTO `st_exam_school_relation` VALUES ('12', '2', '2');
+INSERT INTO `st_exam_school_relation` VALUES ('1', '1', '14', '5');
+INSERT INTO `st_exam_school_relation` VALUES ('2', '2', '14', '5');
+INSERT INTO `st_exam_school_relation` VALUES ('13', '1', '1', '5');
+INSERT INTO `st_exam_school_relation` VALUES ('14', '3', '1', '5');
+INSERT INTO `st_exam_school_relation` VALUES ('15', '2', '2', '6');
+INSERT INTO `st_exam_school_relation` VALUES ('16', '3', '2', '6');
+INSERT INTO `st_exam_school_relation` VALUES ('18', '2', '15', '6');
+INSERT INTO `st_exam_school_relation` VALUES ('19', '3', '15', '6');
+
+-- ----------------------------
+-- Table structure for st_exam_section
+-- ----------------------------
+DROP TABLE IF EXISTS `st_exam_section`;
+CREATE TABLE `st_exam_section` (
+  `section_id` int(11) NOT NULL AUTO_INCREMENT,
+  `exam_id` int(11) NOT NULL DEFAULT '0' COMMENT 'exam_id',
+  `idx` varchar(255) NOT NULL DEFAULT '' COMMENT '序号',
+  `title` varchar(255) NOT NULL DEFAULT '' COMMENT '名称',
+  `count` int(11) NOT NULL DEFAULT '0' COMMENT '内容数量',
+  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态 0-删除 1-正常',
+  `list_order` int(11) NOT NULL DEFAULT '100',
+  PRIMARY KEY (`section_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='exam章节表';
+
+-- ----------------------------
+-- Records of st_exam_section
+-- ----------------------------
+INSERT INTO `st_exam_section` VALUES ('1', '1', '第一章', '契', '0', '0', '1547460082', '1', '1001');
+INSERT INTO `st_exam_section` VALUES ('2', '1', '第二章', '下山', '0', '0', '1547183060', '1', '1001');
+INSERT INTO `st_exam_section` VALUES ('3', '1', '第三章', '拜师', '0', '1547182623', '1547184513', '1', '1003');
+INSERT INTO `st_exam_section` VALUES ('4', '1', '第四章', '苦练', '0', '1547182707', '1547184841', '1', '1004');
+INSERT INTO `st_exam_section` VALUES ('5', '2', '第一章', '前言', '0', '1547478958', '1547478958', '1', '100');
+INSERT INTO `st_exam_section` VALUES ('6', '2', '第二章', '马克思主义', '0', '1547479011', '1547479122', '1', '100');
+INSERT INTO `st_exam_section` VALUES ('7', '2', '第三章', '毛泽东思想', '0', '1547479111', '1547479111', '1', '100');
+INSERT INTO `st_exam_section` VALUES ('8', '2', '第四章', '邓小平理论', '0', '1547479139', '1547479139', '1', '100');
 
 -- ----------------------------
 -- Table structure for st_exam_userlog
@@ -1302,7 +1337,7 @@ CREATE TABLE `st_recycle_bin` (
   `name` varchar(255) DEFAULT '' COMMENT '删除内容名称',
   `user_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT=' 回收站';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COMMENT=' 回收站';
 
 -- ----------------------------
 -- Records of st_recycle_bin
@@ -1382,13 +1417,14 @@ CREATE TABLE `st_school` (
   `list_order` float NOT NULL DEFAULT '10000' COMMENT '排序',
   `delete_time` int(10) NOT NULL DEFAULT '0' COMMENT '删除时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='学校表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='学校表';
 
 -- ----------------------------
 -- Records of st_school
 -- ----------------------------
 INSERT INTO `st_school` VALUES ('1', '重庆大学', '重大', '重庆大学（Chongqing University），简称重大（CQU），位于中央直辖市重庆，是中共中央直管、教育部直属的副部级全国重点大学，由教育部和重庆市共同建设。重大早在民国时期就是中国最杰出的国立大学之一，建国后以“建筑老八校”闻名。现是国家“双一流”、“211工程”和”985工程”首批重点建设的高水平研究型综合性大学；“卓越大学联盟”、“中俄工科大学联盟”成员高校；入选“2011计划”、“111计划”、“卓越工程师教育培养计划”、“卓越法律人才教育培养计划”、“海外高层次人才引进计划”；设有研究生院和国家大学科技园。\r\n    1929年刘湘创办重庆大学；1935年批准为省立大学；抗战期间和西迁的中央大学合作办学。1942年更名为国立重庆大学，成为有文、理、工、商、法、医6个学院的国立综合性大学，1960年成为全国重点大学。改革开放后，学校大力发展人文、经管、艺术、教育等学科专业。2000年，原重庆大学、重庆建筑大学、重庆建筑高等专科学校三校合并组建成新重庆大学，使得一直以机电、能源、材料、信息、生物、经管等学科优势著称的重庆大学，在建筑、土木、环保等学科方面也处于全国较高水平。\r\n    截至2018年9月，重大设36个学院，本科专业96个，覆盖理、工、经、管、法、文、史、哲、教育、艺术10个学科门类。在校生47000余人，其中研究生19000余人，本科生25000余人，留学生1800余人。校园占地面积5200余亩，有A、B、C、虎溪四个校区，校舍建筑面积近160万平方米。 [1]', 'admin/20190108/67a6f3ac1aebf8894d960b37d91623ba.png', '1', '10000', '0');
 INSERT INTO `st_school` VALUES ('2', '西南大学', '西大', '西南大学（Southwest University）简称西大，坐落于重庆市，是中华人民共和国教育部直属高校，由教育部、农业部与重庆市人民政府共建，是“双一流”世界一流学科建设高校，位列国家“211工程” 、“985工程优势学科创新平台”，入选“111计划”、“2011计划”、卓越农林人才教育培养计划、卓越教师培养计划、国家建设高水平大学公派研究生项目，是开办师范生免费教育的7所高校之一，全国自主选拔录取改革试点高校，中国政府奖学金来华留学生接收院校之一，重庆市大学联盟创始学校之一。\r\n西南大学由原教育部直属西南师范大学与原农业部直属西南农业大学于2005年合并而成。原两校毗邻而建，同根同源，均溯源于1906年建立的川东师范学堂。1936年更名为四川省立教育学院。1950年，四川省立教育学院师范、农学相关系科分别与1940年创办的国立女子师范学院、1946年创办的私立相辉文法学院等合并建立西南师范学院、西南农学院。1985年，两校分别更名为西南师范大学、西南农业大学。此后，重庆轻工业职工大学、四川畜牧兽医学院、中国农业科学院柑桔研究所相继并入。 [1-2] \r\n截至2018年12月，学校占地9000余亩，建有北碚校区、荣昌校区、西塔学院；拥有11个学部，3个附属医院，下设36个学院，共有105个本科专业；有22个博士后科研流动站、28个一级学科博士学位授权点、51个一级学科硕士学位授权点；专任教师2968人；在校学生5万余人，其中普通本科生近4万人，硕士、博士研究生11000余人，留学生2000余人。 [1]  [3]', 'admin/20190108/4371be76e8b9136b12c5869382b0ae97.png', '1', '10000', '0');
+INSERT INTO `st_school` VALUES ('3', '北京大学', '北大', '北京大学（Peking University），简称“北大”，由中华人民共和国教育部直属，中央直管副部级建制，位列“211工程”、“985工程”、“世界一流大学和一流学科”，入选“基础学科拔尖学生培养试验计划”、“高等学校创新能力提升计划”、“高等学校学科创新引智计划”，为九校联盟、中国大学校长联谊会、京港大学联盟、亚洲大学联盟、东亚研究型大学协会、国际研究型大学联盟、环太平洋大学联盟、东亚四大学论坛、国际公立大学论坛、中俄综合性大学联盟成员。\r\n北京大学创立于1898年维新变法之际，初名京师大学堂，是中国近现代第一所国立综合性大学，创办之初也是国家最高教育行政机关。1912年改为国立北京大学。1937年南迁至长沙，与国立清华大学和私立南开大学组成国立长沙临时大学，1938年迁至昆明，更名为国立西南联合大学。1946年复员返回北平。1952年经全国高校院系调整，成为以文理基础学科为主的综合性大学，并自北京城内沙滩等地迁至现址。2000年与原北京医科大学合并，组建为新的北京大学。\r\n北京大学是新文化运动的中心和五四运动的策源地，最早在中国传播马克思主义和科学、民主思想，是创建中国共产党的重要基地之一。长期以来，北京大学始终与中国和中国人民共命运，与时代和社会同前进，是培养和造就高素质创造性人才的摇篮，恰如蔡元培先生所言：“大学者，囊括大典，网罗众家之学府也……此思想自由之通则，而大学之所以为大也。” [1]', 'admin/20190114/ae9b343d74bb7e64a4da80f1aca16ca7.png', '1', '10000', '0');
 
 -- ----------------------------
 -- Table structure for st_slide

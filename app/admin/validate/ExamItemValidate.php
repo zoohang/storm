@@ -16,6 +16,7 @@ class ExamItemValidate extends Validate
 {
     protected $rule = [
         'exam_id' => 'require',
+        'section_id' => 'require',
         'item_title' => 'require',
         'type' => 'require',
         'answer' => 'require',
@@ -23,6 +24,7 @@ class ExamItemValidate extends Validate
 
     protected $message = [
         'exam_id.require' => '试卷id不能为空',
+        'section_id.require' => '章节必选',
         'item_title.require'  => '题目名称不能为空',
         'type.require' => '题目类型不能为空',
         'answer.require' => '题目答案不能为空',

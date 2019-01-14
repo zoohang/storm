@@ -18,7 +18,7 @@
                 <div class="tab-content">
                     <div class="tab-pane active" id="A">
                         <input type="hidden" name="exam_id" value="{$params.exam_id|default=$info['exam_id']}">
-                        <input type="hidden" name="section_id" value="{$params.section_id|default=$info['section_id']?:''}">
+                        <input type="hidden" name="section_id" value="{:isset($params['section_id'])?$params['section_id']:''}">
                         <div class="form-group">
                             <label for="input-name"><span class="form-required">*</span>章节序号</label>
                             <div>

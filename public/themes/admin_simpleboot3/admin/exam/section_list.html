@@ -5,19 +5,7 @@
     <ul class="nav nav-tabs">
         <li><a href="{:url('Exam/index')}">试卷列表</a></li>
         <li class="active"><a href="{:url('Exam/section_list', ['exam_id'=>$params['exam_id']])}">章节列表</a></li>
-        <li>
-            <div class="dropdown">
-                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    添加题目
-                    <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                    <li><a class="js-categories-name-input" data-id="" data-type="1">选择</a></li>
-                    <li><a class="js-categories-name-input" data-id="" data-type="2">填空</a></li>
-                    <li><a class="js-categories-name-input" data-id="" data-type="3">论述</a></li>
-                </ul>
-            </div>
-        </li>
+        <li><a href="{:url('Exam/section_edit', ['exam_id'=>$params['exam_id']])}">添加章节</a></li>
     </ul>
     <form method="post" class="js-ajax-form" action="{:url('Exam/listOrderSection')}">
         <div class="table-actions">
