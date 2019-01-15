@@ -61,18 +61,36 @@ class ExamController extends RestUserBaseController
         $this->success('ok', $list);
     }
 
-    //根据分类id和学校id获取刷题内容
+    //根据分类id和学校id获取刷题内容 //todo 刷题的价格
     public function getExamList() {
         $category_id = $this->request->param('category_id', 0, 'intval,abs');
         $school_id = $this->request->param('school_id', 0, 'intval,abs');
         $limit = 10;
-        $where = ['b.status'=>1, 'a.category_id'=>$category_id, 'a.school_id'=>$school_id];
+        $where = ['b.status'=>1, 'a.school_id'=>$school_id];
+        if ($category_id) $where['a.category_id'] = $category_id;
         $order = ['is_top'=>'desc', 'id'=>'desc'];
         $list = DB::name('exam_school_relation a')->join('__EXAM__ b', 'a.exam_id=b.id')
-            ->field('b.*')
+            ->field('b.*, use_num price')
             ->where($where)
             ->order($order)
             ->paginate($limit);
+        $this->success('ok', $list);
+    }
+
+    //获取试卷的章节
+    public function getExamSection() {
+        $exam_id = $this->request->param('exam_id', 0, 'intval,abs');
+        if (!$exam_id) $this->error('试卷的id必填');
+        $where = ['status'=>1, 'exam_id'=>$exam_id];
+        $list = DB::name('exam_section')->where($where)->order(['list_order'=>'asc', 'section_id'=>'asc'])->select()->toArray();
+        $this->success('ok', $list);
+    }
+
+    public function getExamSectionItem() {
+        $section_id = $this->request->param('section_id', 0, 'intval,abs');
+        if (!$section_id) $this->error('试卷的章节必填');
+        $where = ['status'=>1, 'section_id'=>$section_id];
+        $list = ExamItemModel::instance()->where($where)->order(['list_order'=>'asc', 'section_id'=>'asc'])->select()->toArray();
         $this->success('ok', $list);
     }
 

@@ -8,6 +8,7 @@
 // +----------------------------------------------------------------------
 namespace api\v1\controller;
 
+use app\base\controller\Alisms;
 use think\Db;
 use cmf\controller\RestBaseController;
 use wxapp\aes\WXBizDataCrypt;
@@ -146,6 +147,29 @@ class PublicController extends RestBaseController
         $this->success("登录成功!", ['token' => $token, 'user' => $user]);
 
 
+    }
+
+    public function sendSms() {
+        $phone = $this->request->param('phone');
+        $rules = [
+            'phone'  => 'require|regex:1[34578]{1}[0-9]{9}',
+        ];
+        $message = [
+            'phone.require' => '手机号不能为空',
+            'phone.regex' => '手机号格式不对',
+        ];
+        $validate = new Validate($rules, $message);
+        if (!$validate->check($this->request->param())) {
+            $this->error($validate->getError());
+        }
+        //随机生成4为数字
+        $code = mt_rand(1000, 9999);
+        $res = Alisms::instance()->sendSms($phone, 'register', ['code'=>$code]);
+        if ($res === true) {
+            $this->success('ok');
+        } else {
+            $this->error($res);
+        }
     }
 
 }

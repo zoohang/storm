@@ -65,7 +65,7 @@ class RestBaseController
         if (is_null($request)) {
             $request = Request::instance();
         }
-
+        Config::load(CMF_ROOT.'data/conf/config.php');
         Request::instance()->root(cmf_get_root() . '/');
 
         $this->request = $request;
