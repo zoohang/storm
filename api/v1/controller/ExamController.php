@@ -32,17 +32,20 @@ class ExamController extends RestUserBaseController
 
     }
 
-    // 获取刷题的分类
+    // 获取刷题的分类 修订
     public function getCategoryExam() {
-        $id = $this->request->param('id', 0, 'intval,abs');
-        $limit = $this->request->param('limit', 10, 'intval,abs');
-        $where = [];
-        if ($id) $where['cid'] = $id;
-        $list = ExamModel::instance()->where($where)->paginate($limit)->toArray();
+        $where = ['a.status'=>1, 'a.type'=>1];
+        $list = DB::name('category a')
+            ->join('__EXAM_SCHOOL_RELATION__ b', 'a.id=b.category_id')
+            ->field('a.*')
+            ->where($where)
+            ->group('b.category_id')
+            ->select()
+            ->toArray();
         $this->success('ok', $list);
     }
 
-    //获取分类下的学校
+    //获取分类下的学校 新增
     public function getSchool() {
         $category_id = $this->request->param('category_id', 0, 'intval,abs');
         $where = ['b.status'=>1];
@@ -58,10 +61,19 @@ class ExamController extends RestUserBaseController
         $this->success('ok', $list);
     }
 
-    //根据分类id和学校id获取刷题内容 TODO
+    //根据分类id和学校id获取刷题内容
     public function getExamList() {
         $category_id = $this->request->param('category_id', 0, 'intval,abs');
         $school_id = $this->request->param('school_id', 0, 'intval,abs');
+        $limit = 10;
+        $where = ['b.status'=>1, 'a.category_id'=>$category_id, 'a.school_id'=>$school_id];
+        $order = ['is_top'=>'desc', 'id'=>'desc'];
+        $list = DB::name('exam_school_relation a')->join('__EXAM__ b', 'a.exam_id=b.id')
+            ->field('b.*')
+            ->where($where)
+            ->order($order)
+            ->paginate($limit);
+        $this->success('ok', $list);
     }
 
     /**

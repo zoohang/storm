@@ -10,3 +10,4 @@ composer.lock
 /update/log.txt
 /data/conf/config.php
 /data/conf/database.php
+/data/conf/route.php
