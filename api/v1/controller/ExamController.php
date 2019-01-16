@@ -86,12 +86,53 @@ class ExamController extends RestUserBaseController
         $this->success('ok', $list);
     }
 
+    //获取章节下的题目内容[列表] todo
     public function getExamSectionItem() {
         $section_id = $this->request->param('section_id', 0, 'intval,abs');
         if (!$section_id) $this->error('试卷的章节必填');
+        $exam_info = ExamModel::instance()->alias('a')->join('__EXAM_ITEM__ b', 'a.id=b.exam_id', 'left')->field('a.*')->where(['b.section_id'=>$section_id])->find();
+        if (!$exam_info) {
+            $this->error('该试卷不存在, 或已经下架了');
+        }
         $where = ['status'=>1, 'section_id'=>$section_id];
         $list = ExamItemModel::instance()->where($where)->order(['list_order'=>'asc', 'section_id'=>'asc'])->select()->toArray();
-        $this->success('ok', $list);
+        $result = [];
+        $result['info'] = $exam_info;
+        $result['count'] = 0;
+        $result['chooseQusList'] = $result['blankQusList'] = $result['discusseQusList'] = [];
+        if ($data) {
+            $result['count'] = count($data);
+            foreach ($data as $item) {
+                $item['show'] = 0;
+                $item['is_wrong'] = 0;
+                if ($item['type'] == 1) {
+                    $result['chooseQusList'][] = $item;
+                } elseif($item['type'] == 2) {
+                    $result['blankQusList'][] = $item;
+                } elseif($item['type'] == 3) {
+                    $result['discusseQusList'][] = $item;
+                }
+            }
+        }
+        //记录到我的刷题记录
+        $exists = ExamUserlogModel::instance()->get(['user_id'=>$this->userId,'exam_id'=>$id]);
+        if ($exists) {
+            $exists->update_time    = NOW_TIME;
+            $exists->save();
+        } else {
+            $add = [
+                'user_id' => $this->userId,
+                'exam_id' => $id,
+                'title' => $exam_info['title'],
+                'subtitle' => $exam_info['subtitle'],
+                'property' => $exam_info['property'],
+                'create_time' => NOW_TIME,
+                'update_time' => NOW_TIME
+            ];
+            ExamUserlogModel::instance()->allowField(true)->isUpdate(false)->save($add);
+        }
+        //记录到我的刷题记录
+        $this->success('ok', $result);
     }
 
     /**
