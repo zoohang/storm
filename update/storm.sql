@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地连接
+Source Server         : localhost
 Source Server Version : 50553
-Source Host           : 127.0.0.1:3306
+Source Host           : localhost:3306
 Source Database       : storm
 
 Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-14 23:59:27
+Date: 2019-01-17 21:54:21
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -907,11 +907,13 @@ CREATE TABLE `st_exam_userlog` (
   `create_time` int(10) NOT NULL DEFAULT '0',
   `update_time` int(10) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户的刷题记录';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='用户的刷题记录';
 
 -- ----------------------------
 -- Records of st_exam_userlog
 -- ----------------------------
+INSERT INTO `st_exam_userlog` VALUES ('1', '2', '1', '重大和北大都能用到的模拟题', '三年模拟五年高考', '2', '1547691804', '1547691831');
+INSERT INTO `st_exam_userlog` VALUES ('2', '2', '2', '西南大学&amp;北京大学2009研究生真题', '西南大学2009研究生真题1', '1', '1547691857', '1547691857');
 
 -- ----------------------------
 -- Table structure for st_exam_wronglist
@@ -1470,6 +1472,25 @@ CREATE TABLE `st_slide_item` (
 INSERT INTO `st_slide_item` VALUES ('1', '1', '1', '10000', '网易考拉活动日', 'admin/20181029/1d71c5aa0ef3407974dcdfb1815bdd11.jpg', 'https://www.163.com', '', '', '', null);
 
 -- ----------------------------
+-- Table structure for st_sms
+-- ----------------------------
+DROP TABLE IF EXISTS `st_sms`;
+CREATE TABLE `st_sms` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `phone` char(11) NOT NULL DEFAULT '' COMMENT '手机号',
+  `ip` char(15) NOT NULL DEFAULT '' COMMENT '手机号',
+  `code` char(6) NOT NULL DEFAULT '' COMMENT '验证码',
+  `type` tinyint(4) DEFAULT '1' COMMENT '短信类型,1:注册 2:登录',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='手机短信验证码';
+
+-- ----------------------------
+-- Records of st_sms
+-- ----------------------------
+INSERT INTO `st_sms` VALUES ('1', '18581290597', '127.0.0.1', '1334', '1', '1547698037');
+
+-- ----------------------------
 -- Table structure for st_theme
 -- ----------------------------
 DROP TABLE IF EXISTS `st_theme`;
@@ -1579,6 +1600,7 @@ CREATE TABLE `st_user` (
   `signature` varchar(255) NOT NULL DEFAULT '' COMMENT '个性签名',
   `last_login_ip` varchar(15) NOT NULL DEFAULT '' COMMENT '最后登录ip',
   `user_activation_key` varchar(60) NOT NULL DEFAULT '' COMMENT '激活码',
+  `true_name` varchar(32) NOT NULL DEFAULT '' COMMENT '用户真名',
   `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '中国手机不带国家代码，国际手机号格式为：国家代码-手机号',
   `school` varchar(100) NOT NULL DEFAULT '' COMMENT '学校',
   `speciality` varchar(100) NOT NULL DEFAULT '' COMMENT '专业',
@@ -1593,8 +1615,8 @@ CREATE TABLE `st_user` (
 -- ----------------------------
 -- Records of st_user
 -- ----------------------------
-INSERT INTO `st_user` VALUES ('1', '1', '0', '0', '1540963551', '1', '1', '0.00', '1540307170', '1', 'admin', '###d393a7505a2e1ce7ae2f9e8087e42bc2', 'admin', '136927705@qq.com', '', 'https://img.myzx.cn/video/mysource/admin/20180713/5b486e7d1778b_100_100.png', '', '127.0.0.1', '', '13399878665', '', '', '', '');
-INSERT INTO `st_user` VALUES ('2', '2', '1', '0', '1544943873', '1', '1', '0.00', '1544935602', '1', '', '###4a86c1e09a02a571683d0ceb112fc2f2', '张三1', '12355@qq.com', '', 'avatar/20181216/45718ee0baf9a1666ca9738d32d457f3.jpg', '', '127.0.0.1', '', '18581290597', '湖北理工大', '机械设计', '3年2班', '{\"wx_no\":\"zhuo_yi_hang\",\"dashi\":\"1\",\"enjoy_course\":\"1,3,5\",\"source\":\"2,4\"}');
+INSERT INTO `st_user` VALUES ('1', '1', '0', '0', '1540963551', '1', '1', '0.00', '1540307170', '1', 'admin', '###d393a7505a2e1ce7ae2f9e8087e42bc2', 'admin', '136927705@qq.com', '', 'https://img.myzx.cn/video/mysource/admin/20180713/5b486e7d1778b_100_100.png', '', '127.0.0.1', '', '', '13399878665', '', '', '', '');
+INSERT INTO `st_user` VALUES ('2', '2', '1', '0', '1544943873', '1', '1', '0.00', '1544935602', '1', '', '###4a86c1e09a02a571683d0ceb112fc2f2', '张三1', '12355@qq.com', '', 'avatar/20181216/45718ee0baf9a1666ca9738d32d457f3.jpg', '', '127.0.0.1', '', '张三', '18581290597', '湖北理工大', '计算机', '3年2班', '{\"wx_no\":\"zhuo_yi_hang\",\"dashi\":\"1\",\"enjoy_course\":\"1,3,5\",\"source\":\"2,4\"}');
 
 -- ----------------------------
 -- Table structure for st_user_action

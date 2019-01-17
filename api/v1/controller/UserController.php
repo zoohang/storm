@@ -12,6 +12,7 @@ use api\v1\model\FeedbackModel;
 use api\v1\model\UserModel;
 use cmf\controller\RestUserBaseController;
 use think\Db;
+use think\Validate;
 
 class UserController extends RestUserBaseController
 {
@@ -100,5 +101,42 @@ class UserController extends RestUserBaseController
         } else {
             $this->error('提交失败！');
         }
+    }
+
+    //完善登陆过程中的用户信息
+    public function bindPhone() {
+        //用户姓名 专业 手机号 验证码
+        $param = $this->request->param();
+        $rules = [
+            'true_name' => 'require|length:2,20',//用户名称
+            'speciality' => 'require',//专业
+            'mobile'  => 'require|regex:1[34578]{1}[0-9]{9}',
+            'code' => 'require'
+        ];
+        $message = [
+            'mobile.require' => '手机号不能为空',
+            'mobile.regex' => '手机号格式不对',
+        ];
+        $validate = new Validate($rules, $message);
+        if (!$validate->check($param)) {
+            $this->error($validate->getError());
+        }
+        //一个小时内有效
+        $log = DB::name('sms')->where(['phone'=>$param['mobile'], 'create_time'=> ['EGT', NOW_TIME-993600]])->order(['id'=>'desc'])->find();
+        if (!$log || $log['code'] != $param['code']) {
+            $this->error('验证码错误');
+        }
+        $res = UserModel::instance()->allowField(true)->save($param, ['id'=>$this->userId]);
+        if ($res !== false) {
+            $this->success('ok');
+        } else {
+            $this->error('保存失败, 请重试');
+        }
+    }
+
+    //判断用户是否有绑定过手机信息
+    public function checkUserMobile() {
+        $info = UserModel::instance()->where(['id' => $this->userId])->find()->toArray();
+        $this->success('ok', ['mobile'=> $info['mobile'] ?: '']);
     }
 }

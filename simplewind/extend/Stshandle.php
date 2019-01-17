@@ -19,13 +19,18 @@ class Stshandle {
     public function getToken() {
         include_once EXTEND_PATH. 'aliyun-php-sdk/aliyun-php-sdk-core/Config.php';
         date_default_timezone_set('PRC');
-        $content = $this->read_file(EXTEND_PATH.'aliyun-php-sdk/config.json');
-        $myjsonarray = json_decode($content);
+        \think\Config::load(CMF_ROOT.'data/conf/config.php');
+        //$content = $this->read_file(EXTEND_PATH.'aliyun-php-sdk/config.json');
+        $content = \think\Config::get('aliyun_oss');
+        $myjsonarray = (object)$content;
         $accessKeyID = $myjsonarray->AccessKeyID;
         $accessKeySecret = $myjsonarray->AccessKeySecret;
         $roleArn = $myjsonarray->RoleArn;
         $tokenExpire = $myjsonarray->TokenExpireTime;
-        $policy = $this->read_file(EXTEND_PATH.'aliyun-php-sdk/'.$myjsonarray->PolicyFile);
+        //$policy = $this->read_file(EXTEND_PATH.'aliyun-php-sdk/'.$myjsonarray->PolicyFile);
+        $policy = $this->read_file(CMF_ROOT.$myjsonarray->PolicyFile);
+
+
         try{
             $iClientProfile = DefaultProfile::getProfile("cn-shanghai", $accessKeyID, $accessKeySecret);
             $client = new DefaultAcsClient($iClientProfile);

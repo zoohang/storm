@@ -86,16 +86,16 @@ class ExamController extends RestUserBaseController
         $this->success('ok', $list);
     }
 
-    //获取章节下的题目内容[列表] todo
+    //获取章节下的题目内容[列表]
     public function getExamSectionItem() {
         $section_id = $this->request->param('section_id', 0, 'intval,abs');
         if (!$section_id) $this->error('试卷的章节必填');
-        $exam_info = ExamModel::instance()->alias('a')->join('__EXAM_ITEM__ b', 'a.id=b.exam_id', 'left')->field('a.*')->where(['b.section_id'=>$section_id])->find();
+        $exam_info = DB::name('exam a')->join('__EXAM_ITEM__ b', 'a.id=b.exam_id', 'left')->field('a.*')->where(['b.section_id'=>$section_id])->find();
         if (!$exam_info) {
             $this->error('该试卷不存在, 或已经下架了');
         }
         $where = ['status'=>1, 'section_id'=>$section_id];
-        $list = ExamItemModel::instance()->where($where)->order(['list_order'=>'asc', 'section_id'=>'asc'])->select()->toArray();
+        $data = ExamItemModel::instance()->where($where)->order(['list_order'=>'asc', 'section_id'=>'asc'])->select()->toArray();
         $result = [];
         $result['info'] = $exam_info;
         $result['count'] = 0;
@@ -115,14 +115,14 @@ class ExamController extends RestUserBaseController
             }
         }
         //记录到我的刷题记录
-        $exists = ExamUserlogModel::instance()->get(['user_id'=>$this->userId,'exam_id'=>$id]);
+        $exists = ExamUserlogModel::instance()->get(['user_id'=>$this->userId,'exam_id'=>$exam_info['id']]);
         if ($exists) {
             $exists->update_time    = NOW_TIME;
             $exists->save();
         } else {
             $add = [
                 'user_id' => $this->userId,
-                'exam_id' => $id,
+                'exam_id' => $exam_info['id'],
                 'title' => $exam_info['title'],
                 'subtitle' => $exam_info['subtitle'],
                 'property' => $exam_info['property'],

@@ -6,10 +6,6 @@ use think\Model;
 
 class DakaHomeworkModel extends Model
 {
-    protected $type = [
-        'images'    =>  'array',
-    ];
-
     protected $insert = ['user_id','dtype'=>1,'daka_parent_id'];
     protected $autoWriteTimestamp = true;
 
