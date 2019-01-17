@@ -142,3 +142,7 @@ function gmt_iso8601($time) {
     $expiration = substr($expiration, 0, $pos);
     return $expiration."Z";
 }
+
+function oss_img_pre($img) {
+    return Config::get('aliyun_oss.Preview_Pre').$img;
+}

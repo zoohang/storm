@@ -19,6 +19,17 @@ class DakaHomeworkModel extends Model
         return self::$instance;
     }
 
+    public function getImagesAttr($value)
+    {
+        $imgs =  htmlspecialchars_decode($value);
+        $imgs = json_decode($imgs, true);
+        foreach ($imgs as &$img) {
+            $img = oss_img_pre($img);
+        }
+        unset($img);
+        return json_encode($imgs);
+    }
+
     protected function setUserIdAttr()
     {
         return request()->post('user_id');
