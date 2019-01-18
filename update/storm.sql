@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地连接
+Source Server         : localhost
 Source Server Version : 50553
-Source Host           : 127.0.0.1:3306
+Source Host           : localhost:3306
 Source Database       : storm
 
 Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-18 00:34:41
+Date: 2019-01-18 17:34:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -596,7 +596,6 @@ CREATE TABLE `st_course` (
   `image` varchar(256) NOT NULL DEFAULT '' COMMENT '展示图片',
   `recommended` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否推荐',
   `is_top` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否置顶',
-  `join_num` int(11) NOT NULL DEFAULT '0' COMMENT '加入人数',
   `list_order` float NOT NULL DEFAULT '10000' COMMENT '排序',
   `create_time` int(10) NOT NULL DEFAULT '0',
   `update_time` int(10) NOT NULL DEFAULT '0',
@@ -608,10 +607,10 @@ CREATE TABLE `st_course` (
 -- ----------------------------
 -- Records of st_course
 -- ----------------------------
-INSERT INTO `st_course` VALUES ('5', '222', '9', '后端', '333', '0', '0', '0', '1', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '1', '1', '0', '12', '1542726612', '1542726612', '1544889523', '1');
-INSERT INTO `st_course` VALUES ('6', '222', '9', '后端', '333', '0', '0', '0', '1', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '1', '1', '0', '3', '1542726663', '1542726663', '1544889523', '1');
-INSERT INTO `st_course` VALUES ('7', 'nginx123111', '10', '服务端', 'nginx233312', '0', '0', '0', '1', 'admin/20181107/5299ca5b02abe7163b0569cc5aed01da.jpg', '1', '1', '0', '1', '1542727290', '1542812050', '1544889523', '0');
-INSERT INTO `st_course` VALUES ('8', 'php56789', '9', '后端', 'php567891', '0', '0', '0', '3', 'admin/20181107/f05a104ce593705eace17696bc5a3233.jpg', '1', '1', '0', '22', '1542729348', '1544452406', '1544889523', '1');
+INSERT INTO `st_course` VALUES ('5', '222', '9', '后端', '333', '0', '0', '0', '1', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '1', '1', '12', '1542726612', '1542726612', '1544889523', '1');
+INSERT INTO `st_course` VALUES ('6', '222', '9', '后端', '333', '0', '0', '0', '1', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '1', '1', '3', '1542726663', '1542726663', '1544889523', '1');
+INSERT INTO `st_course` VALUES ('7', 'nginx123111', '10', '服务端', 'nginx233312', '0', '0', '0', '1', 'admin/20181107/5299ca5b02abe7163b0569cc5aed01da.jpg', '1', '1', '1', '1542727290', '1542812050', '1544889523', '0');
+INSERT INTO `st_course` VALUES ('8', 'php56789', '9', '后端', 'php567891', '0', '0', '0', '3', 'admin/20181107/f05a104ce593705eace17696bc5a3233.jpg', '1', '1', '22', '1542729348', '1544452406', '1544889523', '1');
 
 -- ----------------------------
 -- Table structure for st_course_item
@@ -719,8 +718,6 @@ CREATE TABLE `st_daka` (
   `thumbnail` varchar(100) NOT NULL DEFAULT '' COMMENT '缩略图',
   `post_content` text COMMENT '文章内容',
   `post_content_filtered` text COMMENT '处理过的文章内容',
-  `join_num` int(11) NOT NULL DEFAULT '0' COMMENT '打卡课程加入人数',
-  `daka_num` int(11) NOT NULL DEFAULT '0' COMMENT '打卡次数[作业提交次数]',
   `list_order` int(11) NOT NULL DEFAULT '100' COMMENT '排序值, 越小越靠前',
   `more` text COMMENT '扩展属性,如缩略图;格式为json',
   PRIMARY KEY (`id`),
@@ -732,16 +729,16 @@ CREATE TABLE `st_daka` (
 -- ----------------------------
 -- Records of st_daka
 -- ----------------------------
-INSERT INTO `st_daka` VALUES ('1', '13', '打卡分类一一', '0', '1', '1', '1', '1', '1', '0', '0', '0', '0', '1545881537', '1546239117', '1545840000', '1546185600', '0', '12312312355555112', 'admin/20181231/ac835582916a3ea5d7b48dc86b9fb151.jpg', '\n&lt;p&gt;1231231312312321&lt;/p&gt;\n&lt;p&gt;4444411111&lt;/p&gt;\n&lt;p&gt;&lt;br&gt;&lt;/p&gt;\n&lt;p&gt;&lt;br&gt;&lt;/p&gt;\n&lt;p&gt;2&lt;/p&gt;\n&lt;p&gt;3&lt;/p&gt;\n', null, '0', '0', '9', '{\"audio\":\"\",\"video\":\"\",\"thumbnail\":\"admin/20181231/ac835582916a3ea5d7b48dc86b9fb151.jpg\",\"photos\":[{\"url\":\"admin/20181231/23fae07583e1f129f44cfff322522401.jpg\",\"name\":\"2efeaddb0ff2e61fb47cbb76e954037f.jpg\"}]}');
-INSERT INTO `st_daka` VALUES ('2', '14', '', '0', '1', '0', '1', '0', '0', '0', '0', '0', '0', '1545891764', '1545891764', '0', '2018', '0', '好像下班了', 'admin/20181227/6776dee3c6e0de549ad8f33147b6f135.gif', '&lt;p&gt;好想下班&lt;img src=&quot;https://img.baidu.com/hi/jx2/j_0002.gif&quot;&gt;&lt;/p&gt;', null, '0', '0', '8', '{\"thumbnail\":\"admin/20181227/6776dee3c6e0de549ad8f33147b6f135.gif\",\"photos\":[{\"url\":\"admin/20181227/a0dc4fb9a4517f5b231c6d5cdc2bc80d.gif\",\"name\":\"20180708140354.gif\"},{\"url\":\"admin/20181227/cc9699075e2333d961d4d8c5c3a3ed93.gif\",\"name\":\"89e5bad671d5e05ea81a1703ef34bee4_t.gif\"},{\"url\":\"admin/20181227/b4298c559cb45eb09c18f6c32dbe3c21.gif\",\"name\":\"445bf4d333be46239bd431ff7627176e_t.gif\"}],\"files\":[{\"url\":\"admin/20181227/67d9bc1b4c06d69602f0189a80707903.docx\",\"name\":\"733358571ad232ad33b90984d9487acb_4_8.docx\"}]}');
-INSERT INTO `st_daka` VALUES ('3', '14', '打卡下班咯', '0', '1', '0', '1', '0', '0', '0', '0', '0', '0', '1545892203', '1545892203', '0', '2018', '0', '好像下班了', 'admin/20181227/6776dee3c6e0de549ad8f33147b6f135.gif', '&lt;p&gt;好想下班&lt;img src=&quot;https://img.baidu.com/hi/jx2/j_0002.gif&quot;&gt;&lt;/p&gt;', null, '0', '0', '7', '{\"thumbnail\":\"admin/20181227/6776dee3c6e0de549ad8f33147b6f135.gif\",\"photos\":[{\"url\":\"admin/20181227/a0dc4fb9a4517f5b231c6d5cdc2bc80d.gif\",\"name\":\"20180708140354.gif\"},{\"url\":\"admin/20181227/cc9699075e2333d961d4d8c5c3a3ed93.gif\",\"name\":\"89e5bad671d5e05ea81a1703ef34bee4_t.gif\"},{\"url\":\"admin/20181227/b4298c559cb45eb09c18f6c32dbe3c21.gif\",\"name\":\"445bf4d333be46239bd431ff7627176e_t.gif\"}],\"files\":[{\"url\":\"admin/20181227/67d9bc1b4c06d69602f0189a80707903.docx\",\"name\":\"733358571ad232ad33b90984d9487acb_4_8.docx\"}]}');
-INSERT INTO `st_daka` VALUES ('4', '13', '打卡分类一一', '0', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546073876', '1546073876', '1546073867', '1546073867', '0', '23432423432', '', '&lt;p&gt;423423423423423432&lt;/p&gt;', null, '0', '0', '6', '\"{\\\"thumbnail\\\":\\\"\\\"}\"');
-INSERT INTO `st_daka` VALUES ('5', '13', '打卡分类一一', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546245627', '1546245627', '1546246118', '1546245480', '0', '111111111111111111111111', '', '&lt;p&gt;222222222222222222222222&lt;/p&gt;', null, '0', '0', '100', '\"{\\\"audio\\\":\\\"\\\",\\\"video\\\":\\\"\\\",\\\"thumbnail\\\":\\\"\\\"}\"');
-INSERT INTO `st_daka` VALUES ('6', '13', '打卡分类一一', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546246121', '1546246121', '0', '0', '0', '111111111111111111111111', 'admin/20181231/71aababa309a3ff75716677e802041a9.jpg', '&lt;p&gt;222222222222222222222222&lt;/p&gt;', null, '0', '0', '100', '\"{\\\"audio\\\":\\\"\\\",\\\"video\\\":\\\"\\\",\\\"thumbnail\\\":\\\"admin/20181231/71aababa309a3ff75716677e802041a9.jpg\\\"}\"');
-INSERT INTO `st_daka` VALUES ('7', '13', '打卡分类一一', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546246446', '1546246686', '0', '0', '0', '3333333333333333', '', '\n&lt;p&gt;222222222222222222222222&lt;/p&gt;\n&lt;p&gt;3333333333333333333333333333&lt;/p&gt;\n', null, '0', '0', '100', '{\"audio\":\"\",\"video\":\"\",\"thumbnail\":\"\"}');
-INSERT INTO `st_daka` VALUES ('8', '14', '打卡下班咯', '0', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546247015', '1546247355', '1546246920', '1546246920', '0', '今天是2018年最后一天咯', 'admin/20181231/5340d43f7b1eecdb25a81e8fe4d15d3b.jpg', '&lt;p&gt;测试获取最后的新增id 获取失败了1&lt;/p&gt;', null, '0', '0', '5', '{\"audio\":\"\",\"video\":\"\",\"photos\":[{\"url\":\"admin/20181231/3c12b2c9c864ffd44f7e9ef20918d00d.jpg\",\"name\":\"2f6b374950d828643a98260306c33d14.jpg\"},{\"url\":\"admin/20181231/1e1c27236205ece3163481ccf28f2a31.jpg\",\"name\":\"3d0fd2242cf6c22f60b7d350a1f2af6b.jpg\"}]}');
-INSERT INTO `st_daka` VALUES ('9', '14', '打卡下班咯', '8', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546247456', '1546525410', '1546524095', '0', '0', '第一章', 'admin/20181231/2e8406f7a5efb8d0631d849920a09eb1.jpg', '\n&lt;p&gt;第一章第一章&lt;/p&gt;\n&lt;p style=&quot;white-space: normal;&quot;&gt;第一章第一章&lt;/p&gt;\n&lt;p&gt;&lt;br&gt;&lt;/p&gt;\n', null, '0', '0', '2', '{\"files\":[{\"url\":\"admin/20190103/ca0dd15e571ec7b3b48562f1e574a6f5.xlsx\",\"name\":\"技术团队事务跟踪管理-20180914.xlsx\"}]}');
-INSERT INTO `st_daka` VALUES ('10', '14', '打卡下班咯', '8', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546247633', '1546247675', '1546524095', '0', '0', '第二章', 'admin/20181231/71aababa309a3ff75716677e802041a9.jpg', '&lt;p&gt;第二章第二章第二章第二章&lt;/p&gt;', null, '0', '0', '3', '{\"audio\":\"\",\"video\":\"\"}');
+INSERT INTO `st_daka` VALUES ('1', '13', '打卡分类一一', '0', '1', '1', '1', '1', '1', '0', '0', '0', '0', '1545881537', '1546239117', '1545840000', '1546185600', '0', '12312312355555112', 'admin/20181231/ac835582916a3ea5d7b48dc86b9fb151.jpg', '\n&lt;p&gt;1231231312312321&lt;/p&gt;\n&lt;p&gt;4444411111&lt;/p&gt;\n&lt;p&gt;&lt;br&gt;&lt;/p&gt;\n&lt;p&gt;&lt;br&gt;&lt;/p&gt;\n&lt;p&gt;2&lt;/p&gt;\n&lt;p&gt;3&lt;/p&gt;\n', null, '9', '{\"audio\":\"\",\"video\":\"\",\"thumbnail\":\"admin/20181231/ac835582916a3ea5d7b48dc86b9fb151.jpg\",\"photos\":[{\"url\":\"admin/20181231/23fae07583e1f129f44cfff322522401.jpg\",\"name\":\"2efeaddb0ff2e61fb47cbb76e954037f.jpg\"}]}');
+INSERT INTO `st_daka` VALUES ('2', '14', '', '0', '1', '0', '1', '0', '0', '0', '0', '0', '0', '1545891764', '1545891764', '0', '2018', '0', '好像下班了', 'admin/20181227/6776dee3c6e0de549ad8f33147b6f135.gif', '&lt;p&gt;好想下班&lt;img src=&quot;https://img.baidu.com/hi/jx2/j_0002.gif&quot;&gt;&lt;/p&gt;', null, '8', '{\"thumbnail\":\"admin/20181227/6776dee3c6e0de549ad8f33147b6f135.gif\",\"photos\":[{\"url\":\"admin/20181227/a0dc4fb9a4517f5b231c6d5cdc2bc80d.gif\",\"name\":\"20180708140354.gif\"},{\"url\":\"admin/20181227/cc9699075e2333d961d4d8c5c3a3ed93.gif\",\"name\":\"89e5bad671d5e05ea81a1703ef34bee4_t.gif\"},{\"url\":\"admin/20181227/b4298c559cb45eb09c18f6c32dbe3c21.gif\",\"name\":\"445bf4d333be46239bd431ff7627176e_t.gif\"}],\"files\":[{\"url\":\"admin/20181227/67d9bc1b4c06d69602f0189a80707903.docx\",\"name\":\"733358571ad232ad33b90984d9487acb_4_8.docx\"}]}');
+INSERT INTO `st_daka` VALUES ('3', '14', '打卡下班咯', '0', '1', '0', '1', '0', '0', '0', '0', '0', '0', '1545892203', '1545892203', '0', '2018', '0', '好像下班了', 'admin/20181227/6776dee3c6e0de549ad8f33147b6f135.gif', '&lt;p&gt;好想下班&lt;img src=&quot;https://img.baidu.com/hi/jx2/j_0002.gif&quot;&gt;&lt;/p&gt;', null, '7', '{\"thumbnail\":\"admin/20181227/6776dee3c6e0de549ad8f33147b6f135.gif\",\"photos\":[{\"url\":\"admin/20181227/a0dc4fb9a4517f5b231c6d5cdc2bc80d.gif\",\"name\":\"20180708140354.gif\"},{\"url\":\"admin/20181227/cc9699075e2333d961d4d8c5c3a3ed93.gif\",\"name\":\"89e5bad671d5e05ea81a1703ef34bee4_t.gif\"},{\"url\":\"admin/20181227/b4298c559cb45eb09c18f6c32dbe3c21.gif\",\"name\":\"445bf4d333be46239bd431ff7627176e_t.gif\"}],\"files\":[{\"url\":\"admin/20181227/67d9bc1b4c06d69602f0189a80707903.docx\",\"name\":\"733358571ad232ad33b90984d9487acb_4_8.docx\"}]}');
+INSERT INTO `st_daka` VALUES ('4', '13', '打卡分类一一', '0', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546073876', '1546073876', '1546073867', '1546073867', '0', '23432423432', '', '&lt;p&gt;423423423423423432&lt;/p&gt;', null, '6', '\"{\\\"thumbnail\\\":\\\"\\\"}\"');
+INSERT INTO `st_daka` VALUES ('5', '13', '打卡分类一一', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546245627', '1546245627', '1546246118', '1546245480', '0', '111111111111111111111111', '', '&lt;p&gt;222222222222222222222222&lt;/p&gt;', null, '100', '\"{\\\"audio\\\":\\\"\\\",\\\"video\\\":\\\"\\\",\\\"thumbnail\\\":\\\"\\\"}\"');
+INSERT INTO `st_daka` VALUES ('6', '13', '打卡分类一一', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546246121', '1546246121', '0', '0', '0', '111111111111111111111111', 'admin/20181231/71aababa309a3ff75716677e802041a9.jpg', '&lt;p&gt;222222222222222222222222&lt;/p&gt;', null, '100', '\"{\\\"audio\\\":\\\"\\\",\\\"video\\\":\\\"\\\",\\\"thumbnail\\\":\\\"admin/20181231/71aababa309a3ff75716677e802041a9.jpg\\\"}\"');
+INSERT INTO `st_daka` VALUES ('7', '13', '打卡分类一一', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546246446', '1546246686', '0', '0', '0', '3333333333333333', '', '\n&lt;p&gt;222222222222222222222222&lt;/p&gt;\n&lt;p&gt;3333333333333333333333333333&lt;/p&gt;\n', null, '100', '{\"audio\":\"\",\"video\":\"\",\"thumbnail\":\"\"}');
+INSERT INTO `st_daka` VALUES ('8', '14', '打卡下班咯', '0', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546247015', '1546247355', '1546246920', '1546246920', '0', '今天是2018年最后一天咯', 'admin/20181231/5340d43f7b1eecdb25a81e8fe4d15d3b.jpg', '&lt;p&gt;测试获取最后的新增id 获取失败了1&lt;/p&gt;', null, '5', '{\"audio\":\"\",\"video\":\"\",\"photos\":[{\"url\":\"admin/20181231/3c12b2c9c864ffd44f7e9ef20918d00d.jpg\",\"name\":\"2f6b374950d828643a98260306c33d14.jpg\"},{\"url\":\"admin/20181231/1e1c27236205ece3163481ccf28f2a31.jpg\",\"name\":\"3d0fd2242cf6c22f60b7d350a1f2af6b.jpg\"}]}');
+INSERT INTO `st_daka` VALUES ('9', '14', '打卡下班咯', '8', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546247456', '1546525410', '1546524095', '0', '0', '第一章', 'admin/20181231/2e8406f7a5efb8d0631d849920a09eb1.jpg', '\n&lt;p&gt;第一章第一章&lt;/p&gt;\n&lt;p style=&quot;white-space: normal;&quot;&gt;第一章第一章&lt;/p&gt;\n&lt;p&gt;&lt;br&gt;&lt;/p&gt;\n', null, '2', '{\"files\":[{\"url\":\"admin/20190103/ca0dd15e571ec7b3b48562f1e574a6f5.xlsx\",\"name\":\"技术团队事务跟踪管理-20180914.xlsx\"}]}');
+INSERT INTO `st_daka` VALUES ('10', '14', '打卡下班咯', '8', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1546247633', '1546247675', '1546524095', '0', '0', '第二章', 'admin/20181231/71aababa309a3ff75716677e802041a9.jpg', '&lt;p&gt;第二章第二章第二章第二章&lt;/p&gt;', null, '3', '{\"audio\":\"\",\"video\":\"\"}');
 
 -- ----------------------------
 -- Table structure for st_daka_homework
@@ -759,20 +756,17 @@ CREATE TABLE `st_daka_homework` (
   `dtype` tinyint(1) NOT NULL DEFAULT '0' COMMENT '回复类型 1-用户上传作业 2-老师评图回复',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='打卡-作业提交表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='打卡-作业提交表';
 
 -- ----------------------------
 -- Records of st_daka_homework
 -- ----------------------------
-INSERT INTO `st_daka_homework` VALUES ('1', '2', '0', '1', '[&quot;wx6da2e823bfb4f0e9.o6zAJs6JS0ZEsQ3n9VzpsDNbHkMk.B60RA6sQgOZCb245049a5619fe2114cff5ff00afa240.png&quot;,&quot;wx6da2e823bfb4f0e9.o6zAJs6JS0ZEsQ3n9VzpsDNbHkMk.k2NWlC9yhrrhf9bc0753961ceb59b9964ceb56ab896e.png&quot;]', '111', '1546573318', '1546573318', '1');
+INSERT INTO `st_daka_homework` VALUES ('1', '2', '0', '1', '[1,2,3]', '111', '1546573318', '1546573318', '1');
 INSERT INTO `st_daka_homework` VALUES ('2', '2', '0', '1', '[1,2,3]', '111', '1546573345', '1546573345', '1');
 INSERT INTO `st_daka_homework` VALUES ('3', '2', '0', '1', '[1,2,3]', '111', '1546573400', '1546573400', '1');
 INSERT INTO `st_daka_homework` VALUES ('4', '2', '0', '1', '[1,2,3]', '111', '1546573573', '1546573573', '1');
 INSERT INTO `st_daka_homework` VALUES ('5', '2', '1', '7', '[\"1,23,4\"]', '222', '1546598766', '1546598766', '1');
 INSERT INTO `st_daka_homework` VALUES ('6', '2', '1', '7', '[\"1,23,4\"]', '222', '1546660016', '1546660016', '1');
-INSERT INTO `st_daka_homework` VALUES ('7', '2', '1', '6', '[\"a.png\",\"b.png\"]', 'postman test', '1547740302', '1547740302', '1');
-INSERT INTO `st_daka_homework` VALUES ('8', '2', '1', '6', '[&quot;a.png&quot;, &quot;aaa1.png&quot;]', 'postman test', '1547742027', '1547742027', '1');
-INSERT INTO `st_daka_homework` VALUES ('9', '2', '0', '1', '[&quot;a.png&quot;, &quot;aaa1.png&quot;]', 'postman test', '1547742032', '1547742032', '1');
 
 -- ----------------------------
 -- Table structure for st_exam
@@ -968,6 +962,36 @@ INSERT INTO `st_feedback` VALUES ('3', '2', '3', '程序错误程序错误程序
 INSERT INTO `st_feedback` VALUES ('4', '2', '3', '程序错误程序错误程序错误程序错误程序错误\n40404040404', '1545058935', '1545058935', '0', '1');
 
 -- ----------------------------
+-- Table structure for st_goods
+-- ----------------------------
+DROP TABLE IF EXISTS `st_goods`;
+CREATE TABLE `st_goods` (
+  `goods_id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_id` int(11) NOT NULL DEFAULT '0',
+  `category_name` varchar(255) NOT NULL DEFAULT '',
+  `goods_name` varchar(255) NOT NULL DEFAULT '' COMMENT '商品名称',
+  `description` varchar(2048) NOT NULL DEFAULT '' COMMENT '商品描述',
+  `image` varchar(512) NOT NULL DEFAULT '' COMMENT '商品预览图片',
+  `cost_price` int(11) NOT NULL DEFAULT '0' COMMENT '原价',
+  `price` int(11) NOT NULL DEFAULT '0' COMMENT '销售价',
+  `stock` int(11) NOT NULL DEFAULT '-1' COMMENT '库存 -1无限库存 其他为库存数量',
+  `goods_type` tinyint(3) NOT NULL DEFAULT '0' COMMENT '商品类型 1-刷题 2-打卡 3-在线课堂 4-线下课堂 5-其他 ',
+  `create_time` int(10) NOT NULL DEFAULT '0',
+  `publish_time` int(10) NOT NULL DEFAULT '0',
+  `update_time` int(10) NOT NULL DEFAULT '0',
+  `delete_time` int(10) NOT NULL,
+  `goods_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态 1:已发布;0:未发布;-1:删除',
+  PRIMARY KEY (`goods_id`),
+  KEY `type` (`goods_type`),
+  KEY `id_type` (`goods_id`,`goods_type`),
+  KEY `status` (`goods_status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='商品表';
+
+-- ----------------------------
+-- Records of st_goods
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for st_hook
 -- ----------------------------
 DROP TABLE IF EXISTS `st_hook`;
@@ -1159,6 +1183,31 @@ INSERT INTO `st_option` VALUES ('1', '1', 'site_info', '{\"site_name\":\"\\u98ce
 INSERT INTO `st_option` VALUES ('2', '1', 'wxapp_settings', '{\"default\":{\"name\":\"\\u98ce\\u66b4\\u624b\\u7ed8\",\"app_id\":\"aaa\",\"app_secret\":\"bbb\",\"is_default\":\"1\",\"_plugin\":\"wxapp\",\"_controller\":\"admin_wxapp\",\"_action\":\"addpost\"},\"wxapps\":{\"aaa\":{\"name\":\"\\u98ce\\u66b4\\u624b\\u7ed8\",\"app_id\":\"aaa\",\"app_secret\":\"bbb\",\"_plugin\":\"wxapp\",\"_controller\":\"admin_wxapp\",\"_action\":\"addpost\"}}}');
 
 -- ----------------------------
+-- Table structure for st_order
+-- ----------------------------
+DROP TABLE IF EXISTS `st_order`;
+CREATE TABLE `st_order` (
+  `order_id` mediumint(9) NOT NULL,
+  `order_sn` varchar(20) NOT NULL DEFAULT '' COMMENT '订单号，唯一',
+  `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id，同user的id',
+  `user_name` varchar(255) NOT NULL DEFAULT '' COMMENT '用户名称',
+  `goods_id` int(11) NOT NULL DEFAULT '0' COMMENT '商品id',
+  `goods_amount` int(11) NOT NULL DEFAULT '0' COMMENT '商品总价格',
+  `pay_fee` int(11) NOT NULL DEFAULT '0' COMMENT '支付费用',
+  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '订单生成时间',
+  `pay_time` int(11) NOT NULL DEFAULT '0' COMMENT '支付时间',
+  `order_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '订单状态。0，未确认；1，已确认；2，已取消；3，无效；4，退货；',
+  `pay_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '支付状态；0，未付款；1，付款中；2，已付款',
+  PRIMARY KEY (`order_id`),
+  KEY `goods_id` (`goods_id`),
+  KEY `order_sn` (`order_sn`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='订单表';
+
+-- ----------------------------
+-- Records of st_order
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for st_plugin
 -- ----------------------------
 DROP TABLE IF EXISTS `st_plugin`;
@@ -1332,30 +1381,6 @@ CREATE TABLE `st_portal_tag_post` (
 INSERT INTO `st_portal_tag_post` VALUES ('6', '7', '3', '1');
 INSERT INTO `st_portal_tag_post` VALUES ('7', '7', '4', '1');
 INSERT INTO `st_portal_tag_post` VALUES ('8', '7', '5', '1');
-
--- ----------------------------
--- Table structure for st_recommend
--- ----------------------------
-DROP TABLE IF EXISTS `st_recommend`;
-CREATE TABLE `st_recommend` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '' COMMENT '名称',
-  `type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '1-搜索关键字',
-  `list_order` decimal(8,0) NOT NULL DEFAULT '1000' COMMENT '排序',
-  `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `more` text COMMENT '其他内容 json',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='推荐表';
-
--- ----------------------------
--- Records of st_recommend
--- ----------------------------
-INSERT INTO `st_recommend` VALUES ('1', '建筑手绘', '1', '1000', '0', null);
-INSERT INTO `st_recommend` VALUES ('2', '商业手绘', '1', '1000', '0', null);
-INSERT INTO `st_recommend` VALUES ('3', '排版', '1', '1000', '0', null);
-INSERT INTO `st_recommend` VALUES ('4', '住宅', '1', '1000', '0', null);
-INSERT INTO `st_recommend` VALUES ('5', '效果图', '1', '1000', '0', null);
-INSERT INTO `st_recommend` VALUES ('6', '公寓', '1', '1000', '0', null);
 
 -- ----------------------------
 -- Table structure for st_recycle_bin
