@@ -6,7 +6,7 @@ use think\Model;
 
 class DakaHomeworkModel extends Model
 {
-    protected $insert = ['user_id','dtype'=>1,'daka_parent_id'];
+    protected $insert = ['user_id','dtype'=>1];
     protected $autoWriteTimestamp = true;
 
     private static $instance = null;

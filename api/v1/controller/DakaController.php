@@ -13,8 +13,12 @@ use api\v1\model\DakaModel;
 use api\v1\model\ExamUserlogModel;
 use api\v1\model\ExamWronglistModel;
 use api\v1\model\CategoryModel;
+use api\v1\model\OrderModel;
+use api\v1\model\UserModel;
+use app\admin\model\GoodsModel;
 use cmf\controller\RestUserBaseController;
 use think\Db;
+use think\Exception;
 use think\Validate;
 
 class DakaController extends RestUserBaseController
@@ -54,8 +58,12 @@ class DakaController extends RestUserBaseController
         $ids[] = $category_id;
         $list = [];
         if ($ids) {
-            $where['category_id'] = ['in', $ids];
-            $list = DakaModel::instance()->where($where)->order(['list_order'=>'asc','id'=>'desc'])->paginate($limit)->toArray();
+            $where['a.category_id'] = ['in', $ids];
+            $list = DakaModel::instance()
+                ->alias('a')
+                ->join('__GOODS__ b', 'a.goods_id=b.goods_id')
+                ->field('a.*,b.price,b.stock')
+                ->where($where)->order(['a.list_order'=>'asc','a.id'=>'desc'])->paginate($limit)->toArray();
         }
         if ($this->request->action() != strtolower(__FUNCTION__)) {
             return $list;
@@ -100,7 +108,17 @@ class DakaController extends RestUserBaseController
         if ($result !== true) {
             $this->error($result);
         }
-        $res = DakaHomeworkModel::instance()->allowField(true)->isUpdate(false)->save($data);
+        Db::startTrans();
+        try{
+            $info = Db::name('Daka')->where(['id'=>$daka_id])->find();
+            $data['daka_parent_id'] = $info['parent_id'];
+            $res = DakaHomeworkModel::instance()->allowField(true)->isUpdate(false)->save($data);
+            DakaModel::instance()->where(['id'=>$info['parent_id']])->inc('daka_num');
+            Db::commit();
+        } catch (\Exception $e) {
+            Db::rollback();
+            $this->error('点赞失败！');
+        }
         if ($res !== false) {
             $this->success('ok');
         } else {
@@ -140,5 +158,34 @@ class DakaController extends RestUserBaseController
 
     public function bugDaka() {
         //todo 购买打卡课程
+        $goods_id = $this->request->param('goods_id', 0, 'intval,abs');
+        $daka_id = $this->request->param('goods_id', 0, 'intval,abs');
+        if (!$goods_id) $this->error('这个商品已经下架');
+        if (!$daka_id) $this->error('打卡课程id必填');
+        $goods_info = GoodsModel::instance()->where(['goods_id'=>$goods_id])->find();
+        $data = [
+            'order_sn' => build_order_no(),
+            'user_id' => $this->userId,
+            'user_name' => $this->user['user_nickname'],
+            'goods_id' => $goods_id,
+            'goods_amount' => $goods_info['price'],
+            'pay_fee' => $goods_info['price'],
+            'pay_time' => NOW_TIME,
+            'order_status' => 1,
+            'pay_status' => 2,
+        ];
+        Db::startTrans();
+        try {
+            $user_info = UserModel::instance()->where(['id'=>$this->userId])->find();
+            if ($user_info['coin'] < $goods_info['price']) throw new \Exception("你剩余的图币不够{$goods_info['price']}");
+            $res = OrderModel::instance()->data($data)->isUpdate(false)->allowField(true)->save();
+            UserModel::instance()->where(['id'=>$this->userId])->dec('coin', $goods_info['price']);
+            DakaModel::instance()->where(['id'=>$daka_id])->inc('join_num');
+            Db::commit();
+        } catch (\Exception $e) {
+            Db::rollback();
+            $this->error($e->getMessage());
+        }
+        $this->success('购买成功!');
     }
 }
