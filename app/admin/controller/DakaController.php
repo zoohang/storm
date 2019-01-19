@@ -13,6 +13,7 @@ namespace app\admin\controller;
 use app\admin\model\DakaModel;
 use app\admin\model\ExamItemModel;
 use app\admin\model\ExamModel;
+use app\admin\model\GoodsModel;
 use cmf\controller\AdminBaseController;
 use app\admin\model\CategoryModel;
 use think\Cookie;
@@ -111,7 +112,25 @@ class DakaController extends AdminBaseController
                     array_push($data['post']['more']['files'], ["url" => $fileUrl, "name" => $data['file_names'][$key]]);
                 }
             }
-            $res = $model->adminAddArticle($data['post'], $data['post']['category_id']);
+
+            Db::startTrans();
+            try {
+                //商品售价
+                $goods = $data['goods'];
+                $other = [
+                    'category_id'=> $post['category_id'],
+                    'goods_name'=> $post['post_title'],
+                    'image'=> $post['thumbnail']
+                ];
+                $data['post']['goods_id'] = GoodsModel::instance()->editGoods($goods, $other, $this->type);
+                //商品售价
+                $res = $model->adminAddArticle($data['post'], $data['post']['category_id']);
+                Db::commit();
+            } catch (\Exception $e) {
+                // 回滚事务
+                Db::rollback();
+                $this->error("新增失败, {$e->getMessage()}");
+            }
             $this->success('保存成功!', url('Daka/edit', ['id'=> $res->id]));
 
         }
@@ -129,6 +148,11 @@ class DakaController extends AdminBaseController
         $categoryTree = $CategoryModel->categoryTree($info['category_id'], '', $this->type);
         $this->assign('category_tree', $categoryTree);
         $this->assign('post', $info);
+        //商品售价
+        if ($info['goods_id']) {
+            $goods = GoodsModel::instance()->where(['goods_id'=>$info['goods_id']])->find();
+            $this->assign('goods', $goods);
+        }
         return $this->fetch();
     }
 
@@ -165,10 +189,23 @@ class DakaController extends AdminBaseController
                     array_push($data['post']['more']['files'], ["url" => $fileUrl, "name" => $data['file_names'][$key]]);
                 }
             }
-
-            $result =  $model->adminEditArticle($data['post'], $data['post']['category_id']);
-            if ($result === false) {
-                $this->error('编辑失败!');
+            //商品售价
+            Db::startTrans();
+            try {
+                $goods = $data['goods'];
+                $other = [
+                    'category_id'=> $post['category_id'],
+                    'goods_name'=> $post['post_title'],
+                    'image'=> $post['thumbnail'],
+                    'goods_status' => $post['post_status']
+                ];
+                $data['post']['goods_id'] = GoodsModel::instance()->editGoods($goods, $other, $this->type);
+                //商品售价
+                $result =  $model->adminEditArticle($data['post'], $data['post']['category_id']);
+                Db::commit();
+            } catch (\Exception $e) {
+                Db::rollback();
+                $this->error("新增失败, {$e->getMessage()}");
             }
             $this->success('编辑成功!', url('Daka/edit', ['id'=> $data['post']['id']]));
 

@@ -79,19 +79,19 @@ class DakaModel extends Model
     {
         $data['user_id'] = cmf_get_current_admin_id();
 
-        if (!empty($data['more']['thumbnail'])) {
+        if (isset($data['more']['thumbnail']) && !empty($data['more']['thumbnail'])) {
             $data['more']['thumbnail'] = cmf_asset_relative_url($data['more']['thumbnail']);
             $data['thumbnail']         = $data['more']['thumbnail'];
         }
 
-        if (!empty($data['more']['audio'])) {
+        /*if (!empty($data['more']['audio'])) {
             $data['more']['audio'] = cmf_asset_relative_url($data['more']['audio']);
         }
 
         if (!empty($data['more']['video'])) {
             $data['more']['video'] = cmf_asset_relative_url($data['more']['video']);
-        }
-        if ($data['more']) $data['more'] = json_encode($data['more'], JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
+        }*/
+        if (isset($data['more']) && $data['more']) $data['more'] = json_encode($data['more'], JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
         if ($category_id) $data['category_name'] = $this->setCategoryNameAttr();
         $this->allowField(true)->data($data, true)->isUpdate(false)->save();
         CategoryModel::instance()->where(['id'=>$category_id])->setInc('count', 1);

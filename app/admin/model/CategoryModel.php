@@ -71,7 +71,7 @@ class CategoryModel extends Model
         }
 
         $tree->init($newCategories);
-        $str     = '<option value=\"{$id}\" {$selected}>{$spacer}{$name}</option>';
+        $str     = '<option value={$id} {$selected}>{$spacer}{$name}</option>';
         $treeStr = $tree->getTree(0, $str);
 
         return $treeStr;

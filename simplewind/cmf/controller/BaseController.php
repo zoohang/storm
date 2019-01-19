@@ -82,4 +82,9 @@ class BaseController extends Controller
         return true;
     }
 
+    protected function ajaxReturn($data, $code=0, $msg='success')
+    {
+        $header['Content-Type'] = 'application/json; charset=utf-8';
+        $this->result(json_encode($data, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES), 0, $msg, 'json', $header);
+    }
 }

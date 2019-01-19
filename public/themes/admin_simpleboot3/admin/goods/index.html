@@ -1,0 +1,126 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="{:url('goods/index')}">列表</a></li>
+    </ul>
+    <form class="well form-inline margin-top-20" method="post" action="{:url('goods/index')}">
+        类型:
+        <select name="type" id="" class="form-control js-categories-name-input" style="width: 200px;">
+            <option value="">请选分类</option>
+            <option value="1" {:isset($params['type'])&&$params['type']==1?'selected':''}>刷题</option>
+            <option value="2" {:isset($params['type'])&&$params['type']==2?'selected':''}>打卡</option>
+            <option value="3" {:isset($params['type'])&&$params['type']==3?'selected':''}>在线课堂</option>
+            <option value="4" {:isset($params['type'])&&$params['type']==4?'selected':''}>线下课堂</option>
+        </select>
+        <span id="type-category" class="{:isset($params['category_id'])?'':'hidden'}">
+            分类:
+            <select name="category_id" id="type-category-select" class="form-control" style="width: 200px;">
+                <if condition="isset($type_category) && $type_category">
+                <option value="">请选分类</option>
+                {$type_category}
+                </if>
+            </select>
+        </span>
+        标题:
+        <input type="text" class="form-control" name="keyword" style="width: 200px;" value="{$params.keyword|default=''}" placeholder="请输入标题">
+        <input type="submit" class="btn btn-primary" value="搜索">
+        <a class="btn btn-danger" href="{:url('goods/index')}">清空</a>
+    </form>
+    <form class="js-ajax-form" action="#" method="post">
+        <div class="table-actions">
+            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
+                    data-action="{:url('goods/publish',array('yes'=>1))}" data-subcheck="true">发布
+            </button>
+            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
+                    data-action="{:url('goods/publish',array('no'=>1))}" data-subcheck="true">取消发布
+            </button>
+        </div>
+        <table class="table table-hover table-bordered table-list">
+            <thead>
+            <tr>
+                <th width="15">
+                    <label>
+                        <input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x">
+                    </label>
+                </th>
+                <th width="80">{:lang('SORT')}</th>
+                <th width="50">ID</th>
+                <th>图片</th>
+                <th>所属分类</th>
+                <th>标题</th>
+                <th>发布时间</th>
+                <th>结束时间	</th>
+                <th width="70">状态</th>
+                <th width="200">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="list" item="vo">
+                <tr>
+                    <td>
+                        <input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
+                               value="{$vo.id}" title="ID:{$vo.id}">
+                    </td>
+                    <td><input name="list_orders[{$vo.id}]" type="text" size="3" value="{$vo.list_order}" class="input-order valid" aria-invalid="false"></td>
+                    <td>{$vo.id}</td>
+                    <td><img src="{:cmf_get_image_preview_url($vo.thumbnail)}" id="thumb-preview"
+                             height="50" style="cursor: hand" onclick="javascript:imagePreviewDialog('{:cmf_get_image_preview_url($vo.thumbnail)}');"/></td>
+                    <td>{$vo.category_name}</td>
+                    <td>{$vo.post_title}</td>
+                    <td>
+                        <empty name="vo.published_time">
+                            未发布
+                            <else/>
+                            {:date('Y-m-d H:i:s',$vo['published_time'])}
+                        </empty>
+                    </td>
+                    <td>
+                        <notempty name="vo.update_time">
+                            {:date('Y-m-d H:i:s',$vo['end_time'])}
+                        </notempty>
+                    </td>
+                    <td>
+                        <switch name="vo.post_status">
+                            <case value="0"><a data-toggle="tooltip" title="已删除"><i class="fa fa-close"></i></a></case>
+                            <case value="1"><a data-toggle="tooltip" title="已发布"><i class="fa fa-check"></i></a></case>
+                            <case value="2"><a data-toggle="tooltip" title="未发布"><i class="fa fa-close"></i></a></case>
+                        </switch>
+                        <notempty name="vo.is_top">
+                            <a data-toggle="tooltip" title="已置顶"><i class="fa fa-arrow-up"></i></a>
+                            <else/>
+                            <a data-toggle="tooltip" title="未置顶"><i class="fa fa-arrow-down"></i></a>
+                        </notempty>
+                        <notempty name="vo.recommended">
+                            <a data-toggle="tooltip" title="已推荐"><i class="fa fa-thumbs-up"></i></a>
+                            <else/>
+                            <a data-toggle="tooltip" title="未推荐"><i class="fa fa-thumbs-down"></i></a>
+                        </notempty>
+                    </td>
+                    <td>
+                        <a href="{:url('daka/edit',['id'=>$vo.id])}">编辑</a>
+                    </td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+<script>
+    $('body').on('change', '.js-categories-name-input', function() {
+        var type = this.value;
+        if (!type) {
+            return false;
+        }
+        $.post('{:url("goods/getCategoryByType")}'+'?type='+type, function (res) {
+            if (res.data) {
+                $('#type-category-select').empty().append(res.data);
+                $('#type-category').removeClass('hidden');
+            }
+        })
+    })
+</script>
+</body>
+</html>

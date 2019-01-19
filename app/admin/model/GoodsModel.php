@@ -26,4 +26,15 @@ class GoodsModel extends Model
         }
         return self::$instance;
     }
+
+    public function editGoods($goods, $data, $type) {
+        $data = array_merge($goods, $data, ['goods_type'=>$type]);
+        $isUpdate = $goods['goods_id'] ? true : false;
+        $this->isUpdate($isUpdate)->allowField(true)->save($data);
+        return $this->goods_id;
+    }
+
+    public function getGoods() {
+
+    }
 }

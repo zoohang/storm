@@ -1,0 +1,22 @@
+<tr>
+    <th>原价[图币,0=免费]<span class="form-required">*</span></th>
+    <td>
+        <input id="goods-id" type="hidden" name="goods[goods_id]" value="{$goods.goods_id|default=''}">
+        <input class="form-control" type="number" name="goods[cost_price]"
+               required value="{$goods.cost_price|default=''}" placeholder="请输入原价/市场价 图币 0=免费"/>
+    </td>
+</tr>
+<tr>
+    <th>售价[图币,0=免费]<span class="form-required">*</span></th>
+    <td>
+        <input class="form-control" type="number" name="goods[price]"
+               required value="{$goods.price|default=''}" placeholder="请输入售价 图币 0=免费"/>
+    </td>
+</tr>
+<tr>
+    <th>库存[个,-1=不限]<span class="form-required">*</span></th>
+    <td>
+        <input class="form-control" type="number" name="goods[stock]"
+               required value="{$goods.stock|default=-1}" placeholder="请输入库存数量 -1=不限数量"/>
+    </td>
+</tr>
