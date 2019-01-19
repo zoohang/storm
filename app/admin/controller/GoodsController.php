@@ -15,7 +15,6 @@ class GoodsController extends AdminBaseController
         $keyword = $this->request->param('keyword', '', 'trim,htmlentities');
         $type = $this->request->param('type', '', 'intval');
         $category_id = $this->request->param('category_id', '', 'intval');
-        //var_dump($this->request->param('category_id'));die;
         $where = ['goods_status'=> ['EGT', 0]];
         if ($type) $where['goods_type'] = $type;
         if ($category_id) $where['category_id'] = $category_id;
@@ -24,7 +23,10 @@ class GoodsController extends AdminBaseController
             $this->assign("type_category", $type_category);
         }
         if ($keyword) $where['goods_name'] = ['like', "%{$keyword}%"];
-        $list = GoodsModel::instance()->where($where)->order(['goods_id'=>'desc'])->paginate(10);
+        $list = GoodsModel::instance()->alias('a')
+            ->join('__CATEGORY__ b', 'a.category_id=b.id')
+            ->field('a.*,b.name category_name')
+            ->where($where)->order(['goods_id'=>'desc'])->paginate(10);
         // 分页注入搜索条件
         $list->appends(['keyword' => $keyword, 'type' => $type, 'category_id'=>$category_id]);
         // 获取分页显示
@@ -41,19 +43,20 @@ class GoodsController extends AdminBaseController
         $goods_id = $this->request->param('goods_id', 0, 'intval,abs');
         if (!$goods_id) $this->error('请选择一个商品');
         $info = GoodsModel::instance()->where(['goods_id'=>$goods_id])->find();
-        $this->assign('info', $info);
+        $this->assign('goods', $info);
         return $this->fetch();
 }
 
     //保存更新
-    public function save()
+    public function editPost()
     {
         $param = $this->request->param();
-        $result = $this->validate($param, 'Goods');
+        $goods = $param['goods'];
+        $result = $this->validate($goods, 'Goods');
         if ($result !== true) {
             $this->error($result);
         }
-        $res = GoodsModel::instance()->isUpdate(true)->allowField(true)->save($param);
+        $res = GoodsModel::instance()->isUpdate(true)->allowField(true)->save($goods);
         if ($res !== false) {
             $this->success('成功!');
         } else {

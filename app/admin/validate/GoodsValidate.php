@@ -18,16 +18,12 @@ class GoodsValidate extends Validate
         'cost_price' => 'require',
         'price' => 'require',
         'stock' => 'require',
-        'goods_type' => 'require',
-        'goods_status' => 'require',
     ];
 
     protected $message = [
         'cost_price.require' => '原价 不能为空',
         'price.require' => '销售价 不能为空',
         'stock.require' => '库存 不能为空',
-        'goods_type.require' => '商品类型 不能为空',
-        'goods_status.require' => '状态 不能为空',
     ];
 
 }

@@ -12,6 +12,7 @@ namespace app\admin\controller;
 
 use app\admin\model\CourseItemModel;
 use app\admin\model\CourseModel;
+use app\admin\model\GoodsModel;
 use cmf\controller\AdminBaseController;
 use app\admin\model\CategoryModel;
 use think\Cookie;
@@ -96,6 +97,8 @@ class CourseController extends AdminBaseController
         if ($id) {
             $info = DB::name('course')->where(["cid" => $id])->find();
             $tids = DB::name('course_teacher_relation')->where(['cid'=>$id, 'status'=>1])->column('tid');
+            $goods = GoodsModel::instance()->getGoods($info['goods_id']);
+            $this->assign('goods', $goods);
         }
         $CategoryModel = new CategoryModel();
         $categoryTree = $CategoryModel->categoryTree(isset($info['pid']) ? $info['pid']: 0, '', $this->type);
@@ -123,11 +126,18 @@ class CourseController extends AdminBaseController
         }
         $CourseModel = new CourseModel();
         $tid = explode(',', $data['tid']);
-
+        $goods = $data['goods'];
+        $other = [
+            'category_id'=> $data['pid'],
+            'goods_name'=> $data['ctitle'],
+            'image'=> $data['image'],
+            'goods_status' => $data['status']
+        ];
         if ($id) {
             //save
             Db::startTrans();
             try{
+                $data['goods_id'] = GoodsModel::instance()->editGoods($goods, $other, $this->type);
                 $CourseModel->isUpdate(true)->allowField(true)->save($data);
                 DB::table('st_course_teacher_relation')->where(['cid'=>$id])->delete();
                 $relation_list = array_map(function($item) use ($id) {
@@ -150,6 +160,7 @@ class CourseController extends AdminBaseController
             //add
             Db::startTrans();
             try{
+                $data['goods_id'] = GoodsModel::instance()->editGoods($goods, $other, $this->type);
                 $CourseModel->isUpdate(false)->allowField(true)->save($data);
                 $cid = $CourseModel->cid;
                 $relation_list = array_map(function($item) use ($cid) {

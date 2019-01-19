@@ -12,6 +12,7 @@ namespace app\admin\controller;
 
 use app\admin\model\ExamItemModel;
 use app\admin\model\ExamModel;
+use app\admin\model\GoodsModel;
 use app\admin\model\SchoolModel;
 use cmf\controller\AdminBaseController;
 use app\admin\model\CategoryModel;
@@ -93,6 +94,16 @@ class ExamController extends AdminBaseController
 
         Db::startTrans();
         try{
+            //商品售价
+            $goods = $data['goods'];
+            $other = [
+                'category_id'=> $data['cid'],
+                'goods_name'=> $data['title'],
+                'image'=> $data['image'],
+                'goods_status' => $data['status'],
+            ];
+            $data['goods_id'] = GoodsModel::instance()->editGoods($goods, $other, $this->type);
+            //商品售价
             $ExamModel->allowField(true)->isUpdate(false)->save($data);
             $data['exam_id'] = $ExamModel->id;
             $school_ids = explode(',', $data['school_id']);
@@ -129,6 +140,8 @@ class ExamController extends AdminBaseController
         $this->assign('school_id', array_column($school_info, 'id'));
         $this->assign('school_name', array_column($school_info, 'name'));
         $this->assign($info);
+        $goods = GoodsModel::instance()->getGoods($info['goods_id']);
+        $this->assign('goods', $goods);
         return $this->fetch();
     }
 
@@ -149,8 +162,16 @@ class ExamController extends AdminBaseController
             if ($result !== true) {
                 $this->error($result);
             }
+            $goods = $data['goods'];
+            $other = [
+                'category_id'=> $data['cid'],
+                'goods_name'=> $data['title'],
+                'image'=> $data['image'],
+                'goods_status' => $data['status']
+            ];
             Db::startTrans();
             try{
+                $data['goods_id'] = GoodsModel::instance()->editGoods($goods, $other, $this->type);
                 $result = $ExamModel->allowField(true)->isUpdate(true)->save($data);
                 $exam_id = $data['id'];
                 Db::name('exam_school_relation')->where(['exam_id'=>$data['id']])->delete();

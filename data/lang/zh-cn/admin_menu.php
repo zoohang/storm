@@ -6,6 +6,7 @@ return array (
   'ADMIN_DAKA_INDEX' => '打卡',
   'ADMIN_EXAM_DEFAULT' => '应用',
   'ADMIN_EXAM_INDEX' => '刷题试卷',
+  'ADMIN_GOODS_INDEX' => '商品管理',
   'ADMIN_HOOK_INDEX' => '钩子管理',
   'ADMIN_HOOK_PLUGINLISTORDER' => '钩子插件排序',
   'ADMIN_HOOK_PLUGINS' => '钩子插件管理',

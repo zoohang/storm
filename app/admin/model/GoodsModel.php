@@ -34,7 +34,7 @@ class GoodsModel extends Model
         return $this->goods_id;
     }
 
-    public function getGoods() {
-
+    public function getGoods($goods_id) {
+        return $this->field(['goods_id', 'cost_price', 'price', 'stock'])->where(['goods_id'=>$goods_id])->find();
     }
 }

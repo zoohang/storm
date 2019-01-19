@@ -85,6 +85,7 @@ class DakaController extends AdminBaseController
             $data = $this->request->param();
 
             //需要抹除发布、置顶、推荐的修改。
+            $goods_status = $data['post']['post_status'];
             unset($data['post']['post_status']);
             unset($data['post']['is_top']);
             unset($data['post']['recommended']);
@@ -120,7 +121,8 @@ class DakaController extends AdminBaseController
                 $other = [
                     'category_id'=> $post['category_id'],
                     'goods_name'=> $post['post_title'],
-                    'image'=> $post['thumbnail']
+                    'image'=> $post['thumbnail'],
+                    'goods_status' => $goods_status
                 ];
                 $data['post']['goods_id'] = GoodsModel::instance()->editGoods($goods, $other, $this->type);
                 //商品售价
