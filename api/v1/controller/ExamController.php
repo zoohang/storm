@@ -13,6 +13,8 @@ use api\v1\model\ExamWronglistModel;
 use api\v1\model\CategoryModel;
 use api\v1\model\ExamItemModel;
 use api\v1\model\ExamModel;
+use api\v1\model\OrderModel;
+use app\admin\model\GoodsModel;
 use cmf\controller\RestUserBaseController;
 use think\Db;
 use think\Validate;
@@ -61,7 +63,7 @@ class ExamController extends RestUserBaseController
         $this->success('ok', $list);
     }
 
-    //根据分类id和学校id获取刷题内容 //todo 刷题的价格
+    //根据分类id和学校id获取刷题内容 //todo 刷题的价格 是否已经购买
     public function getExamList() {
         $category_id = $this->request->param('category_id', 0, 'intval,abs');
         $school_id = $this->request->param('school_id', 0, 'intval,abs');
@@ -70,10 +72,34 @@ class ExamController extends RestUserBaseController
         if ($category_id) $where['a.category_id'] = $category_id;
         $order = ['is_top'=>'desc', 'id'=>'desc'];
         $list = DB::name('exam_school_relation a')->join('__EXAM__ b', 'a.exam_id=b.id')
-            ->field('b.*, use_num price')
+            ->field('b.*')
             ->where($where)
             ->order($order)
-            ->paginate($limit);
+            ->paginate($limit)
+            ->toArray();
+        //价格
+        $goods_ids = array_column($list['data'], 'goods_id');
+        $where = ['goods_id'=>['in', $goods_ids]];
+        $goods = GoodsModel::instance()->where($where)->field('goods_id,price')->select();
+
+        //是否已经购买
+        $order = OrderModel::instance()->where($where)->where(['user_id'=>$this->userId, 'pay_status'=>2])->field('goods_id,order_id')->select();
+        foreach ($list['data'] as &$item) {
+            foreach ($goods as $g) {
+               if ($item['goods_id'] == $g['goods_id']) {
+                   $item['price'] = $g['price'];
+                   continue;
+               }
+            }
+            $item['is_buy'] = 0;
+            foreach ($order as $o) {
+                if ($item['goods_id'] == $o['goods_id']) {
+                    $item['is_buy'] = 1;
+                    continue;
+                }
+            }
+        }
+        unset($item);
         $this->success('ok', $list);
     }
 

@@ -78,7 +78,7 @@ class DakaController extends RestUserBaseController
         if (!$id) $this->error('id必填');
         $info = DakaModel::instance()->where(['id'=>$id])->find()->toArray();
         $field = ['id','post_title'];
-        $child = DakaModel::instance()->field($field)->where(['parent_id'=>$id])->select()->toArray();
+        $child = Db::name('daka')->field($field)->where(['parent_id'=>$id])->select();
         //判断是否收藏成功
         $findFavoriteCount = Db::name("user_favorite")->where([
             'object_id'  => $id,
@@ -86,6 +86,9 @@ class DakaController extends RestUserBaseController
             'user_id'    => $this->userId
         ])->count();
         $info['is_collect'] = $findFavoriteCount ? 1 : 0;
+        //判断是否购买
+        $buy = OrderModel::instance()->where(['goods_id'=>$info['goods_id'], 'user_id'=>$this->userId, 'pay_status'=>2])->count();
+        $info['is_buy'] = $buy ? 1 : 0;
         $this->success('ok', ['info'=>$info, 'child'=>$child]);
     }
 
@@ -155,37 +158,68 @@ class DakaController extends RestUserBaseController
         $this->delCollect($data);
     }
 
-
-    public function bugDaka() {
-        //todo 购买打卡课程
-        $goods_id = $this->request->param('goods_id', 0, 'intval,abs');
-        $daka_id = $this->request->param('goods_id', 0, 'intval,abs');
-        if (!$goods_id) $this->error('这个商品已经下架');
-        if (!$daka_id) $this->error('打卡课程id必填');
-        $goods_info = GoodsModel::instance()->where(['goods_id'=>$goods_id])->find();
-        $data = [
-            'order_sn' => build_order_no(),
-            'user_id' => $this->userId,
-            'user_name' => $this->user['user_nickname'],
-            'goods_id' => $goods_id,
-            'goods_amount' => $goods_info['price'],
-            'pay_fee' => $goods_info['price'],
-            'pay_time' => NOW_TIME,
-            'order_status' => 1,
-            'pay_status' => 2,
-        ];
-        Db::startTrans();
-        try {
-            $user_info = UserModel::instance()->where(['id'=>$this->userId])->find();
-            if ($user_info['coin'] < $goods_info['price']) throw new \Exception("你剩余的图币不够{$goods_info['price']}");
-            $res = OrderModel::instance()->data($data)->isUpdate(false)->allowField(true)->save();
-            UserModel::instance()->where(['id'=>$this->userId])->dec('coin', $goods_info['price']);
-            DakaModel::instance()->where(['id'=>$daka_id])->inc('join_num');
-            Db::commit();
-        } catch (\Exception $e) {
-            Db::rollback();
-            $this->error($e->getMessage());
+    // 我的画图打卡[列表]
+    public function alreadyBuyDaka() {
+        $where = ['a.user_id'=>$this->userId, 'a.pay_status'=>2];
+        $field = ['c.id','c.post_title', 'c.thumbnail', 'c.join_num', 'c.published_time start_time', 'c.end_time'];
+        $list = Db::name('order a')
+            ->join('__DAKA__ c', 'a.goods_id=c.goods_id')
+            ->where($where)
+            ->field($field)
+            ->order('a.order_id desc')
+            ->paginate()
+            ->toArray();
+        $daka_ids = array_column($list['data'], 'id');
+        $item_nums = Db::name('daka')->where(['parent_id'=>['in', $daka_ids]])->field('parent_id,count(*) count')->group('parent_id')->select();
+        $homework_nums = Db::name('daka_homework')->where(['daka_parent_id'=>['in', $daka_ids]])->field('daka_parent_id,count(*) count')->group('daka_parent_id')->select();
+        foreach ($list['data'] as &$item) {
+            $item['thumbnail'] = get_image_url($item['thumbnail']);
+            $item['item_num'] = 0;
+            foreach ($item_nums as $it) {
+                if ($item['id'] == $it['parent_id']) {
+                    $item['item_num'] = $it['count'];
+                    continue;
+                }
+            }
+            $item['hk_num'] = 0;
+            foreach ($homework_nums as $hk) {
+                if ($item['id'] == $hk['daka_parent_id']) {
+                    $item['hk_num'] = $hk['count'];
+                    continue;
+                }
+            }
         }
-        $this->success('购买成功!');
+        unset($item);
+        $this->success('success', $list);
+    }
+
+    //我的画图打卡内容详细item列表
+    public function alreadyBuyDakaItem() {
+        // select a.id, a.post_title,b.id hk_id,b.status from st_daka a
+        //left join st_daka_homework b on a.id=b.daka_id and b.dtype=1 and b.user_id=2
+        // where a.parent_id=1
+        $daka_id = $this->request->param('daka_id', 0, 'intval,abs');
+        if (!$daka_id) $this->error('打卡id必填');
+        $info = DakaModel::instance()->where(['id'=>$daka_id])->find();
+        $list = Db::name('daka a')
+            ->join('__DAKA_HOMEWORK__ b', "a.id=b.daka_id and b.dtype=1 and b.user_id={$this->userId}", 'left')
+            ->field('a.id, a.post_title,b.id hk_id,b.status')
+            ->where(['a.parent_id'=>$daka_id, 'a.post_status'=>1])
+            ->order('a.list_order asc, a.id asc')
+            ->select()->toArray();
+        foreach ($list as &$item) {
+            $item['start_time'] = $info['published_time'];
+            $item['end_time'] = $info['end_time'];
+            if ($item['hk_id'] && $item['status']==1) {
+                $item['status_str'] = 1;
+            } elseif($item['hk_id'] && $item['status']==2){
+                $item['status_str'] = 2;
+            } elseif(is_null($item['hk_id'])) {
+                $item['status_str'] = 0;
+            }
+            unset($item['hk_id'], $item['status']);
+        }
+        unset($item);
+        $this->success('success', $list);
     }
 }
