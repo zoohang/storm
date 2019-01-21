@@ -11,6 +11,8 @@
 namespace app\admin\controller;
 
 use app\admin\model\CategoryModel;
+use app\admin\model\CourseModel;
+use app\admin\model\DakaModel;
 use cmf\controller\AdminBaseController;
 use think\Db;
 use think\Request;
@@ -187,7 +189,9 @@ class CategoryController extends AdminBaseController
         $categoryModel = new CategoryModel();
 
         $result = $categoryModel->editCategory($data);
-
+        Db::name('daka')->where(['category_id'=>$data['id']])->update(['category_name'=>$data['name']]);
+        Db::name('course')->where(['pid'=>$data['id']])->update(['pname'=>$data['name']]);
+        Db::name('exam')->where(['cid'=>$data['id']])->update(['cname'=>$data['name']]);
         if ($result === false) {
             $this->error('保存失败!');
         }

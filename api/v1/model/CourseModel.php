@@ -37,7 +37,7 @@ class CourseModel extends Model
         return cmf_get_image_url($value);
     }
 
-    public function getTypeAttr($value)
+    /*public function getTypeAttr($value)
     {
         switch ($value) {
             case 1:
@@ -53,7 +53,7 @@ class CourseModel extends Model
                 $name='默认';
         }
         return $name;
-    }
+    }*/
 
     /**
      * @param int $num

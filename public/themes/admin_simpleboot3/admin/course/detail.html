@@ -12,9 +12,8 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                    <li><a class="js-categories-name-input" data-id="" data-type="1">选择</a></li>
-                    <li><a class="js-categories-name-input" data-id="" data-type="2">填空</a></li>
-                    <li><a class="js-categories-name-input" data-id="" data-type="3">论述</a></li>
+                    <li><a class="js-categories-name-input" data-id="" data-type="1" href="{:url('course/editSection',['cid'=>$info.cid])}">小节</a></li>
+                    <li><a class="js-categories-name-input" data-id="" data-type="2" href="{:url('course/editItem',['cid'=>$info.cid])}">内容</a></li>
                 </ul>
             </div>
         </li>
@@ -41,7 +40,7 @@
                 <th width="50">ID</th>
                 <th>小节/课程</th>
                 <th>类型:视频/图文</th>
-                <th>描述</th>
+                <!--<th>描述</th>-->
                 <th>创建时间</th>
                 <th>更新时间</th>
                 <th width="200">操作</th>

@@ -126,21 +126,17 @@ class CourseItemModel extends Model
     public function CategoryTableTree($currentIds = 0, $tpl = '', $type=0)
     {
         $where = ['status' => 1];
-//        if (!empty($currentCid)) {
-//            $where['id'] = ['neq', $currentCid];
-//        }
+        if (!empty($currentIds)) {
+            $where['cid'] = $currentIds;
+        }
         if (!empty($type)) {
             $where['type'] = $type;
         }
         $categories = $this->order("list_order ASC")->where($where)->select()->toArray();
-        //dump($categories);
         $tree       = new Tree();
         $tree->icon = ['&nbsp;&nbsp;│', '&nbsp;&nbsp;├─', '&nbsp;&nbsp;└─'];
         $tree->nbsp = '&nbsp;&nbsp;';
 
-        if (!is_array($currentIds)) {
-            $currentIds = [$currentIds];
-        }
 
         $newCategories = [];
         foreach ($categories as $item) {
@@ -151,13 +147,13 @@ class CourseItemModel extends Model
             $item['status_text']    = empty($item['status'])?'隐藏':'显示';
             if ($item['type']=='小节') {
                 $edit_url = url("course/editSection", ["item_id" => $item['item_id'], 'cid'=>$item['cid']]);
-                $del_url = url("course/delete_item", ["item_id" => $item['item_id']]);
+                $del_url = url("course/delete_item", ["item_id" => $item['item_id'], 'cid'=>$item['cid']]);
             }elseif($item['type']=='视频') {
                 $edit_url = url("course/editItem", ["item_id" => $item['item_id'], 'cid'=>$item['cid'], 'type'=>1]);
-                $del_url = url("course/delete_item", ["item_id" => $item['item_id']]);
+                $del_url = url("course/delete_item", ["item_id" => $item['item_id'], 'cid'=>$item['cid']]);
             } elseif($item['type']=='图文'){
                 $edit_url = url("course/editItem", ["item_id" => $item['item_id'], 'cid'=>$item['cid'], 'type'=>2]);
-                $del_url = url("course/delete_item", ["item_id" => $item['item_id']]);
+                $del_url = url("course/delete_item", ["item_id" => $item['item_id'], 'cid'=>$item['cid']]);
             }
             $item['str_action']     = '<a href="' . $edit_url . '">' . lang('EDIT') . '</a>  <a class="js-ajax-delete" href="' . $del_url . '">' . lang('DELETE') . '</a> ';
             array_push($newCategories, $item);
@@ -172,7 +168,6 @@ class CourseItemModel extends Model
                         <td>\$id</td>
                         <td>\$spacer <mark class='success'>\$name</mark></td>
                         <td>\$type</td>
-                        <td>\$summary</td>
                         <td>\$create_time</td>
                         <td>\$update_time</td>
                         <td>\$str_action</td>

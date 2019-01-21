@@ -153,10 +153,10 @@
 
     </td>
 </tr>
-<input type="hidden" name="video_url" value="{$preview_url|default=''}">
-<input type="hidden" name="video_id" value="{$video_id|default=''}">
-<input type="hidden" name="video_long" value="{$video_long|default=''}">
-<input type="hidden" name="video_size" value="{$video_size|default=''}">
+<input type="hidden" name="source_url" value="{$info.source_url|default=''}">
+<input type="hidden" name="video_id" value="{$info.video_id|default=''}">
+<input type="hidden" name="video_long" value="{$info.video_long|default=''}">
+<input type="hidden" name="video_size" value="{$info.video_size|default=''}">
 
 <script src="__STATIC__/aliyun/upload/es6-promise.min.js"></script>
 <script src="__STATIC__/aliyun/upload/aliyun-oss-sdk4.13.2.min.js"></script>
@@ -324,7 +324,7 @@
                     }, function (player) {
                         console.log('播放器创建好了。')
                     });
-                    $('input[name=video_url]').val(result.Mezzanine.FileURL);
+                    $('input[name=source_url]').val(result.Mezzanine.FileURL);
                     $('input[name=videosize]').val(Math.ceil(result.Mezzanine.Size / 1024));
                 } else {
                     layer.open({

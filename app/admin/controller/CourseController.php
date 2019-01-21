@@ -23,19 +23,17 @@ class CourseController extends AdminBaseController
 {
     public $type=3; //category 表中type=1的分类
     public $status = [-1=>'删除', 0=>'未发布', 1=>'已发布'];
-    public $item_type = [1=>'选择题', 2=>'填空题', 3=>'论述题'];
 
     public function _initialize()
     {
         parent::_initialize();
         $this->assign('type', $this->type);
         $this->assign('status' ,$this->status);
-        $this->assign('item_type' ,$this->item_type);
     }
 
     public function index()
     {
-        $where = [];
+        $where = ['status'=>['egt', 0]];
         /**搜索条件**/
         $keyword = $this->request->param('keyword');
         $category = $this->request->param('category', '', 'intval');
@@ -189,12 +187,6 @@ class CourseController extends AdminBaseController
         $cid = $this->request->param('cid', 0, 'intval');
         if (!$cid) $this->error('请选择一个课程');
         $where = ['cid'=>$cid, 'status'=>1];
-        /*$list = DB::name('course_item')
-            ->where($where)
-            ->order("list_order ASC,cid ASC")
-            ->select();
-        $this->assign('list' , $list);*/
-
         //model
         $CourseItemModel = new CourseItemModel();
         $list = $CourseItemModel->CategoryTableTree($cid);
@@ -237,6 +229,7 @@ class CourseController extends AdminBaseController
             'ctitle' => $course_info['ctitle'],
             'item_title' => $item_title,
             'summary' => $summary,
+            'type' => 0,
             'status' => 1
         ];
         if ($item_id) {
@@ -260,7 +253,6 @@ class CourseController extends AdminBaseController
      * 编辑题目 todo 课程的添加/编辑
      */
     public function editItem() {
-        $type = $this->request->param('item_type', 0, 'intval');
         $cid = $this->request->param('cid', 0, 'intval');
         $item_id = $this->request->param('item_id', 0, 'intval');
         if (!$cid) $this->error('课程id不能为空');
@@ -268,7 +260,7 @@ class CourseController extends AdminBaseController
         $course_info = DB::name('course')->where(['cid'=>$cid])->find();
         if ($course_info['type'] == 1) {
             $template_name = 'video';
-        } elseif($course_info['type'] == 3) {
+        } elseif($course_info['type'] == 2) {
             $template_name = 'article';
         } else {
             //todo 其他模型
@@ -276,11 +268,21 @@ class CourseController extends AdminBaseController
         Cookie::set('course_template', $template_name, 86400);
         //题目信息
         $info = [];
+        $CourseItemModel = new CourseItemModel();
         if ($item_id) {
-            $CourseItemModel = new CourseItemModel();
             $info = $CourseItemModel->get($item_id);
+            if ($info['type'] == 1) {
+                //视频模型
+
+            } elseif($info['type'] == 2) {
+                //图文模型
+
+            }
             //if ($info['option']) $info['option'] = json_decode($info['option'], true);
         }
+        //获取小节类目
+        $xiaojie = $CourseItemModel->where(['cid'=>$cid, 'type'=>0])->field(['item_id', 'item_title'])->select();
+        $this->assign('xiaojie', $xiaojie);
         $this->assign('info', $info);
         $this->assign('course_info', $course_info);
         return $this->fetch($template_name);
@@ -294,29 +296,28 @@ class CourseController extends AdminBaseController
         $data = $this->request->param();
         $cid = $this->request->param('cid'); //课程ID
         if (!$cid) $this->error('课程id不能为空');
-        /*$result = $this->validate($data, 'CourseItem');
-        if ($result !== true) {
-            $this->error($result);
-        }*/
+        //dump($data);die;
         $CourseItemModel = new CourseItemModel();
+        $isUpdate = false;
         if ($id) {
-            //save
-            $data['id'] = $id;
-            $result = $CourseItemModel->allowField(true)->isUpdate(true)->save($data);
-            if ($result === false) {
-                $this->error('编辑失败!');
-            } else {
-                $this->success('编辑成功!', url('course/detail', ['cid'=>$cid]));
-            }
+            $isUpdate = true;
+        }
+        if ($data['type'] == 1) {
+            //视频模块
+            Db::name('video_vod')->insert([
+                'video_id' => $data['video_id'],
+                'source_url' => $data['source_url'],
+                'create_time' => NOW_TIME
+            ]);
+        } elseif($data['type'] == 2) {
+
+        }
+        $result = $CourseItemModel->allowField(true)->isUpdate($isUpdate)->save($data);
+        Db::name('course')->where(['cid'=>$cid])->setInc('num');
+        if ($result === false) {
+            $this->error('编辑失败!');
         } else {
-            //add
-            unset($data['id']);
-            $result = $CourseItemModel->allowField(true)->save($data);
-            if ($result === false) {
-                $this->error('添加失败!');
-            } else {
-                $this->success('编辑成功!', url('course/detail', ['cid'=>$cid]));
-            }
+            $this->success('编辑成功!', url('course/detail', ['cid'=>$cid]));
         }
     }
 
@@ -351,14 +352,14 @@ class CourseController extends AdminBaseController
         $param       = $this->request->param();
         $CourseModel = new CourseModel();
         if (isset($param['id'])) {
-            if ($CourseModel->where(['cid'=> $param['id']])->update(['status' => 0]) !== false) {
+            if ($CourseModel->where(['cid'=> $param['id']])->update(['status' => -1]) !== false) {
                 $this->success("删除成功！");
             } else {
                 $this->error("删除失败！");
             }
         }
         if (isset($param['ids'])) {
-            if ($CourseModel->where(['cid'=> ['in', $param['ids']]])->update(['status' => 0]) !== false) {
+            if ($CourseModel->where(['cid'=> ['in', $param['ids']]])->update(['status' => -1]) !== false) {
                 $this->success("删除成功！");
             } else {
                 $this->error("删除失败！");
@@ -439,7 +440,10 @@ class CourseController extends AdminBaseController
     public function delete_item()
     {
         $item_id = $this->request->param('item_id', 0, 'intval');
+        $cid = $this->request->param('cid', 0, 'intval');
+        if (!$item_id || !$cid) $this->error('缺少参数');
         if (Db::name('exam_item')->where(['item_id'=> $item_id])->update(['status' => -1]) !== false) {
+            Db::name('exam')->where(['cid'=> $cid])->setDec('num');
             $this->success("删除成功！");
         } else {
             $this->error("删除失败！");

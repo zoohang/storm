@@ -17,8 +17,22 @@
                 <input type="hidden" name="cid" value="{$params['cid']}">
                 <input type="hidden" name="item_id" value="{$params['item_id']|default=''}">
                 <input type="hidden" name="type" value="1">
+                <input type="hidden" name="status" value="1">
                 <div class="tab-content">
                     <div class="tab-pane active" id="A">
+                        <if condition="!empty($xiaojie)">
+                        <div class="form-group">
+                            <label for="input-name"><span class="form-required">*</span>所属小节</label>
+                            <div>
+                                <select name="parent_id" id="" class="form-control">
+                                    <option value="">请选择</option>
+                                    <foreach name="xiaojie" item="item">
+                                    <option value="{$item.item_id}" {:isset($info.parent_id) && $info.parent_id==$item.item_id?'selected':''}>{$item.item_title}</option>
+                                    </foreach>
+                                </select>
+                            </div>
+                        </div>
+                        </if>
                         <div class="form-group">
                             <label for="input-name"><span class="form-required">*</span>课题标题</label>
                             <div>
@@ -41,7 +55,7 @@
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary js-ajax-submit">保存</button>
-                    <a class="btn btn-default" href="{:url('course/teacherSave')}">返回</a>
+                    <a class="btn btn-default" href="{:url('course/detail', ['cid'=>$params.cid])}">返回</a>
                 </div>
             </form>
         </div>

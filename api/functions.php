@@ -150,3 +150,8 @@ function oss_img_pre($img) {
 function build_order_no() {
     return date('Ymd').substr(implode(NULL, array_map('ord', str_split(substr(uniqid(), 7, 13), 1))), 0, 8);
 }
+
+function sec2time($sec) {
+    $format = $sec>=3600 ? 'H:i:s': 'i:s';
+    return date($format, $sec);
+}

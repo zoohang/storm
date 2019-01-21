@@ -4,7 +4,7 @@ ini_set('memory_limit', '1024M');
 date_default_timezone_set('PRC');
 const DS = DIRECTORY_SEPARATOR;
 
-function query($sql, $db='mingyi') {
+function query($sql, $db='storm') {
     $mysql = new \mysqli('myzxmysql.mysql.rds.aliyuncs.com', 'yuanzuohang', 'NRYoP2uLRG*U9dx', $db,'3316');
     if (!$mysql) {
         printf("Can't connect to MySQL Server. Errorcode: %s ", mysqli_connect_error());

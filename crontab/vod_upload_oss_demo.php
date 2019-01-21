@@ -139,9 +139,8 @@ exit;
     ini_set('memory_limit', '2000M');
     $client = init_vod_client($accessKeyId, $accessKeySecret);
     // todu
-    $sql = "SELECT vid,video_id FROM `my_video_vod` where fd_mp4_url = '' order by vid desc";
-    //$sql = "SELECT vid,video_id FROM `my_video_vod`";
-    $data = query($sql,'mingyi');
+    $sql = "SELECT vid,video_id FROM `st_video_vod` where video_url = '' order by create_time desc";
+    $data = query($sql);
     foreach($data as $item) {
         try{
             $playInfo = get_play_info($client, $item['video_id']);
@@ -175,9 +174,9 @@ ld_mp4='{$update['ld_mp4']}',
 ld_m3u8_url='{$update['ld_m3u8_url']}',
 ld_m3u8='{$update['ld_m3u8']}' where  `vid`={$item['vid']}
 ";
-        $res = query($sql,'mingyi');
         try{
-            $r2 = query("UPDATE `my_video` SET `status`='1' WHERE (`id`={$item['vid']})",'mingyi');
+            $res = query($sql,'mingyi');
+            $r2 = query("UPDATE `my_video` SET `status`='1' WHERE (`id`={$item['vid']})");
         }catch (\Exception $exception){
             echo "video update error \n";
         }
