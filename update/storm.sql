@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地连接
+Source Server         : localhost
 Source Server Version : 50553
-Source Host           : 127.0.0.1:3306
+Source Host           : localhost:3306
 Source Database       : storm
 
 Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-22 01:21:32
+Date: 2019-01-22 18:07:52
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -703,7 +703,6 @@ CREATE TABLE `st_course_teacher_relation` (
 -- ----------------------------
 -- Records of st_course_teacher_relation
 -- ----------------------------
-INSERT INTO `st_course_teacher_relation` VALUES ('44', '9', '1', '0');
 INSERT INTO `st_course_teacher_relation` VALUES ('45', '6', '1', '1');
 INSERT INTO `st_course_teacher_relation` VALUES ('46', '6', '2', '1');
 INSERT INTO `st_course_teacher_relation` VALUES ('47', '5', '1', '1');
@@ -1778,7 +1777,7 @@ CREATE TABLE `st_user_action` (
 -- ----------------------------
 -- Records of st_user_action
 -- ----------------------------
-INSERT INTO `st_user_action` VALUES ('1', '1', '1', '1', '2', '1', '用户登录', 'login', 'user', '');
+INSERT INTO `st_user_action` VALUES ('1', '0', '0', '1', '3', '1', '用户登录', 'login', 'user', '');
 
 -- ----------------------------
 -- Table structure for st_user_action_log
@@ -1818,6 +1817,25 @@ CREATE TABLE `st_user_balance_log` (
 
 -- ----------------------------
 -- Records of st_user_balance_log
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for st_user_coin_log
+-- ----------------------------
+DROP TABLE IF EXISTS `st_user_coin_log`;
+CREATE TABLE `st_user_coin_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '用户 id',
+  `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `change` int(11) NOT NULL DEFAULT '0' COMMENT '更改余额 充值为正 消费为负',
+  `coin` int(11) NOT NULL DEFAULT '0' COMMENT '更改后图币',
+  `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
+  `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='用户图币流水日志表';
+
+-- ----------------------------
+-- Records of st_user_coin_log
 -- ----------------------------
 
 -- ----------------------------
@@ -1899,8 +1917,6 @@ CREATE TABLE `st_user_score_log` (
 -- ----------------------------
 -- Records of st_user_score_log
 -- ----------------------------
-INSERT INTO `st_user_score_log` VALUES ('1', '1', '1540963551', 'login', '1', '1');
-INSERT INTO `st_user_score_log` VALUES ('2', '2', '1544943873', 'login', '1', '1');
 
 -- ----------------------------
 -- Table structure for st_user_token

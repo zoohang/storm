@@ -80,7 +80,7 @@ class LoginController extends HomeBaseController
             $redirect                   = empty($session_login_http_referer) ? $this->request->root() : $session_login_http_referer;
             switch ($log) {
                 case 0:
-                    cmf_user_action('login');
+                    //cmf_user_action('login');
                     $this->success(lang('LOGIN_SUCCESS'), $redirect);
                     break;
                 case 1:

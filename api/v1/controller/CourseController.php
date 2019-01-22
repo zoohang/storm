@@ -99,6 +99,9 @@ class CourseController extends RestUserBaseController
             }
         }
         unset($tp);
+        //老师信息
+        // todo 接口待调试
+        Db::name('course_teacher_relation a')->join('__COURSE_TEACHERS__ b', 'a.tid=b.tid')->field(['b.tid', 'b.tname', 'b.summary', 'b.description', 'b.avatar'])->where(['a.cid'=>$id, 'a.status'=>1, 'b.status'=>1])->select();
         //判断是否收藏成功
         $findFavoriteCount = Db::name("user_favorite")->where([
             'object_id'  => $id,
