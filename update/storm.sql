@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
+Source Server         : 本地连接
 Source Server Version : 50553
-Source Host           : localhost:3306
+Source Host           : 127.0.0.1:3306
 Source Database       : storm
 
 Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-22 18:07:52
+Date: 2019-01-22 23:45:31
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1850,15 +1850,19 @@ CREATE TABLE `st_user_favorite` (
   `url` varchar(255) DEFAULT NULL COMMENT '收藏内容的原文地址，JSON格式',
   `description` text COMMENT '收藏内容的描述',
   `table_name` varchar(64) NOT NULL DEFAULT '' COMMENT '收藏实体以前所在表,不带前缀',
-  `object_id` int(10) unsigned DEFAULT '0' COMMENT '收藏内容原来的主键id',
-  `create_time` int(10) unsigned DEFAULT '0' COMMENT '收藏时间',
+  `object_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '收藏内容原来的主键id',
+  `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '收藏时间',
+  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1-刷题 2-打卡 3在线课堂 4-线下课堂',
   PRIMARY KEY (`id`),
   KEY `uid` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户收藏表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='用户收藏表';
 
 -- ----------------------------
 -- Records of st_user_favorite
 -- ----------------------------
+INSERT INTO `st_user_favorite` VALUES ('1', '2', 'nginx123111', '', 'eyJhY3Rpb24iOiJ2MVwvY291cnNlXC9kZXRhaWwiLCJwYXJhbSI6eyJpZCI6IjkifX0=', 'nginx123111', 'course', '9', '1548168574', '3');
+INSERT INTO `st_user_favorite` VALUES ('2', '2', '12312312355555112', '', 'eyJhY3Rpb24iOiJ2MVwvZGFrYVwvZGV0YWlsIiwicGFyYW0iOnsiaWQiOiIxIn19', '12312312355555112', 'daka', '1', '1548168636', '2');
+INSERT INTO `st_user_favorite` VALUES ('3', '2', '今天是2018年最后一天咯', '', '{\"action\":\"v1\\/daka\\/detail\",\"param\":{\"id\":\"8\"}}', '今天是2018年最后一天咯', 'daka', '8', '1548170017', '2');
 
 -- ----------------------------
 -- Table structure for st_user_like

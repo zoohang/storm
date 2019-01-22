@@ -18,7 +18,7 @@ class FavoriteValidate extends Validate
         'id'    => 'require',
         'title' => 'require|checkTitle',
         'table' => 'require',
-        'url'   => 'require|checkUrl',
+        'url'   => 'require',
         'type'  => 'require|integer'
     ];
     protected $message = [
@@ -26,7 +26,6 @@ class FavoriteValidate extends Validate
         'title.require' => '收藏内容标题不能为空!',
         'table.require' => '收藏内容所在表不能为空!',
         'url.require'   => '收藏内容链接不能为空!',
-        'url.checkUrl'  => '收藏内容链接格式不正确!',
         'type.require'  => '资源类型必填'
 
     ];

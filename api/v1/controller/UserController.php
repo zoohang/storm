@@ -8,6 +8,9 @@
 // +----------------------------------------------------------------------
 namespace api\v1\controller;
 
+use api\v1\model\CourseModel;
+use api\v1\model\DakaModel;
+use api\v1\model\ExamModel;
 use api\v1\model\FeedbackModel;
 use api\v1\model\UserModel;
 use cmf\controller\RestUserBaseController;
@@ -138,5 +141,58 @@ class UserController extends RestUserBaseController
     public function checkUserMobile() {
         $info = UserModel::instance()->where(['id' => $this->userId])->find()->toArray();
         $this->success('ok', ['mobile'=> $info['mobile'] ?: '']);
+    }
+
+    //添加收藏 打卡 type服务类型 1-刷题 2-打卡 3在线课堂 4-线下课堂
+    public function addCollect() {
+        //拼接好数据 调用公共收藏方法
+        $id = $this->request->param('id', 0, 'intval,abs');
+        $type = $this->request->param('type', 0, 'intval,abs');
+        if(!$id) $this->error('手册id必填');
+        if(!$type) $this->error('type必填');
+        switch ($type) {
+            case 1:
+                $title = ExamModel::instance()->where(['id'=>$id])->value('title');
+                $url = json_encode(['action' => 'v1/exam/detail', 'param' => ['id' => $id]]);
+                $table = 'exam';
+                break;
+            case 2:
+                $title = DakaModel::instance()->where(['id'=>$id])->value('post_title');
+                $url = json_encode(['action' => 'v1/daka/detail', 'param' => ['id' => $id]]);
+                $table = 'daka';
+                break;
+            case 3:
+                $title = CourseModel::instance()->where(['cid'=>$id])->value('ctitle');
+                $url = json_encode(['action' => 'v1/course/detail', 'param' => ['id' => $id]]);
+                $table = 'course';
+                break;
+            case 4:
+                //todo
+                break;
+        }
+        $data = [
+            'id' => $id,
+            'title' => $title,
+            'table' => $table,
+            'url'   => $url,
+            'type'  => $type
+        ];
+        $result = $this->validate($data, 'Favorite');
+        if ($result !== true) {
+            $this->error($result);
+        }
+        $this->collect($data);
+    }
+
+    public function deleteCollect() {
+        $id = $this->request->param('id', 0, 'intval,abs');
+        $type = $this->request->param('type', 0, 'intval,abs');
+        if(!$id) $this->error('手册id必填');
+        if(!$type) $this->error('type必填');
+        $data = [
+            'id' => $id,
+            'type' => $type,
+        ];
+        $this->delCollect($data);
     }
 }

@@ -30,7 +30,7 @@ class RestUserBaseController extends RestBaseController
     public function delCollect($data)
     {
         $where['object_id'] = $data['id'];
-        $where['table_name']      = $data['table'];
+        $where['type']      = $data['type'];
         $where['user_id'] = $this->userId;
         $data             = Db::name("UserFavorite")->where($where)->delete();
         if ($data !== false) {
