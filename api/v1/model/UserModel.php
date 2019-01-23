@@ -12,6 +12,7 @@
 // +----------------------------------------------------------------------
 namespace api\v1\model;
 
+use think\Db;
 use think\Model;
 
 class UserModel extends Model
@@ -54,5 +55,21 @@ class UserModel extends Model
                 $value = '保密';
         }
         return $value;
+    }
+
+    //判断是否收藏
+    public function checkCollect($id, $type) {
+        $findFavoriteCount = Db::name("user_favorite")->where([
+            'object_id'  => $id,
+            'type' => $type,
+            'user_id'    => request()->post('user_id')
+        ])->count();
+        return $findFavoriteCount ? 1 : 0;
+    }
+
+    //判断是否购买
+    public function checkBuy($goods_id) {
+        $buy = OrderModel::instance()->where(['goods_id'=>$goods_id, 'user_id'=>request()->post('user_id'), 'pay_status'=>2])->count();
+        return  $buy ? 1 : 0;
     }
 }

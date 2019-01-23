@@ -67,7 +67,7 @@ class CourseController extends AdminBaseController
                 $handle_teacher[$item['cid']][] = $item['tname'];
             }
             $list = $list->each(function ($item, $key) use ($handle_teacher) {
-                if ($handle_teacher[$item['cid']]) {
+                if (isset($handle_teacher[$item['cid']]) && $handle_teacher[$item['cid']]) {
                     $item['tnames'] = join(',', $handle_teacher[$item['cid']]);
                 } else {
                     $item['tnames'] = '';

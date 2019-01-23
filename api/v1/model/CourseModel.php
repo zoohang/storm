@@ -1,6 +1,7 @@
 <?php
 namespace api\v1\model;
 
+use think\Db;
 use think\Model;
 
 class CourseModel extends Model
@@ -63,6 +64,15 @@ class CourseModel extends Model
     {
         $where = ['recommended' => 1];
         return $this->where($where)->order(['list_order' => 'desc'])->limit(10)->select()->toArray();
+    }
+
+    public function getRelationTeachers($cid) {
+        $teachers = Db::name('course_teacher_relation a')->join('__COURSE_TEACHER__ b', 'a.tid=b.tid')->field(['b.tid', 'b.tname', 'b.summary', 'b.description', 'b.avatar'])->where(['a.cid'=>$cid, 'a.status'=>1, 'b.status'=>1])->select()->toArray();
+        foreach ($teachers as &$item) {
+            $item['avatar'] = get_image_url($item['avatar']);
+        }
+        unset($item);
+        return $teachers;
     }
 }
 

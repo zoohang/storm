@@ -100,18 +100,11 @@ class CourseController extends RestUserBaseController
         }
         unset($tp);
         //老师信息
-        // todo 接口待调试
-        Db::name('course_teacher_relation a')->join('__COURSE_TEACHERS__ b', 'a.tid=b.tid')->field(['b.tid', 'b.tname', 'b.summary', 'b.description', 'b.avatar'])->where(['a.cid'=>$id, 'a.status'=>1, 'b.status'=>1])->select();
+        $info['teachers'] = CourseModel::instance()->getRelationTeachers($id);
         //判断是否收藏成功
-        $findFavoriteCount = Db::name("user_favorite")->where([
-            'object_id'  => $id,
-            'table_name' => 'daka',
-            'user_id'    => $this->userId
-        ])->count();
-        $info['is_collect'] = $findFavoriteCount ? 1 : 0;
+        $info['is_collect'] = UserModel::instance()->checkCollect($id, $this->ctype);
         //判断是否购买
-        $buy = OrderModel::instance()->where(['goods_id'=>$info['goods_id'], 'user_id'=>$this->userId, 'pay_status'=>2])->count();
-        $info['is_buy'] = $buy ? 1 : 0;
+        $info['is_buy'] = UserModel::instance()->checkBuy($info['goods_id']);
         $this->success('ok', ['info'=>$info, 'child'=>$child]);
     }
 

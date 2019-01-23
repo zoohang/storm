@@ -12,6 +12,7 @@ use api\v1\model\CourseModel;
 use api\v1\model\DakaModel;
 use api\v1\model\ExamModel;
 use api\v1\model\FeedbackModel;
+use api\v1\model\OrderModel;
 use api\v1\model\UserModel;
 use cmf\controller\RestUserBaseController;
 use think\Db;

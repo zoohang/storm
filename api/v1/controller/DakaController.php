@@ -48,7 +48,6 @@ class DakaController extends RestUserBaseController
     }
 
     // 获取分类下的视频列表
-    // todo 加入人数(购买课程的人数) 打卡次数(作业提交次数) 费用
     public function getCategoryList() {
         $category_id = $this->request->param('category_id', 0, 'intval,abs');
         $limit = $this->request->param('limit', 10, 'intval,abs');
@@ -80,15 +79,10 @@ class DakaController extends RestUserBaseController
         $field = ['id','post_title'];
         $child = Db::name('daka')->field($field)->where(['parent_id'=>$id])->select();
         //判断是否收藏成功
-        $findFavoriteCount = Db::name("user_favorite")->where([
-            'object_id'  => $id,
-            'table_name' => 'daka',
-            'user_id'    => $this->userId
-        ])->count();
-        $info['is_collect'] = $findFavoriteCount ? 1 : 0;
+        $info['is_collect'] = UserModel::instance()->checkCollect($id, $this->ctype);
         //判断是否购买
-        $buy = OrderModel::instance()->where(['goods_id'=>$info['goods_id'], 'user_id'=>$this->userId, 'pay_status'=>2])->count();
-        $info['is_buy'] = $buy ? 1 : 0;
+        $info['is_buy'] = UserModel::instance()->checkBuy($info['goods_id']);
+
         $this->success('ok', ['info'=>$info, 'child'=>$child]);
     }
 
