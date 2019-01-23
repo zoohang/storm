@@ -51,6 +51,16 @@ class OrderModel extends Model
             if ($user_info['coin'] < $goods_info['price']) throw new \Exception("你剩余的图币不够{$goods_info['price']}个");
             OrderModel::instance()->data($data)->isUpdate(false)->allowField(true)->save();
             UserModel::instance()->where(['id'=>$this->userId])->setDec('coin', $goods_info['price']);
+            $log = [
+                'user_id' => $this->userId,
+                'create_time' => NOW_TIME,
+                'change' => $goods_info['price'],
+                'coin' => intval($user_info['coin'] - $goods_info['price']),
+                'description' => $goods_info['goods_name'],
+                'remark' => '消费',
+                'type' => 1
+            ];
+            Db::name('user_coin_log')->insert($log);
             //商品类型 1-刷题 2-打卡 3-在线课堂 4-线下课堂 5-其他
             switch ($goods_info['goods_type']) {
                 case 1:

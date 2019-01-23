@@ -11,6 +11,7 @@
 
 namespace app\user\controller;
 
+use app\user\model\UserModel;
 use cmf\controller\AdminBaseController;
 use think\Db;
 
@@ -135,5 +136,42 @@ class AdminIndexController extends AdminBaseController
         } else {
             $this->error('数据传入失败！');
         }
+    }
+
+    public function coin_log() {
+        $id = $this->request->param('id', 0, 'intval');
+        if (!$id) $this->error('数据传入失败！');
+        $userinfo = Db::name('user')->where(["id" => $id])->find();
+        $logs = Db::name('user_coin_log')->where(['user_id'=>$id])->order(['id'=>'desc'])->select();
+        $this->assign('userinfo', $userinfo);
+        $this->assign('list', $logs);
+        return $this->fetch();
+    }
+
+    public function coin_handle() {
+        $params = $this->request->param();
+        $result = $this->validate($params, 'UserCoinLog');
+        if ($result !== true) {
+            $this->error($result);
+        }
+        $user_id = $params['id'];
+        unset($params['id']);
+        $user_coin = (int)Db::name('user')->where(['id'=>$user_id])->value('coin');
+        $changed_coin = $params['type']==1? ($user_coin - $params['change']): ($user_coin + $params['change']);
+        $params = array_merge($params, [
+            'create_time' => NOW_TIME,
+            'user_id' => $user_id,
+            'coin' => $changed_coin,
+        ]);
+        Db::startTrans();
+        try {
+            Db::name('user_coin_log')->insert($params);
+            Db::name('user')->where(['id'=>$user_id])->setField('coin', $changed_coin);
+            Db::commit();
+        } catch (\Exception $e) {
+            Db::rollback();
+            $this->error($e->getMessage());
+        }
+        $this->success('充值成功!', url('user/adminIndex/coin_log', ['id'=>$user_id]));
     }
 }

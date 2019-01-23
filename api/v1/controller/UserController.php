@@ -196,4 +196,11 @@ class UserController extends RestUserBaseController
         ];
         $this->delCollect($data);
     }
+
+    //我的图币流水
+    public function coinLog() {
+        $coin = UserModel::instance()->where(['id'=>$this->userId])->value('coin');
+        $list = Db::name('user_coin_log')->where(['user_id'=>$this->userId])->order(['id'=>'desc'])->select();
+        $this->success('ok', ['coin'=>$coin, 'list'=>$list]);
+    }
 }

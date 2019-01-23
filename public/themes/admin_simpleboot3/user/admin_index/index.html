@@ -62,9 +62,7 @@
                             <else/>
                             <a style="color: #ccc;">{:lang('BLOCK_USER')}</a>
                         </neq>
-                        <a href="{:url('adminIndex/coin_handle',array('id'=>$vo['id']))}"
-                           class="js-ajax-dialog-btn"
-                           data-msg="{:lang('ACTIVATE_USER_CONFIRM_MESSAGE')}">充值</a>
+                        <a href="{:url('adminIndex/coin_log',array('id'=>$vo['id']))}" class="">充值</a>
                     </td>
                 </tr>
             </foreach>
