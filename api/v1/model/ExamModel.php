@@ -64,5 +64,11 @@ class ExamModel extends Model
             ->where(['b.id'=>$item_id])
             ->find();
     }
+
+    public function searchExam($keywords) {
+        $where = ['status'=>1, 'title'=> ['like', "%{$keywords}%"]];
+        $list = $this->where($where)->paginate();
+        return $list;
+    }
 }
 

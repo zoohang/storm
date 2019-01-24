@@ -64,5 +64,11 @@ class DakaModel extends Model
     {
         return replace_content_file_url(htmlspecialchars_decode($value));
     }
+
+    public function searchDaka($keywords) {
+        $where = ['post_title'=> ['like', "%{$keywords}%"]];
+        $list = $this->where($where)->paginate();
+        return $list;
+    }
 }
 

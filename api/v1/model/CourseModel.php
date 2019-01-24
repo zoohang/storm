@@ -74,5 +74,11 @@ class CourseModel extends Model
         unset($item);
         return $teachers;
     }
+
+    public function searchCourse($keywords) {
+        $where = ['ctitle'=> ['like', "%{$keywords}%"]];
+        $list = $this->where($where)->paginate();
+        return $list;
+    }
 }
 
