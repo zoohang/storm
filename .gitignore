@@ -11,3 +11,4 @@ composer.lock
 /data/conf/config.php
 /data/conf/database.php
 /data/conf/route.php
+/data/lang
