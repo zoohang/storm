@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-24 18:06:51
+Date: 2019-01-24 21:43:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1843,16 +1843,21 @@ CREATE TABLE `st_user_coin_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '用户 id',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `change` int(11) NOT NULL DEFAULT '0' COMMENT '更改余额 充值为正 消费为负',
+  `change` int(11) NOT NULL DEFAULT '0' COMMENT '更改余额数量',
   `coin` int(11) NOT NULL DEFAULT '0' COMMENT '更改后图币',
-  `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
-  `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
+  `description` varchar(1024) NOT NULL DEFAULT '' COMMENT '描述',
+  `remark` varchar(512) NOT NULL DEFAULT '' COMMENT '备注',
+  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '变更类型 1-消费 2-充值',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='用户图币流水日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='用户图币流水日志表';
 
 -- ----------------------------
 -- Records of st_user_coin_log
 -- ----------------------------
+INSERT INTO `st_user_coin_log` VALUES ('1', '2', '1548259774', '200', '10000', '消费', '测试', '1');
+INSERT INTO `st_user_coin_log` VALUES ('2', '2', '1548259800', '1000', '9000', '测试消费 -1000', '测试', '1');
+INSERT INTO `st_user_coin_log` VALUES ('3', '2', '1548259828', '9000', '0', '测试消费9000', '测试', '1');
+INSERT INTO `st_user_coin_log` VALUES ('4', '2', '1548259878', '5000', '5000', '充值500元', '充值', '2');
 
 -- ----------------------------
 -- Table structure for st_user_favorite
