@@ -62,8 +62,13 @@ class CourseModel extends Model
      */
     public function getRecommendCourse($num=4)
     {
-        $where = ['recommended' => 1];
-        return $this->where($where)->order(['list_order' => 'desc'])->limit(10)->select()->toArray();
+        $where = ['a.recommended' => 1];
+        $field = ['a.cid', 'a.ctitle', 'a.num', 'a.join_num', 'a.type', 'a.image', 'b.price'];
+        return $this->alias('a')
+            ->join('__GOODS__ b', 'a.goods_id=b.goods_id')
+            ->field($field)
+            ->where($where)->order(['list_order' => 'desc'])
+            ->limit($num)->select()->toArray();
     }
 
     public function getRelationTeachers($cid) {

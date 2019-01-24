@@ -48,7 +48,8 @@ class SlideItemModel extends Model
     }
 
     public function getOne($slide_id) {
-        return $this->where(['slide_id'=>$slide_id, 'status'=>1])->order(['list_order'=>'asc'])->select()->toArray();
+        $field = ['id', 'title', 'image', 'url'];
+        return $this->where(['slide_id'=>$slide_id])->field($field)->order(['list_order'=>'asc'])->select()->toArray();
     }
 }
 

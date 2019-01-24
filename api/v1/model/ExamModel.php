@@ -70,5 +70,15 @@ class ExamModel extends Model
         $list = $this->where($where)->paginate();
         return $list;
     }
+
+    public function getRecommendExam($num=4) {
+        $where = ['a.recommended' => 1];
+        $field = ['a.*', 'b.price'];
+        return $this->alias('a')
+            ->join('__GOODS__ b','a.goods_id=b.goods_id')
+            ->field($field)
+            ->where($where)
+            ->order(['a.update_time' => 'desc'])->limit($num)->select()->toArray();
+    }
 }
 

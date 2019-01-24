@@ -70,5 +70,18 @@ class DakaModel extends Model
         $list = $this->where($where)->paginate();
         return $list;
     }
+
+    public function getRecommendDaka($num=3) {
+        $where = ['recommended' => 1];
+        $field = ['a.id','a.post_title','a.thumbnail','a.published_time', 'a.end_time','a.join_num','a.daka_num','b.price'];
+        return $this->alias('a')
+            ->join('__GOODS__ b', 'a.goods_id=b.goods_id')
+            ->where($where)
+            ->field($field)->order(['list_order' => 'desc'])->limit($num)->select()->toArray();
+    }
+
+    public function price() {
+        $this->hasOne('__GOODS__', 'goods_id', 'goods_id');
+    }
 }
 
