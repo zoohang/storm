@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地连接
+Source Server         : localhost
 Source Server Version : 50553
-Source Host           : 127.0.0.1:3306
+Source Host           : localhost:3306
 Source Database       : storm
 
 Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-24 00:31:22
+Date: 2019-01-24 18:06:51
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -36,7 +36,7 @@ CREATE TABLE `st_admin_menu` (
   KEY `status` (`status`),
   KEY `parent_id` (`parent_id`),
   KEY `controller` (`controller`)
-) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=utf8mb4 COMMENT='后台菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=185 DEFAULT CHARSET=utf8mb4 COMMENT='后台菜单表';
 
 -- ----------------------------
 -- Records of st_admin_menu
@@ -118,7 +118,7 @@ INSERT INTO `st_admin_menu` VALUES ('74', '73', '2', '0', '10000', 'admin', 'Set
 INSERT INTO `st_admin_menu` VALUES ('75', '6', '1', '1', '10000', 'admin', 'Setting', 'upload', '', '上传设置', '', '上传设置');
 INSERT INTO `st_admin_menu` VALUES ('76', '75', '2', '0', '10000', 'admin', 'Setting', 'uploadPost', '', '上传设置提交', '', '上传设置提交');
 INSERT INTO `st_admin_menu` VALUES ('77', '6', '1', '0', '10000', 'admin', 'Setting', 'clearCache', '', '清除缓存', '', '清除缓存');
-INSERT INTO `st_admin_menu` VALUES ('78', '6', '1', '1', '40', 'admin', 'Slide', 'index', '', '幻灯片管理', '', '幻灯片管理');
+INSERT INTO `st_admin_menu` VALUES ('78', '183', '1', '1', '40', 'admin', 'Slide', 'index', '', '轮播图管理', '', '轮播图管理');
 INSERT INTO `st_admin_menu` VALUES ('79', '78', '1', '0', '10000', 'admin', 'Slide', 'add', '', '添加幻灯片', '', '添加幻灯片');
 INSERT INTO `st_admin_menu` VALUES ('80', '78', '2', '0', '10000', 'admin', 'Slide', 'addPost', '', '添加幻灯片提交', '', '添加幻灯片提交');
 INSERT INTO `st_admin_menu` VALUES ('81', '78', '1', '0', '10000', 'admin', 'Slide', 'edit', '', '编辑幻灯片', '', '编辑幻灯片');
@@ -217,6 +217,8 @@ INSERT INTO `st_admin_menu` VALUES ('179', '175', '1', '1', '10', 'admin', 'Cour
 INSERT INTO `st_admin_menu` VALUES ('180', '175', '1', '1', '10000', 'Admin', 'daka', 'index', '', '打卡', '', '');
 INSERT INTO `st_admin_menu` VALUES ('181', '175', '1', '1', '10000', 'admin', 'school', 'index', '', '学校列表', '', '');
 INSERT INTO `st_admin_menu` VALUES ('182', '175', '1', '1', '10000', 'admin', 'goods', 'index', '', '商品管理', '', '');
+INSERT INTO `st_admin_menu` VALUES ('183', '0', '1', '1', '10000', 'admin', 'recommend', 'default', '', '运营', '', '');
+INSERT INTO `st_admin_menu` VALUES ('184', '183', '1', '1', '10000', 'admin', 'recommend', 'index', '', '搜索推荐', '', '');
 
 -- ----------------------------
 -- Table structure for st_asset
@@ -237,7 +239,7 @@ CREATE TABLE `st_asset` (
   `suffix` varchar(10) NOT NULL DEFAULT '' COMMENT '文件后缀名,不包括点',
   `more` text COMMENT '其它详细信息,JSON格式',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=55 DEFAULT CHARSET=utf8mb4 COMMENT='资源表';
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COMMENT='资源表';
 
 -- ----------------------------
 -- Records of st_asset
@@ -296,6 +298,9 @@ INSERT INTO `st_asset` VALUES ('51', '1', '32656', '1547882012', '1', '0', '4184
 INSERT INTO `st_asset` VALUES ('52', '1', '14539', '1547882022', '1', '0', '7fa8754c79538815bcdafec5d7268b8a0de87ad927533afbd9e9834f79a74050', '00c5cab811db0f8e9ae86f2b36337472.jpg', 'admin/20190119/60ea8c999b52338733c470aab0241597.jpg', '7fa8754c79538815bcdafec5d7268b8a', '0b283b3098b530af3ff023a7745feb19619163f4', 'jpg', null);
 INSERT INTO `st_asset` VALUES ('53', '1', '51356', '1547905125', '1', '0', '15163e2734fb73ee592a88c0d594551510dc716641caba1885b1c256589bd7d0', '69012f869396ffbfbe6bcd8175fe77ad.jpg', 'admin/20190119/61aba0ed9eb83a48ae8243c84c5cbd28.jpg', '15163e2734fb73ee592a88c0d5945515', '765395990612cea3e662f2fc6597b1d75b0104ce', 'jpg', null);
 INSERT INTO `st_asset` VALUES ('54', '1', '182344', '1547908595', '1', '0', 'e4865892d333238746dc0f8a1d8c88190e2576db833783abad2ce276a91ad4a2', 'a689f0d9e09cec5753697d00d6d07e59.jpg', 'admin/20190119/9ee1df243c60a34500ae3534cf0448fd.jpg', 'e4865892d333238746dc0f8a1d8c8819', '03c08eef9f69abbeef7af708a15681c3c7f93ff5', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('55', '1', '8178', '1548213831', '1', '0', '10859e5a48aaa283e3a2d1fed66e165a6cfd7e000f202255cd50486b4cc7c6d1', 'AD_slr_110110_20181229[1].jpg', 'admin/20190123/cb2af6bf02cf4caeedec4077ba4a5759.jpg', '10859e5a48aaa283e3a2d1fed66e165a', '42d1c708499097afcda6c22773d7cb3187e102b1', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('56', '1', '8439', '1548213844', '1', '0', 'f2dd4993a826e87bdc8354c676c1d830dec953a7c3c64a98a5c6a40977530c04', 'AD_xzpq_110110_20181201[1].jpg', 'admin/20190123/24e567e3746d64f6e08eac94ac5bce50.jpg', 'f2dd4993a826e87bdc8354c676c1d830', '0aac97d7ccb2c69825816eb9438ffdcff0098bfb', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('57', '1', '2881', '1548213879', '1', '0', '62c406696fa0b1f3af5cbfcd0a61455a7b777f7660d86d6fbf25b176ed2c1c5b', 'kv3_2[1].png', 'admin/20190123/03fa15e93a32edee9f42a34909855c10.png', '62c406696fa0b1f3af5cbfcd0a61455a', '6a7c7451c0372df7b907814b6d9cc295a2e41548', 'png', null);
 
 -- ----------------------------
 -- Table structure for st_auth_access
@@ -331,7 +336,7 @@ CREATE TABLE `st_auth_rule` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`) USING BTREE,
   KEY `module` (`app`,`status`,`type`)
-) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=utf8mb4 COMMENT='权限规则表';
+) ENGINE=InnoDB AUTO_INCREMENT=185 DEFAULT CHARSET=utf8mb4 COMMENT='权限规则表';
 
 -- ----------------------------
 -- Records of st_auth_rule
@@ -412,7 +417,7 @@ INSERT INTO `st_auth_rule` VALUES ('73', '1', 'admin', 'admin_url', 'admin/Setti
 INSERT INTO `st_auth_rule` VALUES ('74', '1', 'admin', 'admin_url', 'admin/Setting/upload', '', '上传设置', '');
 INSERT INTO `st_auth_rule` VALUES ('75', '1', 'admin', 'admin_url', 'admin/Setting/uploadPost', '', '上传设置提交', '');
 INSERT INTO `st_auth_rule` VALUES ('76', '1', 'admin', 'admin_url', 'admin/Setting/clearCache', '', '清除缓存', '');
-INSERT INTO `st_auth_rule` VALUES ('77', '1', 'admin', 'admin_url', 'admin/Slide/index', '', '幻灯片管理', '');
+INSERT INTO `st_auth_rule` VALUES ('77', '1', 'admin', 'admin_url', 'admin/Slide/index', '', '轮播图管理', '');
 INSERT INTO `st_auth_rule` VALUES ('78', '1', 'admin', 'admin_url', 'admin/Slide/add', '', '添加幻灯片', '');
 INSERT INTO `st_auth_rule` VALUES ('79', '1', 'admin', 'admin_url', 'admin/Slide/addPost', '', '添加幻灯片提交', '');
 INSERT INTO `st_auth_rule` VALUES ('80', '1', 'admin', 'admin_url', 'admin/Slide/edit', '', '编辑幻灯片', '');
@@ -512,6 +517,8 @@ INSERT INTO `st_auth_rule` VALUES ('179', '1', 'admin', 'admin_url', 'admin/Cour
 INSERT INTO `st_auth_rule` VALUES ('180', '1', 'Admin', 'admin_url', 'Admin/daka/index', '', '打卡', '');
 INSERT INTO `st_auth_rule` VALUES ('181', '1', 'admin', 'admin_url', 'admin/school/index', '', '学校列表', '');
 INSERT INTO `st_auth_rule` VALUES ('182', '1', 'admin', 'admin_url', 'admin/goods/index', '', '商品管理', '');
+INSERT INTO `st_auth_rule` VALUES ('183', '1', 'admin', 'admin_url', 'admin/recommend/default', '', '运营', '');
+INSERT INTO `st_auth_rule` VALUES ('184', '1', 'admin', 'admin_url', 'admin/recommend/index', '', '搜索推荐', '');
 
 -- ----------------------------
 -- Table structure for st_category
@@ -620,7 +627,7 @@ INSERT INTO `st_course` VALUES ('5', '222', '9', '规划', '333', '0', '0', '0',
 INSERT INTO `st_course` VALUES ('6', '222', '9', '规划', '333', '0', '0', '0', '1', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '1', '1', '3', '1542726663', '1547909816', '1544889523', '-1', '18');
 INSERT INTO `st_course` VALUES ('7', 'nginx123111', '10', '园林', 'nginx233312', '0', '0', '1', '1', 'admin/20181107/5299ca5b02abe7163b0569cc5aed01da.jpg', '1', '1', '1', '1542727290', '1548085104', '1548084575', '1', '12');
 INSERT INTO `st_course` VALUES ('8', 'php56789', '9', '规划', 'php567891', '2', '0', '0', '2', 'admin/20181107/f05a104ce593705eace17696bc5a3233.jpg', '1', '1', '22', '1542729348', '1547909834', '1548084575', '1', '20');
-INSERT INTO `st_course` VALUES ('9', 'redis高级教程', '10', '园林', '老司机带你飞, redis高级教程', '4', '0', '0', '1', 'admin/20190119/9ee1df243c60a34500ae3534cf0448fd.jpg', '0', '0', '10000', '1547908631', '1547908631', '1548084575', '1', '13');
+INSERT INTO `st_course` VALUES ('9', 'redis高级教程', '10', '园林', '老司机带你飞, redis高级教程', '4', '0', '0', '1', 'admin/20190119/9ee1df243c60a34500ae3534cf0448fd.jpg', '0', '0', '10000', '1547908631', '1548212196', '1548084575', '1', '13');
 
 -- ----------------------------
 -- Table structure for st_course_item
@@ -673,17 +680,18 @@ CREATE TABLE `st_course_teacher` (
   `summary` varchar(256) NOT NULL DEFAULT '' COMMENT '简介',
   `description` text COMMENT '详细介绍',
   `avatar` varchar(256) NOT NULL DEFAULT '' COMMENT '讲师头像url',
-  `create_time` int(10) NOT NULL,
-  `update_time` int(10) NOT NULL,
+  `create_time` int(10) NOT NULL DEFAULT '0',
+  `update_time` int(10) NOT NULL DEFAULT '0',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0-隐藏 1-展示',
   PRIMARY KEY (`tid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='在线课程/线下课程 讲师表';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='在线课程/线下课程 讲师表';
 
 -- ----------------------------
 -- Records of st_course_teacher
 -- ----------------------------
-INSERT INTO `st_course_teacher` VALUES ('1', '张三', '高级工程师', '高级工程师很厉害的', 'admin/20181126/f98a5c314b0331510fe9d835c8f72e72.jpg', '0', '0', '1');
-INSERT INTO `st_course_teacher` VALUES ('2', '李四', '李四李四', '李四李四李四', 'admin/20181126/ade2fe33d0b9d48f3798428e2c6755cd.jpg', '0', '0', '1');
+INSERT INTO `st_course_teacher` VALUES ('1', '张三', '高级工程师', '高级工程师很厉害的', 'admin/20190123/cb2af6bf02cf4caeedec4077ba4a5759.jpg', '0', '0', '1');
+INSERT INTO `st_course_teacher` VALUES ('2', '李四', '李四李四', '李四李四李四', 'admin/20190123/24e567e3746d64f6e08eac94ac5bce50.jpg', '0', '0', '1');
+INSERT INTO `st_course_teacher` VALUES ('3', '王五', '王五', '王五', 'admin/20190123/03fa15e93a32edee9f42a34909855c10.png', '0', '0', '1');
 
 -- ----------------------------
 -- Table structure for st_course_teacher_relation
@@ -698,7 +706,7 @@ CREATE TABLE `st_course_teacher_relation` (
   KEY `cid` (`cid`),
   KEY `tid` (`tid`),
   KEY `status` (`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COMMENT='讲师_课程关联表';
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8mb4 COMMENT='讲师_课程关联表';
 
 -- ----------------------------
 -- Records of st_course_teacher_relation
@@ -709,6 +717,9 @@ INSERT INTO `st_course_teacher_relation` VALUES ('47', '5', '1', '1');
 INSERT INTO `st_course_teacher_relation` VALUES ('48', '5', '2', '1');
 INSERT INTO `st_course_teacher_relation` VALUES ('49', '8', '2', '1');
 INSERT INTO `st_course_teacher_relation` VALUES ('50', '7', '1', '1');
+INSERT INTO `st_course_teacher_relation` VALUES ('51', '7', '2', '1');
+INSERT INTO `st_course_teacher_relation` VALUES ('52', '9', '1', '1');
+INSERT INTO `st_course_teacher_relation` VALUES ('53', '9', '3', '1');
 
 -- ----------------------------
 -- Table structure for st_daka
@@ -1024,7 +1035,7 @@ INSERT INTO `st_goods` VALUES ('8', '14', '1111', '', '333', '222', '111', '2', 
 INSERT INTO `st_goods` VALUES ('9', '14', '今天是2018年最后一天咯', 'admin/20181231/5340d43f7b1eecdb25a81e8fe4d15d3b.jpg', '99', '89', '-1', '2', '1547905009', '1547905009', '0', '1');
 INSERT INTO `st_goods` VALUES ('10', '13', '今天把咸鱼挂起来了', 'admin/20190119/61aba0ed9eb83a48ae8243c84c5cbd28.jpg', '123', '12', '-1', '2', '1547905146', '1547905173', '0', '0');
 INSERT INTO `st_goods` VALUES ('12', '10', 'nginx123111', 'admin/20181107/5299ca5b02abe7163b0569cc5aed01da.jpg', '128', '68', '-1', '3', '1547906935', '1548085104', '0', '1');
-INSERT INTO `st_goods` VALUES ('13', '10', 'redis高级教程', 'admin/20190119/9ee1df243c60a34500ae3534cf0448fd.jpg', '999', '666', '-1', '3', '1547908631', '1547908631', '0', '1');
+INSERT INTO `st_goods` VALUES ('13', '10', 'redis高级教程', 'admin/20190119/9ee1df243c60a34500ae3534cf0448fd.jpg', '999', '666', '-1', '3', '1547908631', '1548212196', '0', '1');
 INSERT INTO `st_goods` VALUES ('14', '7', '园林设计之美', 'portal/20181031/c7cae5f03d3af648e043704ec6f45296.jpg', '298', '198', '98', '1', '1547909089', '1547909662', '0', '1');
 INSERT INTO `st_goods` VALUES ('15', '5', '重大和北大都能用到的模拟题', 'admin/20181216/f966c57f8fb54b31b1c8307a6b503273.jpg', '123', '23', '-1', '1', '1547909719', '1547909719', '0', '1');
 INSERT INTO `st_goods` VALUES ('16', '6', '西南大学&amp;北京大学2009研究生真题', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '0', '0', '-1', '1', '1547909772', '1547909772', '0', '1');
@@ -1442,22 +1453,27 @@ DROP TABLE IF EXISTS `st_recommend`;
 CREATE TABLE `st_recommend` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '' COMMENT '名称',
+  `image` varchar(255) NOT NULL DEFAULT '' COMMENT '图片',
   `type` tinyint(4) NOT NULL DEFAULT '0' COMMENT '1-搜索关键字',
-  `list_order` decimal(8,0) NOT NULL DEFAULT '1000' COMMENT '排序',
+  `list_order` int(11) NOT NULL DEFAULT '100' COMMENT '排序',
   `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
+  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态 0-下线 1-上线 -1删除',
   `more` text COMMENT '其他内容 json',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COMMENT='推荐表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='推荐表';
 
 -- ----------------------------
 -- Records of st_recommend
 -- ----------------------------
-INSERT INTO `st_recommend` VALUES ('1', '建筑手绘', '1', '1000', '0', null);
-INSERT INTO `st_recommend` VALUES ('2', '商业手绘', '1', '1000', '0', null);
-INSERT INTO `st_recommend` VALUES ('3', '排版', '1', '1000', '0', null);
-INSERT INTO `st_recommend` VALUES ('4', '住宅', '1', '1000', '0', null);
-INSERT INTO `st_recommend` VALUES ('5', '效果图', '1', '1000', '0', null);
-INSERT INTO `st_recommend` VALUES ('6', '公寓', '1', '1000', '0', null);
+INSERT INTO `st_recommend` VALUES ('1', '建筑手绘', '', '1', '1', '0', '0', '1', null);
+INSERT INTO `st_recommend` VALUES ('2', '商业手绘', '', '1', '0', '0', '1548308829', '1', null);
+INSERT INTO `st_recommend` VALUES ('3', '排版', '', '1', '3', '0', '0', '1', null);
+INSERT INTO `st_recommend` VALUES ('4', '住宅', '', '1', '4', '0', '0', '0', null);
+INSERT INTO `st_recommend` VALUES ('5', '效果图', '', '1', '5', '0', '0', '1', null);
+INSERT INTO `st_recommend` VALUES ('6', '公寓', '', '1', '6', '0', '0', '1', null);
+INSERT INTO `st_recommend` VALUES ('7', '三体:黑暗森林', '', '1', '7', '0', '0', '0', null);
+INSERT INTO `st_recommend` VALUES ('8', '斗罗大陆', '', '1', '100', '1548308853', '1548310279', '-1', null);
 
 -- ----------------------------
 -- Table structure for st_recycle_bin
@@ -1754,7 +1770,7 @@ CREATE TABLE `st_user` (
 -- Records of st_user
 -- ----------------------------
 INSERT INTO `st_user` VALUES ('1', '1', '0', '0', '1547867646', '1', '1', '0.00', '1540307170', '1', 'admin', '###4a86c1e09a02a571683d0ceb112fc2f2', 'admin', '136927705@qq.com', '', 'https://img.myzx.cn/video/mysource/admin/20180713/5b486e7d1778b_100_100.png', '', '127.0.0.1', '', '', '13399878665', '', '', '', '');
-INSERT INTO `st_user` VALUES ('2', '2', '1', '0', '1544943873', '1', '5000', '0.00', '1544935602', '1', '', '###4a86c1e09a02a571683d0ceb112fc2f2', '张三1', '12355@qq.com', '', 'avatar/20181216/45718ee0baf9a1666ca9738d32d457f3.jpg', '', '127.0.0.1', '', '张三', '18581290597', '湖北理工大', '计算机', '3年2班', '{\"wx_no\":\"zhuo_yi_hang\",\"dashi\":\"1\",\"enjoy_course\":\"1,3,5\",\"source\":\"2,4\"}');
+INSERT INTO `st_user` VALUES ('2', '2', '1', '0', '1544943873', '1', '9510', '0.00', '1544935602', '1', '', '###4a86c1e09a02a571683d0ceb112fc2f2', '张三1', '12355@qq.com', '', 'avatar/20181216/45718ee0baf9a1666ca9738d32d457f3.jpg', '', '127.0.0.1', '', '张三', '18581290597', '湖北理工大', '计算机', '3年2班', '{\"wx_no\":\"zhuo_yi_hang\",\"dashi\":\"1\",\"enjoy_course\":\"1,3,5\",\"source\":\"2,4\"}');
 
 -- ----------------------------
 -- Table structure for st_user_action
@@ -1827,21 +1843,16 @@ CREATE TABLE `st_user_coin_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '用户 id',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-  `change` int(11) NOT NULL DEFAULT '0' COMMENT '更改余额数量',
+  `change` int(11) NOT NULL DEFAULT '0' COMMENT '更改余额 充值为正 消费为负',
   `coin` int(11) NOT NULL DEFAULT '0' COMMENT '更改后图币',
-  `description` varchar(1024) NOT NULL DEFAULT '' COMMENT '描述',
-  `remark` varchar(512) NOT NULL DEFAULT '' COMMENT '备注',
-  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '变更类型 1-消费 2-充值',
+  `description` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
+  `remark` varchar(255) NOT NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COMMENT='用户图币流水日志表';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COMMENT='用户图币流水日志表';
 
 -- ----------------------------
 -- Records of st_user_coin_log
 -- ----------------------------
-INSERT INTO `st_user_coin_log` VALUES ('1', '2', '1548259774', '200', '10000', '消费', '测试', '1');
-INSERT INTO `st_user_coin_log` VALUES ('2', '2', '1548259800', '1000', '9000', '测试消费 -1000', '测试', '1');
-INSERT INTO `st_user_coin_log` VALUES ('3', '2', '1548259828', '9000', '0', '测试消费9000', '测试', '1');
-INSERT INTO `st_user_coin_log` VALUES ('4', '2', '1548259878', '5000', '5000', '充值500元', '充值', '2');
 
 -- ----------------------------
 -- Table structure for st_user_favorite
@@ -1859,6 +1870,7 @@ CREATE TABLE `st_user_favorite` (
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '收藏时间',
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1-刷题 2-打卡 3在线课堂 4-线下课堂',
   PRIMARY KEY (`id`),
+  UNIQUE KEY `user_object_type_unique` (`user_id`,`object_id`,`type`),
   KEY `uid` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COMMENT='用户收藏表';
 
