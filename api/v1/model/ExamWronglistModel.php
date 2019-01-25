@@ -24,17 +24,13 @@ class ExamWronglistModel extends Model
         return self::$instance;
     }
 
-    /**
-     * 基础查询
-     */
-    protected function base($query)
-    {
-        $query->where('status', 1);
-    }
-
-
     public function getWrongCountGroupType($user_id)
     {
         return $this->field("type,count(`type`) ct")->where(['user_id'=>$user_id])->group('type')->select();
+    }
+
+    public function getOptionAttr($value)
+    {
+        return $value ? json_decode($value, true) : $value;
     }
 }

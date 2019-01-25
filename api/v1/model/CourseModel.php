@@ -35,7 +35,12 @@ class CourseModel extends Model
      */
     public function getImageAttr($value)
     {
-        return cmf_get_image_url($value);
+        return get_image_url($value);
+    }
+
+    public function getContentImgAttr($value)
+    {
+        return get_image_url($value);
     }
 
     /*public function getTypeAttr($value)
@@ -84,6 +89,11 @@ class CourseModel extends Model
         $where = ['ctitle'=> ['like', "%{$keywords}%"]];
         $list = $this->where($where)->paginate();
         return $list;
+    }
+
+    public function getBugCourse() {
+        $where = ['b.user_id'=>request()->post('user_id'), 'b.pay_status'=>2, 'b.order_status'=>1];
+        return $this->alias('a')->join('__ORDER__ b','a.goods_id=b.goods_id')->field('a.*')->where($where)->select();
     }
 }
 

@@ -77,7 +77,7 @@ class CourseController extends RestUserBaseController
     public function detail() {
         $id = $this->request->param('id', 0, 'intval,abs');
         if (!$id) $this->error('id必填');
-        $info = Db::name('course a')
+        $info = CourseModel::instance()->alias('a')
             ->join('__GOODS__ b','a.goods_id=b.goods_id')
             ->field('a.*,b.price,b.stock')
             ->where(['a.cid'=>$id])
@@ -121,124 +121,8 @@ class CourseController extends RestUserBaseController
         $this->success('ok', ['info'=>$info]);
     }
 
-    //提交打卡作业
-    // 打卡 小节id 上传文件地址  追加的文字描述
-    // ['daka_id'=>1, 'images'=>[1,2,3],'message'=>'111']
-    public function submitHomeWork() {
-        $data = $this->request->post();
-        $result = $this->validate($data, 'DakaHomework');
-        if ($result !== true) {
-            $this->error($result);
-        }
-        Db::startTrans();
-        try{
-            $info = Db::name('Daka')->where(['id'=>$daka_id])->find();
-            $data['daka_parent_id'] = $info['parent_id'];
-            $res = DakaHomeworkModel::instance()->allowField(true)->isUpdate(false)->save($data);
-            DakaModel::instance()->where(['id'=>$info['parent_id']])->inc('daka_num');
-            Db::commit();
-        } catch (\Exception $e) {
-            Db::rollback();
-            $this->error('点赞失败！');
-        }
-        if ($res !== false) {
-            $this->success('ok');
-        } else {
-            $this->error('上传失败, 请重试');
-        }
-    }
-
-    //添加收藏 打卡
-    public function addCollect() {
-        //拼接好数据 调用公共收藏方法
-        $id = $this->request->param('id', 0, 'intval,abs');
-        $info = DakaModel::get($id);
-        $url = cmf_url_encode('v1/daka/detail', ['id'=>$id]);
-        $data = [
-            'id' => $id,
-            'title' => $info['post_title'],
-            'table' => 'daka',
-            'url'   => $url,
-            'type'  => 2
-        ];
-        $result = $this->validate($data, 'Favorite');
-        if ($result !== true) {
-            $this->error($result);
-        }
-        $this->collect($data);
-    }
-
-    public function deleteCollect() {
-        $id = $this->request->param('id', 0, 'intval,abs');
-        $data = [
-            'id' => $id,
-            'table' => 'daka',
-        ];
-        $this->delCollect($data);
-    }
-
-    // 我的画图打卡[列表]
-    public function alreadyBuyDaka() {
-        $where = ['a.user_id'=>$this->userId, 'a.pay_status'=>2];
-        $field = ['c.id','c.post_title', 'c.thumbnail', 'c.join_num', 'c.published_time start_time', 'c.end_time'];
-        $list = Db::name('order a')
-            ->join('__DAKA__ c', 'a.goods_id=c.goods_id')
-            ->where($where)
-            ->field($field)
-            ->order('a.order_id desc')
-            ->paginate()
-            ->toArray();
-        $daka_ids = array_column($list['data'], 'id');
-        $item_nums = Db::name('daka')->where(['parent_id'=>['in', $daka_ids]])->field('parent_id,count(*) count')->group('parent_id')->select();
-        $homework_nums = Db::name('daka_homework')->where(['daka_parent_id'=>['in', $daka_ids]])->field('daka_parent_id,count(*) count')->group('daka_parent_id')->select();
-        foreach ($list['data'] as &$item) {
-            $item['thumbnail'] = get_image_url($item['thumbnail']);
-            $item['item_num'] = 0;
-            foreach ($item_nums as $it) {
-                if ($item['id'] == $it['parent_id']) {
-                    $item['item_num'] = $it['count'];
-                    continue;
-                }
-            }
-            $item['hk_num'] = 0;
-            foreach ($homework_nums as $hk) {
-                if ($item['id'] == $hk['daka_parent_id']) {
-                    $item['hk_num'] = $hk['count'];
-                    continue;
-                }
-            }
-        }
-        unset($item);
-        $this->success('success', $list);
-    }
-
-    //我的画图打卡内容详细item列表
-    public function alreadyBuyDakaItem() {
-        // select a.id, a.post_title,b.id hk_id,b.status from st_daka a
-        //left join st_daka_homework b on a.id=b.daka_id and b.dtype=1 and b.user_id=2
-        // where a.parent_id=1
-        $daka_id = $this->request->param('daka_id', 0, 'intval,abs');
-        if (!$daka_id) $this->error('打卡id必填');
-        $info = DakaModel::instance()->where(['id'=>$daka_id])->find();
-        $list = Db::name('daka a')
-            ->join('__DAKA_HOMEWORK__ b', "a.id=b.daka_id and b.dtype=1 and b.user_id={$this->userId}", 'left')
-            ->field('a.id, a.post_title,b.id hk_id,b.status')
-            ->where(['a.parent_id'=>$daka_id, 'a.post_status'=>1])
-            ->order('a.list_order asc, a.id asc')
-            ->select()->toArray();
-        foreach ($list as &$item) {
-            $item['start_time'] = $info['published_time'];
-            $item['end_time'] = $info['end_time'];
-            if ($item['hk_id'] && $item['status']==1) {
-                $item['status_str'] = 1;
-            } elseif($item['hk_id'] && $item['status']==2){
-                $item['status_str'] = 2;
-            } elseif(is_null($item['hk_id'])) {
-                $item['status_str'] = 0;
-            }
-            unset($item['hk_id'], $item['status']);
-        }
-        unset($item);
-        $this->success('success', $list);
+    public function getBuyCourse() {
+        $list = CourseModel::instance()->getBugCourse();
+        $this->success('ok', ['list'=>$list]);
     }
 }
