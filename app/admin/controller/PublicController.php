@@ -125,6 +125,6 @@ class PublicController extends AdminBaseController
     public function logout()
     {
         session('ADMIN_ID', null);
-        return redirect(url('/', [], false, true));
+        return redirect(url('/admin', [], false, true));
     }
 }
