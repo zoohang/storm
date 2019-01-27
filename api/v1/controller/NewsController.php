@@ -33,6 +33,7 @@ class NewsController extends RestBaseController
         $categoryId = $this->request->param('category', 1, 'abs,intval');
         $portalCategoryModel = new PortalCategoryModel();
         $category       = $portalCategoryModel->adminCategorySampleArray($categoryId);
+        sort($category);
         //默认全部的列表
         $this->success('ok', [
             'banner' => $slide,
@@ -52,7 +53,7 @@ class NewsController extends RestBaseController
         ];
         $postService = new PostService();
         $data        = $postService->getPostList($param)->toArray();
-        if ($cid !==null) {
+        if ($this->request->action() != strtolower(__FUNCTION__)) {
             return $data;
         } else {
             $this->success('ok', $data);
@@ -78,10 +79,10 @@ class NewsController extends RestBaseController
         $categoryId = $this->request->param('category', 2, 'abs,intval');
         $portalCategoryModel = new PortalCategoryModel();
         $category       = $portalCategoryModel->adminCategorySampleArray($categoryId);
+        sort($category);
         //默认全部的列表
         $this->success('ok', [
-            'category' => $category,
-            'newsList' => $this->CaregoryNewsList($categoryId),
+            'category' => $category
         ]);
     }
 }

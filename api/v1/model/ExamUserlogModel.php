@@ -24,7 +24,7 @@ class ExamUserlogModel extends Model
         return self::$instance;
     }
 
-    public function getPropertyAttr($value)
+    /*public function getPropertyAttr($value)
     {
         switch ($value) {
             case 1:
@@ -37,5 +37,5 @@ class ExamUserlogModel extends Model
                 $name='其他';
         }
         return $name;
-    }
+    }*/
 }

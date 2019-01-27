@@ -38,7 +38,7 @@ class ExamModel extends Model
         return cmf_get_image_url($value);
     }
 
-    public function getTypeAttr($value)
+    /*public function getTypeAttr($value)
     {
         switch ($value) {
             case 1:
@@ -54,7 +54,7 @@ class ExamModel extends Model
                 $name='默认';
         }
         return $name;
-    }
+    }*/
 
     public function getExamInfoByItemId($item_id) {
         return $info = Db::name('Exam')

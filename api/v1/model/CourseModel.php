@@ -67,10 +67,13 @@ class CourseModel extends Model
      */
     public function getRecommendCourse($num=4)
     {
+        $userid = request()->post('user_id');
         $where = ['a.recommended' => 1];
-        $field = ['a.cid', 'a.ctitle', 'a.num', 'a.join_num', 'a.type', 'a.image', 'b.price'];
+        $field = ['a.cid', 'a.ctitle', 'a.num', 'a.join_num', 'a.type', 'a.image', 'b.price', 'IFNULL(c.order_status,0) is_buy'];
+        //todo 判断用户是否购买
         return $this->alias('a')
             ->join('__GOODS__ b', 'a.goods_id=b.goods_id')
+            ->join('__ORDER__ c', "a.goods_id=c.order_id and user_id={$userid} and pay_status=2 and order_status=1", 'left')
             ->field($field)
             ->where($where)->order(['list_order' => 'desc'])
             ->limit($num)->select()->toArray();
@@ -94,6 +97,11 @@ class CourseModel extends Model
     public function getBugCourse() {
         $where = ['b.user_id'=>request()->post('user_id'), 'b.pay_status'=>2, 'b.order_status'=>1];
         return $this->alias('a')->join('__ORDER__ b','a.goods_id=b.goods_id')->field('a.*')->where($where)->select();
+    }
+
+    public function getCollectionCourse() {
+        $where = ['b.user_id'=>request()->post('user_id'), 'b.type'=>3];
+        return $this->alias('a')->join('__USER_FAVORITE__ b', 'a.cid=b.object_id')->where($where)->order(['b.id'=>'desc'])->select();
     }
 }
 

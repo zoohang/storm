@@ -121,8 +121,15 @@ class CourseController extends RestUserBaseController
         $this->success('ok', ['info'=>$info]);
     }
 
+    //已经购买的课程
     public function getBuyCourse() {
         $list = CourseModel::instance()->getBugCourse();
+        $this->success('ok', ['list'=>$list]);
+    }
+
+    //我收藏的课程
+    public function collectionCourse() {
+        $list = CourseModel::instance()->getCollectionCourse();
         $this->success('ok', ['list'=>$list]);
     }
 }

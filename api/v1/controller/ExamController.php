@@ -131,7 +131,9 @@ class ExamController extends RestUserBaseController
             foreach ($data as $item) {
                 $item['show'] = 0;
                 $item['is_wrong'] = 0;
+                $item['is_mult'] = 0;
                 if ($item['type'] == 1) {
+                    if (strlen($item['answer']) > 1)  $item['is_mult'] = 1;
                     $result['chooseQusList'][] = $item;
                 } elseif($item['type'] == 2) {
                     $result['blankQusList'][] = $item;
@@ -248,7 +250,7 @@ class ExamController extends RestUserBaseController
     public function getWrongGroupExam() {
         $data = ExamWronglistModel::instance()->alias('a')
             ->join('__EXAM_ITEM__ b', 'a.exam_item_id=b.id and b.status=1')
-            ->field('a.*')
+            ->field('b.*')
             ->where(['a.user_id'=>$this->userId])
             ->select()->toArray();
         $result = [];
@@ -260,7 +262,9 @@ class ExamController extends RestUserBaseController
                 foreach ($data as $item) {
                     $item['show'] = 0;
                     $item['is_wrong'] = 1;
+                    $item['is_mult'] = 0;
                     if ($item['type'] == 1) {
+                        if (strlen($item['answer']) > 1)  $item['is_mult'] = 1;
                         $result['chooseQusList'][] = $item;
                     } elseif($item['type'] == 2) {
                         $result['blankQusList'][] = $item;

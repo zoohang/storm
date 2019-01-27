@@ -13,14 +13,18 @@
                     <tr>
                         <th><span class="form-required">*</span>题目</th>
                         <td>
-                            <input class="form-control" type="text" style="width:400px;" name="post[item_title]" id="title"
-                                   required value="{$info.item_title|default=''}" placeholder="请输入题目"/>
+                            <textarea class="form-control" name="post[item_title]" id="title"
+                                      style="height: 100px;"
+                                      placeholder="请输入题目">{$info.item_title|default=''}</textarea>
                         </td>
                     </tr>
                     <tr>
                         <th>答案</th>
-                        <td><input class="form-control" type="text" name="post[answer]" id="answer"
-                                   value="{$info.answer|default=''}"  style="width: 100%" placeholder="请填写答案"></td>
+                        <td>
+                            <textarea class="form-control" name="post[answer]" id="answer"
+                                      style="height: 100px;"
+                                      placeholder="请填写答案">{$info.answer|default=''}</textarea>
+                        </td>
                     </tr>
                     <tr>
                         <th>分析</th>

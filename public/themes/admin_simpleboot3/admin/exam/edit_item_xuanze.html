@@ -13,8 +13,9 @@
                     <tr>
                         <th width="70"><span class="form-required">*</span>题目</th>
                         <td>
-                            <input class="form-control" type="text" style="width:100%" name="post[item_title]" id="item_title"
-                                   required value="{$info.item_title|default=''}" placeholder="请输入题目"/>
+                            <textarea class="form-control" name="post[item_title]" id="title"
+                                      style="height: 100px;"
+                                      placeholder="请输入题目">{$info.item_title|default=''}</textarea>
                         </td>
                     </tr>
                     <tr>

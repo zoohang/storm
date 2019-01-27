@@ -340,9 +340,8 @@ class ExamController extends AdminBaseController
             $result = $ExamItemModel->allowField(true)->isUpdate(true)->save($data);
             if ($result === false) {
                 $this->error('编辑失败!');
-            } else {
-                $this->success('编辑成功!', url('exam/editItem', ['item_id'=>$id, 'item_type'=>$data['type'], 'exam_id'=>$data['exam_id']]));
             }
+            $this->success('编辑成功!', url('exam/editItem', ['item_id'=>$id, 'item_type'=>$data['type'], 'exam_id'=>$data['exam_id']]));
         } else {
             //add
             unset($data['id']);
@@ -350,7 +349,7 @@ class ExamController extends AdminBaseController
             if ($result === false) {
                 $this->error('添加失败!');
             }
-            $this->success('添加成功!', url('exam/editItem', ['item_id'=>$result, 'item_type'=>$data['type'], 'exam_id'=>$data['exam_id']]));
+            $this->success('添加成功!', url('exam/editItem', ['item_id'=>$ExamItemModel->id, 'item_type'=>$data['type'], 'exam_id'=>$data['exam_id']]));
         }
     }
 

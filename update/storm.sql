@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-01-27 15:24:22
+Date: 2019-01-27 19:34:58
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -826,7 +826,7 @@ CREATE TABLE `st_exam` (
   `create_name` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '编辑名称',
   `title` varchar(50) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '标题',
   `subtitle` varchar(50) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '小标题',
-  `description` text NOT NULL COMMENT '描述',
+  `description` text COMMENT '描述',
   `image` varchar(255) CHARACTER SET utf8mb4 NOT NULL DEFAULT '' COMMENT '封面图',
   `use_num` int(11) NOT NULL DEFAULT '0' COMMENT '使用过人数',
   `is_top` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否置顶;1:置顶;0:不置顶',
@@ -859,17 +859,17 @@ CREATE TABLE `st_exam_item` (
   `section_id` int(11) NOT NULL DEFAULT '0' COMMENT '章节id',
   `item_title` varchar(200) NOT NULL DEFAULT '题目',
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '题目类型 1:选择题,2:填空题,3:论述题',
-  `option` text NOT NULL COMMENT '选择题[选项][json]',
-  `answer` text NOT NULL COMMENT '参考答案',
-  `analysis` text NOT NULL COMMENT '分析',
-  `knowledge` text NOT NULL COMMENT '知识点',
+  `option` text COMMENT '选择题[选项][json]',
+  `answer` text COMMENT '参考答案',
+  `analysis` text COMMENT '分析',
+  `knowledge` text COMMENT '知识点',
   `create_time` int(10) NOT NULL DEFAULT '0',
   `update_time` int(10) NOT NULL DEFAULT '0',
   `list_order` int(11) NOT NULL DEFAULT '100' COMMENT '排序 排序值越小越靠前',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态 1-正常 0-隐藏 -1删除',
   PRIMARY KEY (`id`),
   KEY `exam_id_idx` (`exam_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of st_exam_item
@@ -885,6 +885,7 @@ INSERT INTO `st_exam_item` VALUES ('8', '2', '5', '44', '2', '', '44', '44', '44
 INSERT INTO `st_exam_item` VALUES ('9', '2', '6', '1', '2', '', '1', '11', '1', '1542123030', '1547479227', '100', '1');
 INSERT INTO `st_exam_item` VALUES ('10', '2', '7', '2', '3', '', '2', '22', '2', '1542123141', '1547479235', '100', '1');
 INSERT INTO `st_exam_item` VALUES ('11', '1', '4', '111111', '1', '{\"A\":\"1\",\"B\":\"2\",\"C\":\"3\",\"D\":\"4\"}', 'AB', '22', '33', '1544450805', '1547461703', '5', '1');
+INSERT INTO `st_exam_item` VALUES ('12', '2', '8', '20世纪90年代后，世界格局又发生了什么重大变化？（2分）其直接原因是什么？（1分）', '3', null, '两极格局瓦解；多极化趋势加强。（2分） 苏联解体。（1分）', '分析', '知识点', '1548583196', '1548583196', '100', '1');
 
 -- ----------------------------
 -- Table structure for st_exam_school_relation
@@ -1004,7 +1005,7 @@ CREATE TABLE `st_feedback` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
   `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1-功能建议 2-课程建议 3-程序错误',
-  `content` text NOT NULL COMMENT '内容',
+  `content` text COMMENT '内容',
   `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
   `is_check` tinyint(1) NOT NULL DEFAULT '0' COMMENT '是否查看 0-没有 1-已查看',
@@ -2049,7 +2050,7 @@ CREATE TABLE `st_video_vod` (
   `video_id` char(32) NOT NULL DEFAULT '' COMMENT '视频/资源id',
   `video_url` varchar(255) NOT NULL DEFAULT '' COMMENT '转码后视频播放地址',
   `source_url` varchar(255) NOT NULL DEFAULT '' COMMENT '源文件播放地址',
-  `source_raw` text NOT NULL COMMENT '原始数据',
+  `source_raw` text COMMENT '原始数据',
   `create_time` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`video_id`),
   UNIQUE KEY `primary_video_id` (`video_id`)
