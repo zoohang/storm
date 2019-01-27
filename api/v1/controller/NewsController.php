@@ -30,14 +30,14 @@ class NewsController extends RestBaseController
         //banner
         $slide = SlideItemModel::instance()->getOne(2);
         //新闻分类
-        $categoryId = $this->request->param('category', 0, 'abs,intval');
+        $categoryId = $this->request->param('category', 1, 'abs,intval');
         $portalCategoryModel = new PortalCategoryModel();
         $category       = $portalCategoryModel->adminCategorySampleArray($categoryId);
         //默认全部的列表
         $this->success('ok', [
             'banner' => $slide,
             'category' => $category,
-            'newsList' => $this->CaregoryNewsList(0),
+            'newsList' => $this->CaregoryNewsList($categoryId),
         ]);
     }
 
@@ -46,6 +46,7 @@ class NewsController extends RestBaseController
         $portalCategoryModel = new PortalCategoryModel();
         $category       = $portalCategoryModel->adminCategorySampleArray($categoryId);
         $ids = $portalCategoryModel->getArrayId($category);
+        array_unshift($ids, $categoryId);
         $param = [
             'category' => ['IN', $ids]
         ];
@@ -63,7 +64,24 @@ class NewsController extends RestBaseController
     {
         $id = $this->request->param('id', 0, 'abs,intval');
         if (!$id) $this->error('文章的ID必填');
-        $info = $post =  PortalPostModel::instance()->where('id', $id)->find()->toArray();
+        $info = PortalPostModel::instance()->where('id', $id)->find() ?: [];
+        if ($info){
+            $info = $info->toArray();
+            //更新点击post_hits
+            PortalPostModel::instance()->where(['id'=>$id])->setInc('post_hits');
+        }
         $this->success('ok', $info);
+    }
+
+    //线下课堂
+    public function classRoom() {
+        $categoryId = $this->request->param('category', 2, 'abs,intval');
+        $portalCategoryModel = new PortalCategoryModel();
+        $category       = $portalCategoryModel->adminCategorySampleArray($categoryId);
+        //默认全部的列表
+        $this->success('ok', [
+            'category' => $category,
+            'newsList' => $this->CaregoryNewsList($categoryId),
+        ]);
     }
 }

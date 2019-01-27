@@ -94,20 +94,15 @@
                     <td><b>{$vo.id}</b></td>
                     <td>
                         <notempty name="category">
-                            <a href="{:cmf_url('portal/Article/index',array('id'=>$vo['id'],'cid'=>$vo['category_id']))}"
-                               target="_blank">{$vo.post_title}</a>
+                            {$vo.post_title}
                             <else/>
-                            <a href="{:cmf_url('portal/Article/index',array('id'=>$vo['id']))}"
-                               target="_blank">{$vo.post_title}</a>
+                            {$vo.post_title}
                         </notempty>
                     </td>
                     <td>
                         <foreach name="vo.categories" item="voo">
                             <span class="label label-default">
-                                <a href="{:cmf_url('portal/List/index',array('id'=>$voo['id']))}"
-                                   style="color: #fff;"
-                                   target="_blank"
-                                >{$voo.name}</a>
+                                {$voo.name}
                             </span>&nbsp;
                         </foreach>
                     </td>

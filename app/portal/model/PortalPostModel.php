@@ -49,6 +49,10 @@ class PortalPostModel extends Model
         return $this->belongsToMany('PortalTagModel', 'portal_tag_post', 'tag_id', 'post_id');
     }
 
+    public function getThumbnailAttr($value){
+        return get_image_url($value);
+    }
+
     /**
      * post_content 自动转化
      * @param $value

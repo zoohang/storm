@@ -234,14 +234,16 @@ class PostService
 
         $where = [
             'a.create_time' => ['>=', 0],
-            'a.delete_time' => 0
+            'a.delete_time' => 0,
+            'a.published_time' => ['between', [1, time()]],
+            'post_status' => 1
         ];
 
         $join = [
             ['__USER__ u', 'a.user_id = u.id']
         ];
 
-        $field = 'a.*,u.user_login,u.user_nickname,u.user_email';
+        $field = 'a.id,a.post_title,a.thumbnail,a.post_hits,a.post_keywords,a.post_excerpt,a.post_source';
 
         $category = empty($filter['category']) ? 0 : $filter['category'];
         if (!empty($category)) {
@@ -249,7 +251,7 @@ class PostService
             array_push($join, [
                 '__PORTAL_CATEGORY_POST__ b', 'a.id = b.post_id'
             ]);
-            $field = 'a.*,b.id AS post_category_id,b.list_order,b.category_id,u.user_login,u.user_nickname,u.user_email';
+            $field = 'a.id,a.post_title,a.thumbnail,a.post_hits,a.post_keywords,a.post_excerpt,a.post_source';
         }
 
         $startTime = empty($filter['start_time']) ? 0 : strtotime($filter['start_time']);
