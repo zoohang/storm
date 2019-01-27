@@ -30,7 +30,7 @@ class PortalCategoryModel extends CommonModel
 
     //可查询字段
     protected $visible = [
-        'id', 'name', 'description', 'post_count',
+        'id', 'name', 'description', 'post_count', 'parent_id',
         'seo_title', 'seo_keywords', 'seo_description',
 	'list_order','more', 'PostIds', 'articles'
     ];
@@ -104,5 +104,28 @@ class PortalCategoryModel extends CommonModel
         }
         $post_ids['PostIds'] = $ids;
         return $post_ids;
+    }
+
+    public function getCategoryTreeArray($parent_id=0) {
+        $categoryList = $this->select()->toArray();
+        $tree = new \tree\Tree();
+        $tree->init($categoryList);
+        $data = $tree->getTreeArray($parent_id);
+        sort($data);
+        return $data;
+    }
+
+    public function getCategoryIds($data) {
+        if (!$data) return [];
+        static $ids = [];
+        if ($data && is_array($data)) {
+            foreach ($data as $item) {
+                $ids[] = $item['id'];
+                if ($item['children']) {
+                    $this->getCategoryIds($item['children']);
+                }
+            }
+        }
+        return $ids;
     }
 }

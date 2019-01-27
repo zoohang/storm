@@ -60,8 +60,20 @@ class PortalPostModel extends Model
 
     public function getRecommendArticle()
     {
-        $where = ['post_type' => 1, 'recommended' => 1];
-        return $this->field(['id', 'post_title', 'published_time'])->where($where)->order(['id' => 'desc'])->limit(10)->select()->toArray();
+        $categoryId = 1;
+        $category_list = PortalCategoryModel::instance()->getCategoryTreeArray($categoryId);
+        $ids = PortalCategoryModel::instance()->getCategoryIds($category_list);
+        $ids[] = $categoryId;
+        $list = [];
+        if ($ids) {
+            $where = ['post_type' => 1, 'recommended' => 1, 'b.category_id' => ['in', $ids]];
+            $list = $this->alias('a')
+                ->join('portal_category_post b', 'a.id=b.post_id')
+                ->field(['a.id', 'a.post_title', 'a.published_time'])
+                ->where($where)->order(['b.list_order' => 'asc'])
+                ->limit(10)->select()->toArray();
+        }
+        return $list;
     }
 }
 

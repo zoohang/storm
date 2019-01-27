@@ -21,14 +21,23 @@ class ExamItemModel extends Model
      * @DateTime: 2017-05-25T21:54:03+0800
      * @since:    1.0
      */
-    protected function base($query)
+    /*protected function base($query)
     {
         $query->where('status', 1);
-    }
+    }*/
 
     public function getOptionAttr($value)
     {
-        return $value ? json_decode($value, true) : $value;
+        if ($value) {
+            $value = json_decode($value, true);
+            sort($value);
+            $value = array_map(function($item){
+                return ['answer'=>$item, 'is_active'=>0];
+            }, $value);
+        } else {
+            $value = [];
+        }
+        return $value;
     }
 }
 

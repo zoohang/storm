@@ -120,8 +120,11 @@ class ExamController extends RestUserBaseController
         if (!$exam_info) {
             $this->error('该试卷不存在, 或已经下架了');
         }
-        $where = ['status'=>1, 'section_id'=>$section_id];
-        $data = ExamItemModel::instance()->where($where)->order(['list_order'=>'asc', 'section_id'=>'asc'])->select()->toArray();
+        $where = ['a.status'=>1, 'a.section_id'=>$section_id];
+        $data = ExamItemModel::instance()->alias('a')
+            ->join('__EXAM_WRONGLIST__ b', "a.id=b.exam_item_id and b.user_id={$this->userId}", 'left')
+            ->field('a.*, IFNULL(b.id, 0) is_wrong')
+            ->where($where)->order(['a.list_order'=>'asc', 'a.section_id'=>'asc'])->select()->toArray();
         $result = [];
         $result['info'] = $exam_info;
         $result['count'] = 0;
@@ -130,8 +133,8 @@ class ExamController extends RestUserBaseController
             $result['count'] = count($data);
             foreach ($data as $item) {
                 $item['show'] = 0;
-                $item['is_wrong'] = 0;
                 $item['is_mult'] = 0;
+                $item['is_wrong'] = $item['is_wrong'] ? 1 : 0;
                 if ($item['type'] == 1) {
                     if (strlen($item['answer']) > 1)  $item['is_mult'] = 1;
                     $result['chooseQusList'][] = $item;
