@@ -73,7 +73,7 @@ class CourseModel extends Model
         //todo 判断用户是否购买
         return $this->alias('a')
             ->join('__GOODS__ b', 'a.goods_id=b.goods_id')
-            ->join('__ORDER__ c', "a.goods_id=c.order_id and user_id={$userid} and pay_status=2 and order_status=1", 'left')
+            ->join('__ORDER__ c', "a.goods_id=c.order_id and c.user_id={$userid} and pay_status=2 and order_status=1", 'left')
             ->field($field)
             ->where($where)->order(['list_order' => 'desc'])
             ->limit($num)->select()->toArray();

@@ -13,6 +13,7 @@
 
 namespace api\v1\model;
 
+use app\portal\service\PostService;
 use think\Model;
 
 class PortalPostModel extends Model
@@ -58,6 +59,7 @@ class PortalPostModel extends Model
         return cmf_get_image_url($value);
     }
 
+    //首页推荐文章 头条
     public function getRecommendArticle()
     {
         $categoryId = 1;
@@ -74,6 +76,22 @@ class PortalPostModel extends Model
                 ->limit(10)->select()->toArray();
         }
         return $list;
+    }
+
+    public function searchOfflineCourse($keywords)
+    {
+        $categoryId = 2;
+        $portalCategoryModel = new \app\portal\model\PortalCategoryModel();
+        $category       = $portalCategoryModel->adminCategorySampleArray($categoryId);
+        $ids = $portalCategoryModel->getArrayId($category);
+        array_unshift($ids, $categoryId);
+        $param = [
+            'category' => ['IN', $ids],
+            'keyword' => $keywords
+        ];
+        $postService = new PostService();
+        $data        = $postService->getPostList($param)->toArray();
+        return $data;
     }
 }
 

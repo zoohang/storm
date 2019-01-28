@@ -38,6 +38,11 @@ class DakaModel extends Model
         return get_image_url($value);
     }
 
+    public function getPostImageAttr($value)
+    {
+        return get_image_url($value);
+    }
+
     public function getMoreAttr($value)
     {
         if (empty($value)) return [];
@@ -72,10 +77,12 @@ class DakaModel extends Model
     }
 
     public function getRecommendDaka($num=3) {
+        $userid = request()->post('user_id');
         $where = ['recommended' => 1];
-        $field = ['a.id','a.post_title','a.thumbnail','a.published_time', 'a.end_time','a.join_num','a.daka_num','b.price'];
+        $field = ['a.id','a.post_title','a.thumbnail','a.published_time', 'a.end_time','a.join_num','a.daka_num','a.goods_id','b.price', 'IFNULL(c.order_status,0) is_buy'];
         return $this->alias('a')
             ->join('__GOODS__ b', 'a.goods_id=b.goods_id')
+            ->join('__ORDER__ c', "a.goods_id=c.order_id and c.user_id={$userid} and pay_status=2 and order_status=1", 'left')
             ->where($where)
             ->field($field)->order(['list_order' => 'desc'])->limit($num)->select()->toArray();
     }

@@ -53,19 +53,24 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>内容</th>
+                        <th>内容[文字描述]</th>
                         <td>
-                            <script type="text/plain" id="content" name="post[post_content]"></script>
+                            <textarea class="form-control" name="post[post_content]" id="" cols="30" rows="5"></textarea>
                         </td>
                     </tr>
                     <tr>
-                        <th>相册</th>
+                        <th>内容[图片描述]</th>
                         <td>
-                            <ul id="photos" class="pic-list list-unstyled form-inline"></ul>
-                            <a href="javascript:uploadMultiImage('图片上传','#photos','photos-item-tpl');"
-                               class="btn btn-default btn-sm">选择图片</a>
+                            <input type="hidden" name="post[post_image]" id="thumbnailpost" value="">
+                            <a href="javascript:uploadOneImage('图片上传','#thumbnailpost');">
+                                <img src="__TMPL__/public/assets/images/default-thumbnail.png"
+                                     id="thumbnailpost-preview"
+                                     width="135" style="cursor: pointer"/>
+                            </a>
+                            <input type="button" class="btn btn-sm btn-cancel-thumbnail" value="取消图片">
                         </td>
                     </tr>
+                    <input type="hidden" name="post[post_status]" value="0">
                     <include file="goods/setup_price" />
                 </table>
                 <hook name="portal_admin_article_edit_view_main"/>
@@ -120,12 +125,6 @@
     </form>
 </div>
 <script type="text/javascript" src="__STATIC__/js/admin.js"></script>
-<script type="text/javascript">
-    //编辑器路径定义
-    var editorURL = GV.WEB_ROOT;
-</script>
-<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.config.js"></script>
-<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.all.min.js"></script>
 <script type="text/javascript">
     $(function () {
         editorcontent = new baidu.editor.ui.Editor();

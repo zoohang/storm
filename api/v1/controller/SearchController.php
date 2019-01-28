@@ -12,6 +12,7 @@ use api\v1\model\CategoryModel;
 use api\v1\model\CourseModel;
 use api\v1\model\DakaModel;
 use api\v1\model\ExamModel;
+use api\v1\model\PortalPostModel;
 use cmf\controller\RestUserBaseController;
 use think\Db;
 use think\Validate;
@@ -41,8 +42,7 @@ class SearchController extends RestUserBaseController
                 $list = CourseModel::instance()->searchCourse($keywords);
                 break;
             case 4:
-                //todo
-                //$list = $this->searchOfflineCourse($keywords);
+                $list = PortalPostModel::instance()->searchOfflineCourse($keywords);
                 break;
             default:
                 $list = $this->searchCourse($keywords);

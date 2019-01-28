@@ -36,7 +36,7 @@ class SlideItemModel extends Model
      */
     public function getImageAttr($value)
     {
-        return cmf_get_image_url($value);
+        return get_image_url($value);
     }
 
     public static function instance()
