@@ -30,7 +30,7 @@ class CourseController extends RestUserBaseController
     public function index()
     {
         //初始化内容 获取分类
-        $category = $this->getDakaCategory();
+        $category = $this->getCourseCategory();
         //获取全部的内容 列表
         $list = $this->getCategoryList();
         $this->success('ok', ['category'=>$category, 'list'=>$list]);
@@ -79,7 +79,7 @@ class CourseController extends RestUserBaseController
         if (!$id) $this->error('id必填');
         $info = CourseModel::instance()->alias('a')
             ->join('__GOODS__ b','a.goods_id=b.goods_id')
-            ->field('a.*,b.price,b.stock')
+            ->field('a.*,b.price,b.stock,b.cost_price')
             ->where(['a.cid'=>$id])
             ->find();
         $field = ['item_id','item_title','parent_id', 'video_long'];
@@ -94,6 +94,7 @@ class CourseController extends RestUserBaseController
             foreach ($items as $item) {
                 if ($item['parent_id'] == $tp['item_id']) {
                     $item['video_long'] = $info['type']==1 ? sec2time($item['video_long']) : '';
+                    $item['jump_type'] = $info['type']==1 ? 'link' : 'rich';
                     $tp['children'][] = $item;
                 }
             }

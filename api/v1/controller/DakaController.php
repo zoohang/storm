@@ -75,7 +75,10 @@ class DakaController extends RestUserBaseController
     public function detail() {
         $id = $this->request->param('id', 0, 'intval,abs');
         if (!$id) $this->error('id必填');
-        $info = DakaModel::instance()->where(['id'=>$id])->find()->toArray();
+        $info = DakaModel::instance()->alias('a')
+            ->join('__GOODS__ b','a.goods_id=b.goods_id')
+            ->field('a.*,b.price,b.stock,b.cost_price')
+            ->where(['id'=>$id])->find()->toArray();
         $field = ['id','post_title'];
         $child = Db::name('daka')->field($field)->where(['parent_id'=>$id])->select();
         //判断是否收藏成功
