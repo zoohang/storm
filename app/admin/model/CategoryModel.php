@@ -26,7 +26,7 @@ class CategoryModel extends Model
         2=>'打卡',
         3=>'在线课堂',
 //        4=>'线下课堂',
-        11=>'大学',
+//        11=>'大学',
     ];
 
     private static $instance = null;
