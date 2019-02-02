@@ -12,9 +12,12 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                    <li><a class="js-categories-name-input" data-id="" data-type="1">选择</a></li>
+                    <!--<li><a class="js-categories-name-input" data-id="" data-type="1">选择</a></li>
                     <li><a class="js-categories-name-input" data-id="" data-type="2">填空</a></li>
-                    <li><a class="js-categories-name-input" data-id="" data-type="3">论述</a></li>
+                    <li><a class="js-categories-name-input" data-id="" data-type="3">论述</a></li>-->
+                    <li><a href="{:url('Exam/editItem',['exam_id'=>$params['id'], 'item_type'=>1])}">选择</a></li>
+                    <li><a href="{:url('Exam/editItem',['exam_id'=>$params['id'], 'item_type'=>2])}">填空</a></li>
+                    <li><a href="{:url('Exam/editItem',['exam_id'=>$params['id'], 'item_type'=>3])}">论述</a></li>
                 </ul>
             </div>
         </li>
@@ -72,7 +75,7 @@
                     <td>{$vo.item_title}</td>
                     <td>{$vo.answer}</td>
                     <td>
-                        <a alt="{:url('Exam/editItem',['item_id'=>$vo.id, 'exam_id'=>$vo.exam_id, 'item_type'=>$vo.type])}" class="js-categories-name-input" data-id="{$vo.id}" data-type="{$vo.type}">编辑</a>
+                        <a href="{:url('Exam/editItem',['item_id'=>$vo.id, 'exam_id'=>$vo.exam_id, 'item_type'=>$vo.type])}" class="" data-id="{$vo.id}" data-type="{$vo.type}">编辑</a>
                         <a class="js-ajax-delete" href="{:url('Exam/delete_item',['id'=>$vo.id])}">删除</a>
                     </td>
                 </tr>

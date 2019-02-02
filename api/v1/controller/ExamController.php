@@ -120,6 +120,7 @@ class ExamController extends RestUserBaseController
         if (!$exam_info) {
             $this->error('该试卷不存在, 或已经下架了');
         }
+        $exam_info['image'] = get_image_url($exam_info['image']);
         $where = ['a.status'=>1, 'a.section_id'=>$section_id];
         $data = ExamItemModel::instance()->alias('a')
             ->join('__EXAM_WRONGLIST__ b', "a.id=b.exam_item_id and b.user_id={$this->userId}", 'left')

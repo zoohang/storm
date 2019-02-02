@@ -39,5 +39,10 @@ class ExamItemModel extends Model
         }
         return $value;
     }
+
+    public function getImageAttr($value)
+    {
+        return get_image_url($value);
+    }
 }
 

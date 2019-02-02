@@ -25,8 +25,6 @@ class CourseItemModel extends Model
         1=>'刷题',
         2=>'打卡',
         3=>'在线课堂',
-        4=>'线下课堂',
-        11=>'大学',
     ];
 
     public function getTypeAttr($value)
