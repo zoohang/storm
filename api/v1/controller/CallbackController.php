@@ -24,11 +24,22 @@ class CallbackController extends BaseController
         try {
             $video_id = $data['VideoId'];
             $video_url = $data['StreamInfos'][0]['FileUrl'];
-            $create_time = NOW_TIME;
             $source_raw = json_encode($data, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
-            $sql = "replace into `st_video_vod`(`video_id`,`video_url`,`source_raw`,`create_time`) values('{$video_id}', '{$video_url}', '{$source_raw}', '{$create_time}')";
-            //Log::record($sql,'sql');
-            Db::execute($sql);
+            $exists = Db::name('video_vod')->where(['video_id'=>$video_id])->find();
+            if (!$exists) {
+                Db::name('video_vod')->insert([
+                    'video_id' => $video_id,
+                    'video_url' => $video_url,
+                    'source_raw' => $source_raw,
+                    'create_time' => NOW_TIME
+                ]);
+            } else {
+                Db::name('video_vod')->where(['video_id'=>$video_id])->update([
+                    'video_url' => $video_url,
+                    'source_raw' => $source_raw,
+                    'update_time' => NOW_TIME
+                ]);
+            }
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();

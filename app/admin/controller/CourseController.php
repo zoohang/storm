@@ -304,11 +304,15 @@ class CourseController extends AdminBaseController
         }
         if ($data['type'] == 1) {
             //视频模块
-            Db::name('video_vod')->insert([
-                'video_id' => $data['video_id'],
-                'source_url' => $data['source_url'],
-                'create_time' => NOW_TIME
-            ]);
+            if (!$data['video_id']) $this->error('请上传视频!');
+            $exists = Db::name('video_vod')->where(['video_id'=>$data['video_id']])->find();
+            if (!$exists) {
+                Db::name('video_vod')->insert([
+                    'video_id' => $data['video_id'],
+                    'source_url' => $data['source_url'],
+                    'create_time' => NOW_TIME
+                ]);
+            }
         } elseif($data['type'] == 2) {
 
         }
