@@ -30,7 +30,7 @@ function get_image_url($file, $style = 'watermark') {
     } else if (strpos($file, "/") === 0) {
         return cmf_get_domain() . $file;
     } else {
-        return get_static_domain() . 'upload/' . $file;
+        return config('aliyun_oss.Preview_Pre') . $file;
     }
 }
 
