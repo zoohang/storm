@@ -10,6 +10,7 @@
 // +---------------------------------------------------------------------
 namespace cmf\lib;
 
+use app\base\model\OssModel;
 use think\File;
 use app\user\model\AssetModel;
 
@@ -283,13 +284,12 @@ class Upload
         $objAsset   = $assetModel->where(["user_id" => $userId, "file_key" => $arrInfo["file_key"]])->find();
 
         $storage = cmf_get_option('storage');
-
         if (empty($storage['type'])) {
             $storage['type'] = 'Local';
         }
-
+        $storage['type'] = 'OSS';
         $needUploadToRemoteStorage = false;//是否要上传到云存储
-        if ($objAsset && $storage['type'] =='Local') {
+        if ($storage['type'] =='Local') {
             $arrAsset = $objAsset->toArray();
             //$arrInfo["url"] = $this->request->domain() . $arrAsset["file_path"];
             $arrInfo["file_path"] = $arrAsset["file_path"];
@@ -307,7 +307,11 @@ class Upload
 
         } else {
             $needUploadToRemoteStorage = true;
+            //todo oss
+            OssModel::getInstance()->uploadFile($arrInfo["file_path"], $strSaveFilePath);
+            //$arrInfo['file_path'] = config('aliyun_oss.Dir').DS.$arrInfo["filename"];
             $assetModel->data($arrInfo)->allowField(true)->save();
+            @unlink($strSaveFilePath); // 删除已经上传的文件
         }
 
         //删除临时文件
@@ -318,22 +322,21 @@ class Upload
         @rmdir($targetDir);
 
         if ($storage['type'] != 'Local') { //  增加存储驱动
-            $watermark = cmf_get_plugin_config($storage['type']);
-            $storage = new Storage($storage['type'], $storage['storages'][$storage['type']]);
+            //$watermark = cmf_get_plugin_config($storage['type']);
+            //$storage = new Storage($storage['type'], $storage['storages'][$storage['type']]);
 
             if ($needUploadToRemoteStorage) {
                 session_write_close();
-                $result = $storage->upload($arrInfo["file_path"], './upload/' . $arrInfo["file_path"], $fileType);
-                if (!empty($result)) {
-                    return array_merge([
-                        'filepath'    => $arrInfo["file_path"],
-                        "name"        => $arrInfo["filename"],
-                        'id'          => $strId,
-                        'preview_url' => cmf_get_root() . '/upload/' . $arrInfo["file_path"],
-                        'url'         => cmf_get_root() . '/upload/' . $arrInfo["file_path"],
-                    ], $result);
-                }
-            } else {
+                //$result = $storage->upload($arrInfo["file_path"], './upload/' . $arrInfo["file_path"], $fileType);
+                return [
+                    'filepath'    => $arrInfo["file_path"],
+                    "name"        => $arrInfo["filename"],
+                    'id'          => $strId,
+                    'preview_url' => config('aliyun_oss.Preview_Pre') . $arrInfo["file_path"],
+                    'url'         => config('aliyun_oss.Preview_Pre') . $arrInfo["file_path"],
+                ];
+
+            } /*else {
                 $previewUrl = $fileType == 'image' ? $storage->getPreviewUrl($arrInfo["file_path"]) : $storage->getFileDownloadUrl($arrInfo["file_path"]);
                 $url        = $fileType == 'image' ? $storage->getImageUrl($arrInfo["file_path"], $watermark['styles_watermark']) : $storage->getFileDownloadUrl($arrInfo["file_path"]);
                             //测试ing
@@ -344,7 +347,7 @@ class Upload
                     'preview_url' => $previewUrl,
                     'url'         => $url,
                 ];
-            }
+            }*/
 
 
         }
