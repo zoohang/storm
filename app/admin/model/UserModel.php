@@ -19,4 +19,12 @@ class UserModel extends Model
         'more' => 'array',
     ];
 
+    public function getDakaTeacherList() {
+        return $this->alias('a')
+            ->join('__ROLE_USER__ b', 'a.id=b.user_id')
+            ->field('a.id, a.user_login, a.avatar')
+            ->where(['b.role_id'=>3, 'a.user_type'=>1, 'a.user_status'=>1])
+            ->select()
+            ->toArray();
+    }
 }

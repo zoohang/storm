@@ -14,6 +14,8 @@ use app\admin\model\DakaModel;
 use app\admin\model\ExamItemModel;
 use app\admin\model\ExamModel;
 use app\admin\model\GoodsModel;
+use app\admin\model\UserModel;
+use app\admin\validate\DakaValidate;
 use cmf\controller\AdminBaseController;
 use app\admin\model\CategoryModel;
 use think\Cookie;
@@ -437,4 +439,53 @@ class DakaController extends AdminBaseController
             $this->error("删除失败！");
         }
     }
+
+    //打卡课程的老师管理
+    public function daka_teacher() {
+        $id = $this->request->param('id', 0, 'intval');
+        if (!$id) $this->error('请选择一套打卡课程');
+        $list = Db::name('daka_teacher_relation a')
+            ->join('__USER__ b', 'b.id=a.admin_id')
+            ->field()
+            ->where()
+            ->select();
+        $this->assign('list', $list);
+        return $this->fetch();
+    }
+
+    public function daka_teacher_add() {
+        $userModel = new UserModel();
+        $list = $userModel->getDakaTeacherList();
+        $this->assign('list', $list);
+        return $this->fetch();
+    }
+
+    public function daka_teacher_save() {
+        $id = $this->request->param('id', 0, 'intval');
+        if (!$id) $this->error('请选择一套打卡课程');
+        $uids = $this->request->param('uids');
+        if (!$uids) $this->error('请选择老师');
+        $sql = "REPLACE INTO `st_daka_teacher_relation` (`daka_id`, `admin_id`) VALUES ";
+        foreach ($uids as $uid) {
+            $sql .= " ({$id}, {$uid}) ";
+        }
+        $res = Db::execute($sql);
+        if ($res !== false) {
+            $this->success('编辑成功！');
+        } else {
+            $this->error("编辑失败！");
+        }
+    }
+
+    public function daka_teacher_delete() {
+        $relation_id = $this->request->param('relation_id', 0, 'intval');
+        if (!$relation_id) $this->error('请选择一个老师');
+        $res = Db::name('daka_teacher_relation')->where(['relation_id'=>$relation_id])->delete();
+        if ($res !== false) {
+            $this->success('删除成功！');
+        } else {
+            $this->error("删除失败！");
+        }
+    }
+
 }
