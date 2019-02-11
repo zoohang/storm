@@ -322,7 +322,7 @@ class DakaController extends AdminBaseController
         if (isset($param['ids']) && isset($param["yes"])) {
             $ids = $this->request->param('ids/a');
 
-            $model->where(['id' => ['in', $ids]])->update(['post_status' => 1, 'update_time' => time()]);
+            $model->where(['id' => ['in', $ids]])->update(['post_status' => 1, 'update_time' => NOW_TIME, 'published_time' => NOW_TIME]);
 
             $this->success("发布成功！", '');
         }

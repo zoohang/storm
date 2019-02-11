@@ -82,8 +82,9 @@ class Local
      */
     public function getFileDownloadUrl($file, $expires = 3600)
     {
-        $url = $this->getUrl($file);
-        return $url;
+        //$url = $this->getUrl($file);
+        //return $url;
+        return config('aliyun_oss.Preview_Pre') . $file;
     }
 
     /**

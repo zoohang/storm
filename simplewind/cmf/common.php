@@ -856,7 +856,9 @@ function cmf_asset_relative_url($assetUrl)
     if (strpos($assetUrl, "http") === 0) {
         return $assetUrl;
     } else {
-        return str_replace('/upload/', '', $assetUrl);
+        $storage = Storage::instance();
+        return $storage->getPreviewUrl($assetUrl);
+        //return str_replace('/upload/', '', $assetUrl);
     }
 }
 

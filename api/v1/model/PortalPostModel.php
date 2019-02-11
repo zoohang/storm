@@ -59,6 +59,16 @@ class PortalPostModel extends Model
         return cmf_get_image_url($value);
     }
 
+    /**
+     * post_content 自动转化
+     * @param $value
+     * @return string
+     */
+    public function getPostContentAttr($value)
+    {
+        return replace_content_file_url(htmlspecialchars_decode($value));
+    }
+
     //首页推荐文章 头条
     public function getRecommendArticle()
     {
