@@ -104,14 +104,14 @@ class DakaController extends RestUserBaseController
     // 打卡 小节id 上传文件地址  追加的文字描述
     // ['daka_id'=>1, 'images'=>[1,2,3],'message'=>'111']
     public function submitHomeWork() {
-        $data = $this->request->post();
+        $data = $this->request->param();
         $result = $this->validate($data, 'DakaHomework');
         if ($result !== true) {
             $this->error($result);
         }
         Db::startTrans();
         try{
-            $info = Db::name('Daka')->where(['id'=>$daka_id])->find();
+            $info = Db::name('Daka')->where(['id'=>$data['daka_id']])->find();
             $data['daka_parent_id'] = $info['parent_id'];
             $res = DakaHomeworkModel::instance()->allowField(true)->isUpdate(false)->save($data);
             DakaModel::instance()->where(['id'=>$info['parent_id']])->setInc('daka_num');

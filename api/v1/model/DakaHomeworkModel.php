@@ -27,7 +27,7 @@ class DakaHomeworkModel extends Model
             $img = oss_img_pre($img);
         }
         unset($img);
-        return json_encode($imgs);
+        return $imgs;
     }
 
     protected function setUserIdAttr()
