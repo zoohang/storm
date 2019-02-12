@@ -95,8 +95,9 @@ class DakaController extends RestUserBaseController
         if (!$id) $this->error('id必填');
         $info = DakaModel::instance()->where(['id'=>$id])->find();
         if (!$info) $this->error('该课程已经下架或不存在');
-        $user_data = DakaHomeworkModel::instance()->where(['user_id'=>$this->userId, 'daka_id'=>$id])->select();
-        $this->success('ok', ['info'=>$info->toArray(), 'user_data'=>$user_data]);
+        $user_data = DakaHomeworkModel::instance()->where(['user_id'=>$this->userId, 'daka_id'=>$id])->select()->toArray();
+        $is_upload = $user_data ? 1: 0;
+        $this->success('ok', ['info'=>$info->toArray(), 'user_data'=>$user_data, 'is_upload'=>$is_upload]);
     }
 
     //提交打卡作业
@@ -113,11 +114,11 @@ class DakaController extends RestUserBaseController
             $info = Db::name('Daka')->where(['id'=>$daka_id])->find();
             $data['daka_parent_id'] = $info['parent_id'];
             $res = DakaHomeworkModel::instance()->allowField(true)->isUpdate(false)->save($data);
-            DakaModel::instance()->where(['id'=>$info['parent_id']])->inc('daka_num');
+            DakaModel::instance()->where(['id'=>$info['parent_id']])->setInc('daka_num');
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();
-            $this->error('点赞失败！');
+            $this->error($e->getMessage());
         }
         if ($res !== false) {
             $this->success('ok');

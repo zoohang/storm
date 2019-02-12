@@ -27,7 +27,7 @@ class ToolController extends RestUserBaseController
         $host = "http://{$oss_conf['BucketName']}.{$oss_conf['Endpoint']}";
         // $callbackUrl为上传回调服务器的URL，请将下面的IP和Port配置为您自己的真实URL信息。
         //$callbackUrl = 'http://88.88.88.88:8888/aliyun-oss-appserver-php/php/callback.php';
-        $dir = $oss_conf['Dir'];          // 用户上传文件时指定的前缀。
+        $dir = 'users/'.date('Ymd').'/';          // 用户上传文件时指定的前缀。
         /*$callback_param = array('callbackUrl'=>$callbackUrl,
                                 'callbackBody'=>'filename=${object}&size=${size}&mimeType=${mimeType}&height=${imageInfo.height}&width=${imageInfo.width}',
                                 'callbackBodyType'=>"application/x-www-form-urlencoded");*/
