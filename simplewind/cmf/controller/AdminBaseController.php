@@ -14,7 +14,7 @@ use think\Db;
 
 class AdminBaseController extends BaseController
 {
-
+    protected $userinfo;
     public function _initialize()
     {
         // 监听admin_init
@@ -23,7 +23,7 @@ class AdminBaseController extends BaseController
         $session_admin_id = session('ADMIN_ID');
         if (!empty($session_admin_id)) {
             $user = Db::name('user')->where(['id' => $session_admin_id])->find();
-
+            $this->userinfo = $user;
             if (!$this->checkAccess($session_admin_id)) {
                 $this->error("您没有访问权限！");
             }

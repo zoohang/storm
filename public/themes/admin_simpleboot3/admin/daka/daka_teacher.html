@@ -3,14 +3,15 @@
 <body>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
-        <li class="active"><a href="{:url('daka/daka_teacher',['id'=>$params['id']])}">批改作业老师</a></li>
+        <li><a href="{:url('daka/index')}">打卡列表</a></li>
+        <li class="active"><a href="{:url('daka/daka_teacher',['id'=>$params['id']])}">评图老师</a></li>
         <li><a href="{:url('daka/daka_teacher_edit', ['daka_id'=>$params['id']])}">添加</a></li>
     </ul>
     <form class="js-ajax-form" action="{:url('daka/listOrder')}" method="post">
         <table class="table table-hover table-bordered table-list">
             <thead>
             <tr>
-                <th width="50">老师ID</th>
+                <th width="50">ID</th>
                 <th>老师名称</th>
                 <th>email</th>
                 <th width="200">操作</th>
@@ -28,29 +29,9 @@
             </foreach>
             </tbody>
         </table>
-        <div class="table-actions">
-            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit">{:lang('SORT')}</button>
-        </div>
         <ul class="pagination">{$page|default=''}</ul>
     </form>
 </div>
 <script src="__STATIC__/js/admin.js"></script>
-<script>
-    $('body').on('click', '.js-categories-name-input', function() {
-        var item_id = $(this).data('id');
-        var item_type = $(this).data('type');
-        openIframeLayer("{:url('daka/editItem')}?item_id=" + item_id + '&item_type=' + item_type + '&daka_id=' + daka_id, '题目编辑', {
-            area: ['1000px', '600px'],
-            btn: ['确定', '取消'],
-            yes: function (index, layero) {
-                //do something
-                var iframeWin          = window[layero.find('iframe')[0]['name']];
-                //var selectedCategories = iframeWin.confirm();
-                layer.close(index); //如果设定了yes回调，需进行手工关闭
-                location.reload()
-            }
-        });
-    })
-</script>
 </body>
 </html>

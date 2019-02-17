@@ -514,9 +514,41 @@ class DakaController extends AdminBaseController
         }
     }
 
+    private function getAdminRole() {
+        $admin_id = cmf_get_current_admin_id();
+        if ($admin_id == 1) return 1;
+        $list = Db::name('role_user')->where(['user_id'=>$admin_id])->column('role_id');
+        if (in_array(1, $list)) {
+            //超管
+            return 1;
+        } elseif (in_array(3, $list)) {
+            //老师
+            return 3;
+        }
+    }
+
     //老师批改打卡作业列表
     public function teacher_daka_list() {
+        // 1.管理员 看到的是每个老师的作业列表和批改的情况 可以帮忙分配作业给其他的老师
+        // 2.老师 能看到提交给自己的评图列表 状态筛选
+        // 获取管理员身份
+        $role_id = $this->getAdminRole();
+        if ($role_id == 3) {
+            $this->teacher_role();
+        } else if($role_id == 1) {
+            $this->admin_role();
+        }
+    }
 
+    protected function teacher_role() {
+
+
+        return $this->fetch('teacher_role');
+    }
+
+    protected function admin_role() {
+
+        return $this->fetch('admin_role');
     }
 
     //老师编辑打卡作业
