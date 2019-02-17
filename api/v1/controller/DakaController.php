@@ -140,21 +140,19 @@ class DakaController extends RestUserBaseController
             ->toArray();
         $daka_ids = array_column($list['data'], 'id');
         $item_nums = Db::name('daka')->where(['parent_id'=>['in', $daka_ids]])->field('parent_id,count(*) count')->group('parent_id')->select();
-        $homework_nums = Db::name('daka_homework')->where(['daka_parent_id'=>['in', $daka_ids]])->field('daka_parent_id,count(*) count')->group('daka_parent_id')->select();
+        $homework_nums = Db::name('daka_homework')->where(['user_id'=>$this->userId,'daka_parent_id'=>['in', $daka_ids]])->field('daka_parent_id,count(*) count')->group('daka_parent_id')->select();
         foreach ($list['data'] as &$item) {
             $item['thumbnail'] = get_image_url($item['thumbnail']);
             $item['item_num'] = 0;
             foreach ($item_nums as $it) {
                 if ($item['id'] == $it['parent_id']) {
                     $item['item_num'] = $it['count'];
-                    continue;
                 }
             }
             $item['hk_num'] = 0;
             foreach ($homework_nums as $hk) {
                 if ($item['id'] == $hk['daka_parent_id']) {
                     $item['hk_num'] = $hk['count'];
-                    continue;
                 }
             }
         }
