@@ -3,113 +3,26 @@
 <body>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
-        <li class="active"><a href="{:url('daka/index')}">打卡列表</a></li>
-        <li><a href="{:url('daka/add')}">添加</a></li>
+        <li class="active"><a href="{:url('daka/daka_teacher',['id'=>$params['id']])}">批改作业老师</a></li>
+        <li><a href="{:url('daka/daka_teacher_edit', ['daka_id'=>$params['id']])}">添加</a></li>
     </ul>
-    <form class="well form-inline margin-top-20" method="post" action="{:url('daka/index')}">
-        类型:
-        <select name="category" id="" class="form-control" style="width: 200px;">
-            <option value="">请选打卡分类</option>
-            {$category_list}
-        </select>
-        标题:
-        <input type="text" class="form-control" name="keyword" style="width: 200px;" value="{$params.keyword|default=''}" placeholder="请输入标题">
-        <input type="submit" class="btn btn-primary" value="搜索">
-        <a class="btn btn-danger" href="{:url('daka/index')}">清空</a>
-    </form>
     <form class="js-ajax-form" action="{:url('daka/listOrder')}" method="post">
-        <div class="table-actions">
-            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
-                    data-action="{:url('daka/listOrder')}">排序
-            </button>
-            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
-                    data-action="{:url('daka/publish',array('yes'=>1))}" data-subcheck="true">发布
-            </button>
-            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
-                    data-action="{:url('daka/publish',array('no'=>1))}" data-subcheck="true">取消发布
-            </button>
-            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
-                    data-action="{:url('daka/top',array('yes'=>1))}" data-subcheck="true">置顶
-            </button>
-            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
-                    data-action="{:url('daka/top',array('no'=>1))}" data-subcheck="true">取消置顶
-            </button>
-            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
-                    data-action="{:url('daka/recommend',array('yes'=>1))}" data-subcheck="true">推荐
-            </button>
-            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
-                    data-action="{:url('daka/recommend',array('no'=>1))}" data-subcheck="true">取消推荐
-            </button>
-            <button class="btn btn-danger btn-sm js-ajax-submit" type="submit"
-                    data-action="{:url('daka/delete')}" data-subcheck="true" data-msg="您确定删除吗？">
-                {:lang('DELETE')}
-            </button>
-        </div>
         <table class="table table-hover table-bordered table-list">
             <thead>
             <tr>
-                <th width="15">
-                    <label>
-                        <input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x">
-                    </label>
-                </th>
-                <th width="80">{:lang('SORT')}</th>
-                <th width="50">ID</th>
-                <th>图片</th>
-                <th>所属分类</th>
-                <th>标题</th>
-                <th>发布时间</th>
-                <th>结束时间	</th>
-                <th width="70">状态</th>
+                <th width="50">老师ID</th>
+                <th>老师名称</th>
+                <th>email</th>
                 <th width="200">操作</th>
             </tr>
             </thead>
             <tbody>
             <foreach name="list" item="vo">
                 <tr>
+                    <td>{$vo.id}</td><td>{$vo.user_login}</td>
+                    <td>{$vo.user_email}</td>
                     <td>
-                        <input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
-                               value="{$vo.id}" title="ID:{$vo.id}">
-                    </td>
-                    <td><input name="list_orders[{$vo.id}]" type="text" size="3" value="{$vo.list_order}" class="input-order valid" aria-invalid="false"></td>
-                    <td>{$vo.id}</td>
-                    <td><img src="{:cmf_get_image_preview_url($vo.thumbnail)}" id="thumb-preview"
-                             height="50" style="cursor: hand" onclick="javascript:imagePreviewDialog('{:cmf_get_image_preview_url($vo.thumbnail)}');"/></td>
-                    <td>{$vo.category_name}</td>
-                    <td>{$vo.post_title}</td>
-                    <td>
-                        <empty name="vo.published_time">
-                            未发布
-                            <else/>
-                            {:date('Y-m-d H:i:s',$vo['published_time'])}
-                        </empty>
-                    </td>
-                    <td>
-                        <notempty name="vo.update_time">
-                            {:date('Y-m-d H:i:s',$vo['end_time'])}
-                        </notempty>
-                    </td>
-                    <td>
-                        <switch name="vo.post_status">
-                            <case value="0"><a data-toggle="tooltip" title="已删除"><i class="fa fa-close"></i></a></case>
-                            <case value="1"><a data-toggle="tooltip" title="已发布"><i class="fa fa-check"></i></a></case>
-                            <case value="2"><a data-toggle="tooltip" title="未发布"><i class="fa fa-close"></i></a></case>
-                        </switch>
-                        <notempty name="vo.is_top">
-                            <a data-toggle="tooltip" title="已置顶"><i class="fa fa-arrow-up"></i></a>
-                            <else/>
-                            <a data-toggle="tooltip" title="未置顶"><i class="fa fa-arrow-down"></i></a>
-                        </notempty>
-                        <notempty name="vo.recommended">
-                            <a data-toggle="tooltip" title="已推荐"><i class="fa fa-thumbs-up"></i></a>
-                            <else/>
-                            <a data-toggle="tooltip" title="未推荐"><i class="fa fa-thumbs-down"></i></a>
-                        </notempty>
-                    </td>
-                    <td>
-                        <a href="{:url('daka/detail',['id'=>$vo.id])}">章节详情</a>
-                        <a href="{:url('daka/edit',['id'=>$vo.id])}">编辑</a>
-                        <a class="js-ajax-delete" href="{:url('daka/delete',['id'=>$vo.id])}">删除</a>
+                        <a class="js-ajax-delete" href="{:url('daka/daka_teacher_delete',['relation_id'=>$vo.relation_id])}">删除</a>
                     </td>
                 </tr>
             </foreach>

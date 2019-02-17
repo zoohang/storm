@@ -59,7 +59,7 @@
                 <th>所属分类</th>
                 <th>标题</th>
                 <th>发布时间</th>
-                <th>结束时间	</th>
+                <th>结束时间</th>
                 <th width="70">状态</th>
                 <th width="200">操作</th>
             </tr>
@@ -108,6 +108,7 @@
                     </td>
                     <td>
                         <a href="{:url('daka/detail',['id'=>$vo.id])}">章节详情</a>
+                        <a href="{:url('daka/daka_teacher',['id'=>$vo.id])}">评图老师</a>
                         <a href="{:url('daka/edit',['id'=>$vo.id])}">编辑</a>
                         <a class="js-ajax-delete" href="{:url('daka/delete',['id'=>$vo.id])}">删除</a>
                     </td>

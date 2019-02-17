@@ -446,35 +446,61 @@ class DakaController extends AdminBaseController
         if (!$id) $this->error('请选择一套打卡课程');
         $list = Db::name('daka_teacher_relation a')
             ->join('__USER__ b', 'b.id=a.admin_id')
-            ->field()
-            ->where()
+            ->field(['a.relation_id','b.id','b.user_login','b.user_email','b.avatar','b.user_nickname'])
+            ->where(['a.daka_id'=>$id])
+            ->order(['a.relation_id'=>'asc'])
             ->select();
         $this->assign('list', $list);
         return $this->fetch();
     }
 
-    public function daka_teacher_add() {
+    public function daka_teacher_edit() {
+        $daka_id = $this->request->param('daka_id', 0, 'intval');
+        if (!$daka_id) $this->error('请选择一套打卡课程');
         $userModel = new UserModel();
         $list = $userModel->getDakaTeacherList();
+        $already = Db::name('daka_teacher_relation')->where(['daka_id'=>$daka_id])->select()->toArray();
+        foreach ($list as &$item) {
+            $item['selected'] = 0;
+            foreach($already as $v) {
+                if ($item['id'] == $v['admin_id']){
+                    $item['selected'] = 1;
+                    continue;
+                }
+            }
+        }
+        unset($item);
         $this->assign('list', $list);
         return $this->fetch();
     }
 
     public function daka_teacher_save() {
-        $id = $this->request->param('id', 0, 'intval');
+        $data = $this->request->param();
+        $id = $this->request->param('daka_id', 0, 'intval');
         if (!$id) $this->error('请选择一套打卡课程');
-        $uids = $this->request->param('uids');
-        if (!$uids) $this->error('请选择老师');
-        $sql = "REPLACE INTO `st_daka_teacher_relation` (`daka_id`, `admin_id`) VALUES ";
-        foreach ($uids as $uid) {
-            $sql .= " ({$id}, {$uid}) ";
+        if (!$data['admin_id']) $this->error('请选择老师');
+        Db::startTrans();
+        try {
+            Db::name('daka_teacher_relation')->where(['daka_id'=>$id])->delete();
+            if ($data['admin_id']) {
+                $add = [];
+                foreach ($data['admin_id'] as $admin_id) {
+                    $add[] = [
+                        'daka_id' => $id,
+                        'admin_id' => $admin_id
+                    ];
+                }
+            }
+            Db::name('daka_teacher_relation')->insertAll($add);
+            //更新评图老师的数量
+            $count = count($data['admin_id']);
+            Db::name('daka')->where(['id'=>$id])->setField('teacher_num', $count);
+            Db::commit();
+        } catch (\Exception $e) {
+            Db::rollback();
+            $this->error($e->getMessage());
         }
-        $res = Db::execute($sql);
-        if ($res !== false) {
-            $this->success('编辑成功！');
-        } else {
-            $this->error("编辑失败！");
-        }
+        $this->success('编辑成功！');
     }
 
     public function daka_teacher_delete() {
@@ -486,6 +512,26 @@ class DakaController extends AdminBaseController
         } else {
             $this->error("删除失败！");
         }
+    }
+
+    //老师批改打卡作业列表
+    public function teacher_daka_list() {
+
+    }
+
+    //老师编辑打卡作业
+    public function teacher_daka_edit() {
+
+    }
+
+    //提交更改
+    public function teacher_daka_save() {
+
+    }
+
+    //批改作业数量统计
+    public function teacher_daka_tongji() {
+
     }
 
 }

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-02-13 00:42:25
+Date: 2019-02-16 09:20:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -739,7 +739,7 @@ CREATE TABLE `st_daka_homework` (
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1-已经提交 2-已经评论',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='打卡-作业提交表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='打卡-作业提交表';
 
 -- ----------------------------
 -- Records of st_daka_homework
