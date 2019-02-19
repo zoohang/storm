@@ -122,4 +122,22 @@ class DakaModel extends Model
         return $this;
 
     }
+
+    public function getTeacherHomeWrokList($where=[]) {
+        $field = ['a.*','b.post_title title2','c.post_title title', 'c.category_name', 'c.category_id'];
+        return Db::name('daka_homework a')
+            ->join('__DAKA__ b', 'a.daka_id=b.id')
+            ->join('__DAKA__ c', 'a.daka_parent_id=c.id')
+            ->field($field)
+            ->where($where)
+            ->paginate();
+    }
+
+    public function getDakaList($where) {
+        return Db::name('daka_homework a')
+            ->join('__DAKA__ b', 'a.daka_parent_id=b.id')
+            ->field(['b.id', 'b.post_title', 'b.category_name'])
+            ->where($where)
+            ->select()->toArray();
+    }
 }
