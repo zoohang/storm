@@ -5,7 +5,7 @@
     <ul class="nav nav-tabs">
         <li class="active"><a href="{:url('daka/index')}">评图列表</a></li>
     </ul>
-    <form class="well form-inline margin-top-20" method="post" action="{:url('daka/index')}">
+    <form class="well form-inline margin-top-20" method="post" action="{:url('daka/teacher_daka_list')}">
         类型:
         <select name="category" id="" class="form-control" style="width: 200px;">
             <option value="">请选打卡课程</option>
@@ -26,10 +26,10 @@
                     </label>
                 </th>
                 <th width="50">ID</th>
-                <th>图片</th>
                 <th>所属分类</th>
-                <th>标题</th>
-                <th>发布时间</th>
+                <th>课程</th>
+                <th>章节</th>
+                <th>提交时间</th>
                 <th>结束时间</th>
                 <th width="70">状态</th>
                 <th width="200">操作</th>
@@ -47,6 +47,7 @@
                     <td>{$vo.title}</td>
                     <td>{$vo.title2}</td>
                     <td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
+                    <td>{:date('Y-m-d H:i:s',$vo['end_time'])}</td>
                     <td>
                         <switch name="vo.status">
                             <case value="1"><a data-toggle="tooltip" title="未评图"><i class="fa fa-close"></i></a></case>
@@ -54,10 +55,8 @@
                         </switch>
                     </td>
                     <td>
-                        <a href="{:url('daka/detail',['id'=>$vo.id])}">章节详情</a>
-                        <a href="{:url('daka/daka_teacher',['id'=>$vo.id])}">评图老师</a>
-                        <a href="{:url('daka/edit',['id'=>$vo.id])}">编辑</a>
-                        <a class="js-ajax-delete" href="{:url('daka/delete',['id'=>$vo.id])}">删除</a>
+                        <a href="{:url('daka/teacher_daka_edit',['homework_id'=>$vo.id])}">编辑</a>
+                        <a class="js-ajax-delete" href="{:url('daka/delete',['homework_id'=>$vo.id])}">删除</a>
                     </td>
                 </tr>
             </foreach>

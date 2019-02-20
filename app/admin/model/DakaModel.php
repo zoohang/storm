@@ -124,7 +124,7 @@ class DakaModel extends Model
     }
 
     public function getTeacherHomeWrokList($where=[]) {
-        $field = ['a.*','b.post_title title2','c.post_title title', 'c.category_name', 'c.category_id'];
+        $field = ['a.*', 'b.end_time','b.post_title title2','c.post_title title', 'c.category_name', 'c.category_id'];
         return Db::name('daka_homework a')
             ->join('__DAKA__ b', 'a.daka_id=b.id')
             ->join('__DAKA__ c', 'a.daka_parent_id=c.id')
@@ -138,6 +138,16 @@ class DakaModel extends Model
             ->join('__DAKA__ b', 'a.daka_parent_id=b.id')
             ->field(['b.id', 'b.post_title', 'b.category_name'])
             ->where($where)
-            ->select()->toArray();
+            ->group('b.id')
+            ->select()
+            ->toArray();
+    }
+
+    public function getHomeWorkInfo($where) {
+        return Db::name('daka_homework')->where($where)->find();
+    }
+
+    public function getDakaDetail($where) {
+        return $this->where($where)->find();
     }
 }

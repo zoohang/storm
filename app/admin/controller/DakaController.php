@@ -562,19 +562,49 @@ class DakaController extends AdminBaseController
         return $this->fetch('teacher_role');
     }
 
+    // todo
     protected function admin_role() {
 
         return $this->fetch('admin_role');
     }
 
-    //老师编辑打卡作业
+    //老师编辑打卡作业 todo 效验
     public function teacher_daka_edit() {
-
+        $homework_id = $this->request->param('homework_id', 0, 'intval');
+        if (!$homework_id) $this->error('请选择作业');
+        $model = new DakaModel();
+        $homework_info = $model->getHomeWorkInfo(['id'=>$homework_id]);
+        $daka_info = $model->getDakaDetail(['id'=>$homework_info['daka_id']]);
+        $this->assign('homework_info', $homework_info);
+        $this->assign('daka_info', $daka_info);
+        dump($info);
     }
 
-    //提交更改
+    //提交更改 todo 效验
     public function teacher_daka_save() {
-
+        $data = $this->request->param();
+        $homework_id = $data['homework_id'];
+        $post = $data['teacher'];
+        $result = $this->validate($post, 'api\v1\validate\DakaHomework');
+        if ($result !== true) {
+            $this->error($result);
+        }
+        Db::startTrans();
+        try{
+            $info = Db::name('Daka')->where(['id'=>$data['daka_id']])->find();
+            $data['daka_parent_id'] = $info['parent_id'];
+            $res = DakaHomeworkModel::instance()->allowField(true)->isUpdate(false)->save($data);
+            DakaModel::instance()->where(['id'=>$info['parent_id']])->setInc('daka_num');
+            Db::commit();
+        } catch (\Exception $e) {
+            Db::rollback();
+            $this->error($e->getMessage());
+        }
+        if ($res !== false) {
+            $this->success('ok');
+        } else {
+            $this->error('上传失败, 请重试');
+        }
     }
 
     //批改作业数量统计
