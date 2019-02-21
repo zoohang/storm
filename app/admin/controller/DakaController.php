@@ -574,15 +574,29 @@ class DakaController extends AdminBaseController
         if (!$homework_id) $this->error('请选择作业');
         $model = new DakaModel();
         $homework_info = $model->getHomeWorkInfo(['id'=>$homework_id]);
-        $daka_info = $model->getDakaDetail(['id'=>$homework_info['daka_id']]);
-        $this->assign('homework_info', $homework_info);
+        $daka_info = $model->getDakaDetail(['b.id'=>$homework_info['daka_id']]);
+
         $this->assign('daka_info', $daka_info);
-        dump($info);
+        if ($homework_info['images']) {
+            $imgs =  htmlspecialchars_decode($homework_info['images']);
+            $imgs = json_decode($imgs, true);
+            foreach ($imgs as &$img) {
+                $img = config('aliyun_oss.Preview_Pre').$img;;
+            }
+            unset($img);
+            $homework_info['images'] = $imgs;
+        }
+        $this->assign('homework_info', $homework_info);
+        //老师回答内容获取
+        $teacher = $model->getHomeWorkInfo(['teacher_id'=>cmf_get_current_admin_id(), 'user_id'=>$homework_info['user_id'], 'dtype'=>2]);
+        $this->assign('teacher', $teacher ?: []);
+        return $this->fetch();
     }
 
-    //提交更改 todo 效验
+    //提交更改 todo 效验 todo todo
     public function teacher_daka_save() {
         $data = $this->request->param();
+        var_export($data);die;
         $homework_id = $data['homework_id'];
         $post = $data['teacher'];
         $result = $this->validate($post, 'api\v1\validate\DakaHomework');

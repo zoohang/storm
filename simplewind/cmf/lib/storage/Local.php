@@ -59,7 +59,8 @@ class Local
     public function getPreviewUrl($file, $style = '')
     {
         // 更改为阿里云的上传前缀
-        return config('aliyun_oss.Preview_Pre') . $file;
+        $style = $style ? "?x-oss-process=style/$style" : '';
+        return config('aliyun_oss.Preview_Pre') . $file.$style;
         //return $this->_getWebRoot() . '/upload/' . $file;
     }
 

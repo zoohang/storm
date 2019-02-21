@@ -148,6 +148,8 @@ class DakaModel extends Model
     }
 
     public function getDakaDetail($where) {
-        return $this->where($where)->find();
+        return $this->alias('a')
+            ->join('__DAKA__ b', 'a.id=b.parent_id')->field('a.post_title daka_title,b.*')
+            ->where($where)->find()->toArray();
     }
 }

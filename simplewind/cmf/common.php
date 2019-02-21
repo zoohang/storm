@@ -729,14 +729,15 @@ function cmf_get_image_url($file, $style = 'watermark')
  * @param string $style 图片样式,支持各大云存储
  * @return string
  */
-function cmf_get_image_preview_url($file, $style = 'watermark')
+function cmf_get_image_preview_url($file, $style = '')
 {
     if (empty($file)) {
         return '';
     }
 
     if (strpos($file, "http") === 0) {
-        return $file;
+        if (strpos($file, \config('aliyun_oss.Preview_Pre')) === 0 && $style) $style = "?x-oss-process=style/$style";
+        return $file.$style;
     } else if (strpos($file, "/") === 0) {
         return $file;
     } else {

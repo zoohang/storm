@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-02-20 00:34:56
+Date: 2019-02-22 00:27:28
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -36,7 +36,7 @@ CREATE TABLE `st_admin_menu` (
   KEY `status` (`status`),
   KEY `parent_id` (`parent_id`),
   KEY `controller` (`controller`)
-) ENGINE=InnoDB AUTO_INCREMENT=185 DEFAULT CHARSET=utf8mb4 COMMENT='后台菜单表';
+) ENGINE=InnoDB AUTO_INCREMENT=187 DEFAULT CHARSET=utf8mb4 COMMENT='后台菜单表';
 
 -- ----------------------------
 -- Records of st_admin_menu
@@ -214,11 +214,13 @@ INSERT INTO `st_admin_menu` VALUES ('176', '175', '1', '1', '2', 'admin', 'Exam'
 INSERT INTO `st_admin_menu` VALUES ('177', '175', '1', '1', '1', 'admin', 'Category', 'index', '', '综合分类', 'book', '');
 INSERT INTO `st_admin_menu` VALUES ('178', '175', '1', '1', '3', 'admin', 'Course', 'index', '', '在线课堂', '', '');
 INSERT INTO `st_admin_menu` VALUES ('179', '175', '1', '1', '10', 'admin', 'Course', 'teacher', '', '课题讲师列表', '', '');
-INSERT INTO `st_admin_menu` VALUES ('180', '175', '1', '1', '10000', 'Admin', 'daka', 'index', '', '打卡', '', '');
+INSERT INTO `st_admin_menu` VALUES ('180', '185', '1', '1', '10000', 'Admin', 'daka', 'index', '', '打卡', '', '');
 INSERT INTO `st_admin_menu` VALUES ('181', '175', '1', '1', '10000', 'admin', 'school', 'index', '', '学校列表', '', '');
 INSERT INTO `st_admin_menu` VALUES ('182', '175', '1', '1', '10000', 'admin', 'goods', 'index', '', '商品管理', '', '');
 INSERT INTO `st_admin_menu` VALUES ('183', '0', '1', '1', '10000', 'admin', 'recommend', 'default', '', '运营', '', '');
 INSERT INTO `st_admin_menu` VALUES ('184', '183', '1', '1', '10000', 'admin', 'recommend', 'index', '', '搜索推荐', '', '');
+INSERT INTO `st_admin_menu` VALUES ('185', '0', '1', '1', '10000', 'admin', 'Daka', 'default', '', '打卡', '', '');
+INSERT INTO `st_admin_menu` VALUES ('186', '185', '1', '1', '10000', 'admin', 'Daka', 'teacher_daka_list', '', '评图', '', '');
 
 -- ----------------------------
 -- Table structure for st_asset
@@ -239,7 +241,7 @@ CREATE TABLE `st_asset` (
   `suffix` varchar(10) NOT NULL DEFAULT '' COMMENT '文件后缀名,不包括点',
   `more` text COMMENT '其它详细信息,JSON格式',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8mb4 COMMENT='资源表';
+) ENGINE=InnoDB AUTO_INCREMENT=97 DEFAULT CHARSET=utf8mb4 COMMENT='资源表';
 
 -- ----------------------------
 -- Records of st_asset
@@ -249,6 +251,23 @@ INSERT INTO `st_asset` VALUES ('76', '1', '3550', '1549124666', '1', '0', 'f5328
 INSERT INTO `st_asset` VALUES ('77', '1', '4016', '1549124748', '1', '0', 'd2909dfe5d85ee9f868d937826af100598eeab7f17dd70e73de651d35057216e', '483ec8222b824f868e40a32b32295d07.jpg', 'admin/20190203/fc0116bdbc530e1be12a762d19fdf89f.jpg', 'd2909dfe5d85ee9f868d937826af1005', '430141ef95b2ce08b48f36592d22bde9f8bbdd08', 'jpg', null);
 INSERT INTO `st_asset` VALUES ('78', '1', '2896', '1549125173', '1', '0', '94a2841285a67f6102263b1a0c56ab7f93eef0dce924e2ff9921087f964e61ca', '51a1dc1df648122e0502f94cc2a07158.jpg', 'admin/20190203/1054aa221a00ac24f939ca1469a0e02b.jpg', '94a2841285a67f6102263b1a0c56ab7f', '2b85ea97597793547d6b2d6d2bba9fbcf05abb74', 'jpg', null);
 INSERT INTO `st_asset` VALUES ('79', '1', '2291', '1549125776', '1', '0', 'c28eb8582dc63998a81c9e6c785b87d90bd700345b7920f43cf621b7c8b80e29', '48b56854b52e7c791bc5048f37bdf4db.jpg', 'default/20190203/ca9b5ab9683337b5514270fbf9b21f3d.jpg', 'c28eb8582dc63998a81c9e6c785b87d9', '8a4778b3eab01d5ac014466a4d1b9ee9b38d8939', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('80', '3', '191777', '1550759812', '1', '0', '79522026b797d5f7b778f7e669f98a40a735f8c60c7ded9dc7fde803bfd1e464', '59fce102c9d3b09f3d510cb765d81f89.jpg', 'admin/20190221/15aa57836fbcd0d60613cf5b5bdc9140.jpg', '79522026b797d5f7b778f7e669f98a40', '56a6543dafc032824dc39a227973a144bc0ada84', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('81', '3', '214636', '1550759813', '1', '0', '6838104c72b482cc70151a70e78ba0c67d74eb51d5bc0b100e195c7fdb33dcac', 'b6696eeb1703059cf36a292181ae4670.jpg', 'admin/20190221/37baae87277cb793035cfce644103e95.jpg', '6838104c72b482cc70151a70e78ba0c6', '09c625d73163f88a01f26cf8159ea008c83c31cc', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('82', '3', '38291', '1550759829', '1', '0', '08fecb7505a91202c338488a10d3f95edd5f84492f8bcb26f069288dfafe6ba6', '1c165819a17e250a4b17f3fcb2266a67.jpg', 'admin/20190221/587828e70e057cff6144c851ddcf513a.jpg', '08fecb7505a91202c338488a10d3f95e', 'ec618a47e9f801ce273c096c2cd19b2824986aee', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('83', '3', '13812', '1550759846', '1', '0', '22b440e75f4abd70ecd480672ae908a42039efd48b005c05734ae8a80487aa7d', 'cb1a8729d8fe1acc2a1d16c12259d589.jpg', 'admin/20190221/8565b1c66109950a12003bfce5cb9ddb.jpg', '22b440e75f4abd70ecd480672ae908a4', 'be6fa33f4b4fc56d0ad6590ed551c28ff2b59c22', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('84', '3', '60145', '1550765584', '1', '0', 'a005b53ab6a31d2ce6d2e58e9af3950f606c77d705b78dd85bb3946ef86b3bd2', '06c573d6555a4f9e65edd878fd68f66d_1.jpg', 'admin/20190222/409de2975030c03324fc67e913eb7eaa.jpg', 'a005b53ab6a31d2ce6d2e58e9af3950f', '643c3533ed46c23bc4e4633a8189470554b49471', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('85', '3', '60145', '1550765668', '1', '0', 'a005b53ab6a31d2ce6d2e58e9af3950f606c77d705b78dd85bb3946ef86b3bd2', '06c573d6555a4f9e65edd878fd68f66d_1.jpg', 'admin/20190222/2a7eab13197288e7ea50f0e9af12d6d5.jpg', 'a005b53ab6a31d2ce6d2e58e9af3950f', '643c3533ed46c23bc4e4633a8189470554b49471', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('86', '1', '900', '1550765799', '1', '0', 'f9c0f75e7e1dd6eacd99b0bda00f36d46f62cea124678b8225514ba2c255dce6', 'demo.txt', 'portal/20190222/f8880326896ce6ebd1f7c4a6901cec33.txt', 'f9c0f75e7e1dd6eacd99b0bda00f36d4', '900cdc6431d24d2d96d91106d0c5134b8a832a2c', 'txt', null);
+INSERT INTO `st_asset` VALUES ('87', '3', '60145', '1550765852', '1', '0', 'a005b53ab6a31d2ce6d2e58e9af3950f606c77d705b78dd85bb3946ef86b3bd2', '06c573d6555a4f9e65edd878fd68f66d_1.jpg', 'admin/20190222/1280fd685b53ee5bdcb1cb11440bc996.jpg', 'a005b53ab6a31d2ce6d2e58e9af3950f', '643c3533ed46c23bc4e4633a8189470554b49471', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('88', '3', '60145', '1550765889', '1', '0', 'a005b53ab6a31d2ce6d2e58e9af3950f606c77d705b78dd85bb3946ef86b3bd2', '06c573d6555a4f9e65edd878fd68f66d_1.jpg', 'admin/20190222/a98edc70eb9b5e18dbd134dccdda9413.jpg', 'a005b53ab6a31d2ce6d2e58e9af3950f', '643c3533ed46c23bc4e4633a8189470554b49471', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('89', '3', '100602', '1550765898', '1', '0', 'aca25f5a2cf99009e9f679e0c598ffba5b881147407f9a15463a24c554ea533a', 'cb7deb8e016c45a67b9ab644ed2524f9_1.jpg', 'admin/20190222/4251eea9e4e86d47756c06a79864adc7.jpg', 'aca25f5a2cf99009e9f679e0c598ffba', '260c8fcbd6a8fef66f2ae029c0e9c8798bae904d', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('90', '3', '60145', '1550766163', '1', '0', 'a005b53ab6a31d2ce6d2e58e9af3950f606c77d705b78dd85bb3946ef86b3bd2', '06c573d6555a4f9e65edd878fd68f66d_1.jpg', 'admin/20190222/f1e827aad7e9b93dbdd738af660290ca.jpg', 'a005b53ab6a31d2ce6d2e58e9af3950f', '643c3533ed46c23bc4e4633a8189470554b49471', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('91', '3', '100602', '1550766167', '1', '0', 'aca25f5a2cf99009e9f679e0c598ffba5b881147407f9a15463a24c554ea533a', 'cb7deb8e016c45a67b9ab644ed2524f9_1.jpg', 'admin/20190222/a0bcbf1bc3d108767f071c0351347ac0.jpg', 'aca25f5a2cf99009e9f679e0c598ffba', '260c8fcbd6a8fef66f2ae029c0e9c8798bae904d', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('92', '3', '60145', '1550766253', '1', '0', 'a005b53ab6a31d2ce6d2e58e9af3950f606c77d705b78dd85bb3946ef86b3bd2', '06c573d6555a4f9e65edd878fd68f66d_1.jpg', 'admin/20190222/55c798a132d2278bc01c681690669d89.jpg', 'a005b53ab6a31d2ce6d2e58e9af3950f', '643c3533ed46c23bc4e4633a8189470554b49471', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('93', '3', '100602', '1550766253', '1', '0', 'aca25f5a2cf99009e9f679e0c598ffba5b881147407f9a15463a24c554ea533a', 'cb7deb8e016c45a67b9ab644ed2524f9_1.jpg', 'admin/20190222/b3895e7686ac1353b440ba1ae30843bf.jpg', 'aca25f5a2cf99009e9f679e0c598ffba', '260c8fcbd6a8fef66f2ae029c0e9c8798bae904d', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('94', '3', '60145', '1550766304', '1', '0', 'a005b53ab6a31d2ce6d2e58e9af3950f606c77d705b78dd85bb3946ef86b3bd2', '06c573d6555a4f9e65edd878fd68f66d_1.jpg', 'admin/20190222/3d2224d4ee7eaf7f615d1da71f7ff472.jpg', 'a005b53ab6a31d2ce6d2e58e9af3950f', '643c3533ed46c23bc4e4633a8189470554b49471', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('95', '3', '100602', '1550766304', '1', '0', 'aca25f5a2cf99009e9f679e0c598ffba5b881147407f9a15463a24c554ea533a', 'cb7deb8e016c45a67b9ab644ed2524f9_1.jpg', 'admin/20190222/9e245d9976eb5583f17960a89af82b96.jpg', 'aca25f5a2cf99009e9f679e0c598ffba', '260c8fcbd6a8fef66f2ae029c0e9c8798bae904d', 'jpg', null);
+INSERT INTO `st_asset` VALUES ('96', '3', '100602', '1550766347', '1', '0', 'aca25f5a2cf99009e9f679e0c598ffba5b881147407f9a15463a24c554ea533a', 'cb7deb8e016c45a67b9ab644ed2524f9_1.jpg', 'admin/20190222/edcab0ed115f6936bbc5aa561bfc22d3.jpg', 'aca25f5a2cf99009e9f679e0c598ffba', '260c8fcbd6a8fef66f2ae029c0e9c8798bae904d', 'jpg', null);
 
 -- ----------------------------
 -- Table structure for st_auth_access
@@ -262,13 +281,14 @@ CREATE TABLE `st_auth_access` (
   PRIMARY KEY (`id`),
   KEY `role_id` (`role_id`),
   KEY `rule_name` (`rule_name`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='权限授权表';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='权限授权表';
 
 -- ----------------------------
 -- Records of st_auth_access
 -- ----------------------------
-INSERT INTO `st_auth_access` VALUES ('1', '3', 'admin/exam/default', 'admin_url');
-INSERT INTO `st_auth_access` VALUES ('2', '3', 'admin/daka/index', 'admin_url');
+INSERT INTO `st_auth_access` VALUES ('6', '3', 'admin/daka/default', 'admin_url');
+INSERT INTO `st_auth_access` VALUES ('7', '3', 'admin/daka/index', 'admin_url');
+INSERT INTO `st_auth_access` VALUES ('8', '3', 'admin/daka/teacher_daka_list', 'admin_url');
 
 -- ----------------------------
 -- Table structure for st_auth_rule
@@ -286,7 +306,7 @@ CREATE TABLE `st_auth_rule` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`) USING BTREE,
   KEY `module` (`app`,`status`,`type`)
-) ENGINE=InnoDB AUTO_INCREMENT=185 DEFAULT CHARSET=utf8mb4 COMMENT='权限规则表';
+) ENGINE=InnoDB AUTO_INCREMENT=187 DEFAULT CHARSET=utf8mb4 COMMENT='权限规则表';
 
 -- ----------------------------
 -- Records of st_auth_rule
@@ -469,6 +489,8 @@ INSERT INTO `st_auth_rule` VALUES ('181', '1', 'admin', 'admin_url', 'admin/scho
 INSERT INTO `st_auth_rule` VALUES ('182', '1', 'admin', 'admin_url', 'admin/goods/index', '', '商品管理', '');
 INSERT INTO `st_auth_rule` VALUES ('183', '1', 'admin', 'admin_url', 'admin/recommend/default', '', '运营', '');
 INSERT INTO `st_auth_rule` VALUES ('184', '1', 'admin', 'admin_url', 'admin/recommend/index', '', '搜索推荐', '');
+INSERT INTO `st_auth_rule` VALUES ('185', '1', 'admin', 'admin_url', 'admin/Daka/default', '', '打卡', '');
+INSERT INTO `st_auth_rule` VALUES ('186', '1', 'admin', 'admin_url', 'admin/Daka/teacher_daka_list', '', '评图', '');
 
 -- ----------------------------
 -- Table structure for st_category
@@ -711,11 +733,11 @@ CREATE TABLE `st_daka` (
 -- ----------------------------
 -- Records of st_daka
 -- ----------------------------
-INSERT INTO `st_daka` VALUES ('1', '13', '打卡分类一一', '0', '1', '1', '1', '1', '0', '0', '0', '0', '0', '1', '2', '1545881537', '1547909881', '1545840000', '1546185600', '0', '12312312355555112', 'admin/20181231/ac835582916a3ea5d7b48dc86b9fb151.jpg', '\n&lt;p&gt;1231231312312321&lt;/p&gt;\n&lt;p&gt;4444411111&lt;/p&gt;\n&lt;p&gt;&lt;br&gt;&lt;/p&gt;\n&lt;p&gt;&lt;br&gt;&lt;/p&gt;\n&lt;p&gt;2&lt;/p&gt;\n&lt;p&gt;3&lt;/p&gt;\n', null, '9', '{\"photos\":[{\"url\":\"admin/20181231/23fae07583e1f129f44cfff322522401.jpg\",\"name\":\"2efeaddb0ff2e61fb47cbb76e954037f.jpg\"}]}', '21', '3', '0');
+INSERT INTO `st_daka` VALUES ('1', '13', '打卡分类一一', '0', '1', '1', '1', '1', '0', '0', '0', '0', '0', '1', '2', '1545881537', '1550758574', '1545840000', '1550160000', '0', '中国古典建筑', 'admin/20181231/ac835582916a3ea5d7b48dc86b9fb151.jpg', '11111', null, '9', '{\"photos\":[{\"url\":\"admin/20181231/23fae07583e1f129f44cfff322522401.jpg\",\"name\":\"2efeaddb0ff2e61fb47cbb76e954037f.jpg\"}]}', '21', '3', '0');
 INSERT INTO `st_daka` VALUES ('2', '14', '打卡下班咯', '0', '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '1545891764', '1547881841', '0', '1980', '0', '好像下班了', 'admin/20181227/6776dee3c6e0de549ad8f33147b6f135.gif', '&lt;p&gt;好想下班&lt;img src=&quot;https://img.baidu.com/hi/jx2/j_0002.gif&quot;&gt;&lt;/p&gt;', null, '8', '{\"photos\":[{\"url\":\"admin/20181227/a0dc4fb9a4517f5b231c6d5cdc2bc80d.gif\",\"name\":\"20180708140354.gif\"},{\"url\":\"admin/20181227/cc9699075e2333d961d4d8c5c3a3ed93.gif\",\"name\":\"89e5bad671d5e05ea81a1703ef34bee4_t.gif\"},{\"url\":\"admin/20181227/b4298c559cb45eb09c18f6c32dbe3c21.gif\",\"name\":\"445bf4d333be46239bd431ff7627176e_t.gif\"}]}', '3', '0', '0');
 INSERT INTO `st_daka` VALUES ('3', '14', '打卡下班咯', '0', '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '1545892203', '1547910058', '0', '1980', '0', '好像下班了', 'admin/20181227/6776dee3c6e0de549ad8f33147b6f135.gif', '&lt;p&gt;好想下班&lt;img src=&quot;https://img.baidu.com/hi/jx2/j_0002.gif&quot;&gt;&lt;/p&gt;', null, '7', '{\"photos\":[{\"url\":\"admin/20181227/a0dc4fb9a4517f5b231c6d5cdc2bc80d.gif\",\"name\":\"20180708140354.gif\"},{\"url\":\"admin/20181227/cc9699075e2333d961d4d8c5c3a3ed93.gif\",\"name\":\"89e5bad671d5e05ea81a1703ef34bee4_t.gif\"},{\"url\":\"admin/20181227/b4298c559cb45eb09c18f6c32dbe3c21.gif\",\"name\":\"445bf4d333be46239bd431ff7627176e_t.gif\"}]}', '23', '0', '0');
 INSERT INTO `st_daka` VALUES ('4', '13', '打卡分类一一', '0', '1', '1', '1', '0', '0', '0', '0', '0', '0', '1', '0', '1546073876', '1547909899', '1546073820', '1546073820', '0', '23432423432', '', '&lt;p&gt;423423423423423432&lt;/p&gt;', null, '6', '\"{\\\"thumbnail\\\":\\\"\\\"}\"', '22', '0', '0');
-INSERT INTO `st_daka` VALUES ('5', '13', '打卡分类一一', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '1546245627', '1547999097', '0', '0', '0', '第一章', '', '&lt;p&gt;222222222222222222222222&lt;/p&gt;', null, '1', '\"{\\\"audio\\\":\\\"\\\",\\\"video\\\":\\\"\\\",\\\"thumbnail\\\":\\\"\\\"}\"', '0', '0', '0');
+INSERT INTO `st_daka` VALUES ('5', '13', '打卡分类一一', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '1546245627', '1550759912', '0', '0', '0', '第一章', 'admin/20190221/8565b1c66109950a12003bfce5cb9ddb.jpg', '\n&lt;p&gt;&lt;img src=&quot;https://img.baidu.com/hi/jx2/j_0003.gif&quot;&gt;&lt;/p&gt;\n&lt;p&gt;&lt;span style=\'font-family: &quot;Microsoft YaHei&quot;; font-size: 15.3333px; background-color: rgb(255, 255, 255);\'&gt;    白嘉轩后来引以豪壮的是一生里娶过七房女人。&lt;/span&gt;&lt;br style=\'font-family: &quot;Microsoft YaHei&quot;; font-size: 15.3333px; white-space: normal; background-color: rgb(255, 255, 255);\'&gt;&lt;br style=\'font-family: &quot;Microsoft YaHei&quot;; font-size: 15.3333px; white-space: normal; background-color: rgb(255, 255, 255);\'&gt;&lt;span style=\'font-family: &quot;Microsoft YaHei&quot;; font-size: 15.3333px; background-color: rgb(255, 255, 255);\'&gt;    娶头房媳妇时他刚刚过十六岁生日。那是西原上巩家村大户巩增荣的头生女，比他大两岁。他在完全无知慌乱中度过了新婚之夜，留下了永远羞于向人道及的可笑的傻样，而自己却永生难以忘记。一年后，这个女人死于难产。&lt;/span&gt;&lt;br style=\'font-family: &quot;Microsoft YaHei&quot;; font-size: 15.3333px; white-space: normal; background-color: rgb(255, 255, 255);\'&gt;&lt;br style=\'font-family: &quot;Microsoft YaHei&quot;; font-size: 15.3333px; white-space: normal; background-color: rgb(255, 255, 255);\'&gt;&lt;span style=\'font-family: &quot;Microsoft YaHei&quot;; font-size: 15.3333px; background-color: rgb(255, 255, 255);\'&gt;    第二房娶的是南原庞家村殷实人家庞修瑞的奶干女儿。这女子又正好比他小两岁，模样俊秀眼睛忽灵儿。她完全不知道嫁人是怎么回事，而他此时已谙熟男女之间所有的隐秘。他看着她的羞怯慌乱而想到自己第一次的傻样反倒觉得更富刺激。当他哄唆着把躲躲闪闪而又不敢违坳他的小媳妇裹入身下的时候，他听到了她的不是欢乐而是痛苦的一声哭叫。当他疲惫地歇息下来，才发觉肩膀内侧疼痛钻心，她把他咬烂了。他抚伤惜痛的时候，心里就潮起了对这个娇惯得有点任性的奶干女儿的恼火。正欲发作，她却扳过他的肩膀暗示他再来一次。一当经过男女间的第一次交欢，她就变得没有节制的任性。这个女人从下轿顶着红绸盖巾进入白家门楼到躺进一具薄板棺材抬出这个门楼，时间尚不足一年，是害痨病死的。&lt;/span&gt;&lt;br style=\'font-family: &quot;Microsoft YaHei&quot;; font-size: 15.3333px; white-space: normal; background-color: rgb(255, 255, 255);\'&gt;&lt;br style=\'font-family: &quot;Microsoft YaHei&quot;; font-size: 15.3333px; white-space: normal; background-color: rgb(255, 255, 255);\'&gt;&lt;span style=\'font-family: &quot;Microsoft YaHei&quot;; font-size: 15.3333px; background-color: rgb(255, 255, 255);\'&gt;    第三个女人是北原上樊家寨的一户同样殷实人家的头生女儿，十六岁的身体发育得像二十岁的女人一样丰满成熟，丰腴的肩膀和浑圆的臀部，又有一对大xx子。她要么是早熟，要么是婚前有过男女间的知识，一钻进被窝就把他紧紧搂住，双臂上显示着急迫与贪婪，把丰满鼓胀的xx子毫不羞怯地贴紧他的胸脯。&lt;/span&gt;&lt;br style=\'font-family: &quot;Microsoft YaHei&quot;; font-size: 15.3333px; white-space: normal; background-color: rgb(255, 255, 255);\'&gt;&lt;br style=\'font-family: &quot;Microsoft YaHei&quot;; font-size: 15.3333px; white-space: normal; background-color: rgb(255, 255, 255);\'&gt;&lt;span style=\'font-family: &quot;Microsoft YaHei&quot;; font-size: 15.3333px; background-color: rgb(255, 255, 255);\'&gt;    当他进入她的身体时，她嗷嗷直叫，却不是痛苦而是沉迷。这个像一团绒球的女人在他怀里缠磨过一年就瘦成了一根干枯的包谷秆子，最后吐血而死了，死了也没搞清是什么病症。&lt;/span&gt;&lt;/p&gt;\n', null, '1', '{\"photos\":[{\"url\":\"https://img.fengbaojy.com/admin/20190221/15aa57836fbcd0d60613cf5b5bdc9140.jpg\",\"name\":\"59fce102c9d3b09f3d510cb765d81f89.jpg\"},{\"url\":\"https://img.fengbaojy.com/admin/20190221/587828e70e057cff6144c851ddcf513a.jpg\",\"name\":\"1c165819a17e250a4b17f3fcb2266a67.jpg\"}]}', '0', '0', '0');
 INSERT INTO `st_daka` VALUES ('6', '13', '打卡分类一一', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '1546246121', '1547999118', '0', '0', '0', '第二章', 'admin/20181231/71aababa309a3ff75716677e802041a9.jpg', '&lt;p&gt;222222222222222222222222&lt;/p&gt;', null, '2', '\"{\\\"audio\\\":\\\"\\\",\\\"video\\\":\\\"\\\",\\\"thumbnail\\\":\\\"admin/20181231/71aababa309a3ff75716677e802041a9.jpg\\\"}\"', '0', '0', '0');
 INSERT INTO `st_daka` VALUES ('7', '13', '打卡分类一一', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '1546246446', '1547999131', '0', '0', '0', '第三章', '', '\n&lt;p&gt;222222222222222222222222&lt;/p&gt;\n&lt;p&gt;3333333333333333333333333333&lt;/p&gt;\n', null, '3', '{\"audio\":\"\",\"video\":\"\",\"thumbnail\":\"\"}', '0', '0', '0');
 INSERT INTO `st_daka` VALUES ('8', '14', '打卡下班咯', '0', '1', '1', '1', '0', '1', '0', '0', '0', '0', '0', '0', '1546247015', '1547905009', '1546246920', '1546246920', '0', '今天是2018年最后一天咯', 'admin/20181231/5340d43f7b1eecdb25a81e8fe4d15d3b.jpg', '&lt;p&gt;测试获取最后的新增id 获取失败了1&lt;/p&gt;', null, '5', '{\"photos\":[{\"url\":\"admin/20181231/3c12b2c9c864ffd44f7e9ef20918d00d.jpg\",\"name\":\"2f6b374950d828643a98260306c33d14.jpg\"},{\"url\":\"admin/20181231/1e1c27236205ece3163481ccf28f2a31.jpg\",\"name\":\"3d0fd2242cf6c22f60b7d350a1f2af6b.jpg\"}]}', '9', '0', '0');
@@ -748,12 +770,12 @@ CREATE TABLE `st_daka_homework` (
 -- ----------------------------
 -- Records of st_daka_homework
 -- ----------------------------
-INSERT INTO `st_daka_homework` VALUES ('1', '2', '3', '1', '5', '[1,2,3]', '111', '1546573318', '1546573318', '1', '1');
+INSERT INTO `st_daka_homework` VALUES ('1', '2', '3', '1', '5', '[&quot;users/20190212/wx6da2e823bfb4f0e9.o6zAJs6JS0ZEsQ3n9VzpsDNbHkMk.ylVCcJsRr37C5250fc705fcbfc51b3531844637711bb.png&quot;,&quot;users/20190212/wx6da2e823bfb4f0e9.o6zAJs6JS0ZEsQ3n9VzpsDNbHkMk.p7PHXlotw6rJf9bc0753961ceb59b9964ceb56ab896e.png&quot;]', '第一章', '1546573318', '1546573318', '1', '1');
 INSERT INTO `st_daka_homework` VALUES ('2', '2', '3', '1', '6', '[1,2,3]', '111', '1546573345', '1546573345', '1', '1');
 INSERT INTO `st_daka_homework` VALUES ('3', '2', '5', '1', '1', '[1,2,3]', '111', '1546573400', '1546573400', '1', '1');
 INSERT INTO `st_daka_homework` VALUES ('4', '2', '4', '1', '1', '[1,2,3]', '111', '1546573573', '1546573573', '1', '1');
 INSERT INTO `st_daka_homework` VALUES ('5', '2', '4', '1', '7', '[\"1,23,4\"]', '222', '1546598766', '1546598766', '1', '2');
-INSERT INTO `st_daka_homework` VALUES ('6', '2', '4', '1', '7', '[4,5,7]', '老师回复内容', '0', '0', '2', '1');
+INSERT INTO `st_daka_homework` VALUES ('6', '2', '3', '1', '5', '[4,5,7]', '老师回复内容', '0', '0', '2', '1');
 INSERT INTO `st_daka_homework` VALUES ('7', '2', '3', '1', '5', '[&quot;a.png&quot;, &quot;aaa1.png&quot;]', 'postman test', '1549980324', '1549980324', '1', '1');
 
 -- ----------------------------
@@ -1034,7 +1056,7 @@ INSERT INTO `st_goods` VALUES ('17', '5', '2008年黄冈密卷高考题', '', '0
 INSERT INTO `st_goods` VALUES ('18', '9', '222', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '0', '0', '-1', '3', '1547909816', '1547909816', '0', '1');
 INSERT INTO `st_goods` VALUES ('19', '9', '222', 'admin/20181107/5948e168d9114ce4ba0e11c983a9c467.jpg', '0', '0', '-1', '3', '1547909824', '1547909824', '0', '1');
 INSERT INTO `st_goods` VALUES ('20', '6', '2008年黄冈密卷高考题111', 'admin/20190203/1054aa221a00ac24f939ca1469a0e02b.jpg', '123', '12', '-1', '1', '1547909834', '1549125175', '0', '1');
-INSERT INTO `st_goods` VALUES ('21', '13', '12312312355555112', 'admin/20181231/ac835582916a3ea5d7b48dc86b9fb151.jpg', '0', '0', '-1', '2', '1547909881', '1547909881', '0', '1');
+INSERT INTO `st_goods` VALUES ('21', '13', '中国古典建筑', 'admin/20181231/ac835582916a3ea5d7b48dc86b9fb151.jpg', '0', '0', '-1', '2', '1547909881', '1550758574', '0', '1');
 INSERT INTO `st_goods` VALUES ('22', '13', '23432423432', '', '0', '0', '-1', '2', '1547909898', '1547909898', '0', '1');
 INSERT INTO `st_goods` VALUES ('23', '5', '重大和北大都能用到的模拟题', 'admin/20190203/fc0116bdbc530e1be12a762d19fdf89f.jpg', '123', '23', '-1', '1', '1547910058', '1549124765', '0', '1');
 
@@ -1803,7 +1825,7 @@ CREATE TABLE `st_user` (
 -- ----------------------------
 INSERT INTO `st_user` VALUES ('1', '1', '0', '0', '1547867646', '1', '1', '0.00', '1540307170', '1', 'admin', '###4a86c1e09a02a571683d0ceb112fc2f2', 'admin', '136927705@qq.com', '', 'https://img.myzx.cn/video/mysource/admin/20180713/5b486e7d1778b_100_100.png', '', '127.0.0.1', '', '', '13399878665', '', '', '', '');
 INSERT INTO `st_user` VALUES ('2', '2', '1', '0', '1544943873', '1', '8832', '0.00', '1544935602', '1', '', '###4a86c1e09a02a571683d0ceb112fc2f2', '张三1', '12355@qq.com', '', 'avatar/20181216/45718ee0baf9a1666ca9738d32d457f3.jpg', '', '127.0.0.1', '', '张三', '18581290597', '湖北理工大', '计算机', '3年2班', '{\"wx_no\":\"zhuo_yi_hang\",\"dashi\":\"1\",\"enjoy_course\":\"1,3,5\",\"source\":\"2,4\"}');
-INSERT INTO `st_user` VALUES ('3', '1', '0', '0', '1550588466', '0', '0', '0.00', '0', '1', '张老师', '###4a86c1e09a02a571683d0ceb112fc2f2', '', 'zhanglaoshi@qq.com', '', 'avatar/20181216/45718ee0baf9a1666ca9738d32d457f3.jpg', '', '127.0.0.1', '', '', '', '', '', '', null);
+INSERT INTO `st_user` VALUES ('3', '1', '0', '0', '1550762397', '0', '0', '0.00', '0', '1', '张老师', '###4a86c1e09a02a571683d0ceb112fc2f2', '', 'zhanglaoshi@qq.com', '', 'avatar/20181216/45718ee0baf9a1666ca9738d32d457f3.jpg', '', '127.0.0.1', '', '', '', '', '', '', null);
 INSERT INTO `st_user` VALUES ('4', '1', '0', '0', '1550390540', '0', '0', '0.00', '0', '1', '王老师', '###4a86c1e09a02a571683d0ceb112fc2f2', '', 'wanglaoshi@qq.com', '', '', '', '127.0.0.1', '', '', '', '', '', '', null);
 INSERT INTO `st_user` VALUES ('5', '1', '0', '0', '0', '0', '0', '0.00', '0', '1', '刘老师', '###4a86c1e09a02a571683d0ceb112fc2f2', '', 'liulaoshi@qq.com', '', '', '', '', '', '', '', '', '', '', null);
 INSERT INTO `st_user` VALUES ('6', '1', '0', '0', '0', '0', '0', '0.00', '0', '1', 'fengbao', '###4a86c1e09a02a571683d0ceb112fc2f2', '', 'fengbao@qq.com', '', '', '', '', '', '', '', '', '', '', null);
