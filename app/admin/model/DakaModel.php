@@ -144,7 +144,12 @@ class DakaModel extends Model
     }
 
     public function getHomeWorkInfo($where) {
-        return Db::name('daka_homework')->where($where)->find();
+        $info = Db::name('daka_homework')->where($where)->find();
+        if ($info['images']){
+            $imgs =  htmlspecialchars_decode($info['images']);
+            $info['images'] = json_decode($imgs, true);
+        }
+        return $info;
     }
 
     public function getDakaDetail($where) {

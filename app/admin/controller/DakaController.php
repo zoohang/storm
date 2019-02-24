@@ -577,15 +577,6 @@ class DakaController extends AdminBaseController
         $daka_info = $model->getDakaDetail(['b.id'=>$homework_info['daka_id']]);
 
         $this->assign('daka_info', $daka_info);
-        if ($homework_info['images']) {
-            $imgs =  htmlspecialchars_decode($homework_info['images']);
-            $imgs = json_decode($imgs, true);
-            foreach ($imgs as &$img) {
-                $img = config('aliyun_oss.Preview_Pre').$img;;
-            }
-            unset($img);
-            $homework_info['images'] = $imgs;
-        }
         $this->assign('homework_info', $homework_info);
         //老师回答内容获取
         $teacher = $model->getHomeWorkInfo(['teacher_id'=>cmf_get_current_admin_id(), 'user_id'=>$homework_info['user_id'], 'dtype'=>2]);
@@ -596,29 +587,42 @@ class DakaController extends AdminBaseController
     //提交更改 todo 效验 todo todo
     public function teacher_daka_save() {
         $data = $this->request->param();
-        var_export($data);die;
-        $homework_id = $data['homework_id'];
         $post = $data['teacher'];
-        $result = $this->validate($post, 'api\v1\validate\DakaHomework');
+        $result = $this->validate($post, 'api\v1\validate\DakaHomeworkValidate');
         if ($result !== true) {
             $this->error($result);
         }
+        $user_homework_info = Db::name('daka_homework')->where(['id'=>$post['user_homework_id']])->find();
+        $post['user_id'] = $user_homework_info['user_id'];
+        $post['teacher_id'] = $user_homework_info['teacher_id'];
+        $post['daka_parent_id'] = $user_homework_info['daka_parent_id'];
+        $post['daka_id'] = $user_homework_info['daka_id'];
+        $post['dtype'] = 2;
+
+        if ($post['images']) {
+            $post['images'] = htmlspecialchars(json_encode($post['images']));
+        }
         Db::startTrans();
-        try{
-            $info = Db::name('Daka')->where(['id'=>$data['daka_id']])->find();
-            $data['daka_parent_id'] = $info['parent_id'];
-            $res = DakaHomeworkModel::instance()->allowField(true)->isUpdate(false)->save($data);
-            DakaModel::instance()->where(['id'=>$info['parent_id']])->setInc('daka_num');
+        try {
+            if ($post['id']) {
+                $post['update_time'] = NOW_TIME;
+                //编辑
+                unset($post['user_homework_id']);
+                Db::name('daka_homework')->where(['id' => $post['id']])->update($post);
+            } else {
+                $post['create_time'] = NOW_TIME;
+                $post['parent_id'] = $post['user_homework_id'];
+                unset($post['id'], $post['user_homework_id']);
+                //新增
+                Db::name('daka_homework')->insert($post);
+                Db::name('daka_homework')->where(['id' => $data['teacher']['user_homework_id']])->update(['is_answer' => 1, 'update_time' => NOW_TIME]);
+            }
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();
             $this->error($e->getMessage());
         }
-        if ($res !== false) {
-            $this->success('ok');
-        } else {
-            $this->error('上传失败, 请重试');
-        }
+        $this->success('评图成功!');
     }
 
     //批改作业数量统计

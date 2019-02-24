@@ -31,7 +31,7 @@
                 <th>章节</th>
                 <th>提交时间</th>
                 <th>结束时间</th>
-                <th width="70">状态</th>
+                <th width="80">是否评图</th>
                 <th width="200">操作</th>
             </tr>
             </thead>
@@ -49,14 +49,13 @@
                     <td>{:date('Y-m-d H:i:s',$vo['create_time'])}</td>
                     <td>{:date('Y-m-d H:i:s',$vo['end_time'])}</td>
                     <td>
-                        <switch name="vo.status">
-                            <case value="1"><a data-toggle="tooltip" title="未评图"><i class="fa fa-close"></i></a></case>
-                            <case value="2"><a data-toggle="tooltip" title="已评图"><i class="fa fa-check"></i></a></case>
+                        <switch name="vo.is_answer">
+                            <case value="0"><a data-toggle="tooltip" title="未评图"><i class="fa fa-close"></i></a></case>
+                            <case value="1"><a data-toggle="tooltip" title="已评图"><i class="fa fa-check"></i></a></case>
                         </switch>
                     </td>
                     <td>
                         <a href="{:url('daka/teacher_daka_edit',['homework_id'=>$vo.id])}">编辑</a>
-                        <a class="js-ajax-delete" href="{:url('daka/delete',['homework_id'=>$vo.id])}">删除</a>
                     </td>
                 </tr>
             </foreach>

@@ -6,7 +6,7 @@
 </style>
 <script type="text/html" id="photos-item-tpl">
     <li id="saved-image{id}">
-        <input id="photo-{id}" type="hidden" name="teacher[photo_urls][]" value="{filepath}">
+        <input id="photo-{id}" type="hidden" name="teacher[images][]" value="{filepath}">
         <img id="photo-{id}-preview" src="{url}" style="height:36px;width: 36px;"
              onclick="imagePreviewDialog(this.src);">
         <a href="javascript:uploadOneImage('图片上传','#photo-{id}');">替换</a>
@@ -17,10 +17,7 @@
 <body>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
-        <li><a href="{:url('Daka/index')}">打卡列表</a></li>
-        <li>
-            <a href="{:url('Daka/add')}">添加</a>
-        </li>
+        <li><a href="{:url('Daka/teacher_daka_list')}">打卡列表</a></li>
         <li class="active"><a>编辑</a></li>
     </ul>
     <form action="{:url('Daka/teacher_daka_save')}" method="post" class="form-horizontal js-ajax-form margin-top-20">
@@ -73,7 +70,7 @@
                         <td>
                             <foreach name="homework_info.images" item="item">
                                 <div style="display: inline-block; border: 1px solid #ccc9a4;">
-                                    <img src="{:cmf_get_image_preview_url($item, 200)}" alt="" onclick="imagePreviewDialog('{$item}');">
+                                    <img src="{:cmf_get_image_preview_url($item, 200)}" alt="" onclick="imagePreviewDialog('{:cmf_get_image_preview_url($item)}');">
                                     <a href="{$item}" download="{$item}" target="_blank" style="display:block;text-align: center; padding: 5px 0;">下载</a>
                                 </div>
                             </foreach>
@@ -97,14 +94,14 @@
                             <ul id="photos" class="pic-list list-unstyled form-inline">
                                 <notempty name="teacher.images">
                                     <foreach name="teacher.images" item="vo">
-                                        <php>$img_url=cmf_get_image_preview_url($vo);</php>
+                                        <php>$img_url=cmf_get_image_preview_url('{:cmf_get_image_preview_url($vo)}', 200);</php>
                                         <li id="saved-image{$key}">
-                                            <input id="photo-{$key}" type="hidden" name="teacher[photo_urls][]"
+                                            <input id="photo-{$key}" type="hidden" name="teacher[images][]"
                                                    value="{$vo}">
                                             <img id="photo-{$key}-preview"
-                                                 src="{:cmf_get_image_preview_url($vo)}"
+                                                 src="{:cmf_get_image_preview_url($vo, 200)}"
                                                  style="height:36px;width: 36px;"
-                                                 onclick="parent.imagePreviewDialog(this.src);">
+                                                 onclick="parent.imagePreviewDialog('{:cmf_get_image_preview_url($vo)}');">
                                             <a href="javascript:uploadOneImage('图片上传','#photo-{$key}');">替换</a>
                                             <a href="javascript:(function(){$('#saved-image{$key}').remove();})();">移除</a>
                                         </li>
@@ -121,7 +118,8 @@
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <input type="hidden" name="teacher[id]" value="{$teacher.id|default=''}">
-                <input type="hidden" name="teacher[user_homework_id]" value="{$homework_info.id|default=''}">
+                <input type="hidden" name="teacher[user_homework_id]" value="{$homework_info.id}">
+                <input type="hidden" name="teacher[daka_id]" value="{$homework_info.daka_id}">
                 <button type="submit" class="btn btn-primary js-ajax-submit">{:lang('SAVE')}</button>
                 <a class="btn btn-default" href="{:url('Daka/index')}">{:lang('BACK')}</a>
             </div>
