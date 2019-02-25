@@ -1,0 +1,42 @@
+<include file="public@header"/>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('daka/teacher_daka_tongji')}">统计</a></li>
+    </ul>
+    <form class="well form-inline margin-top-20" method="post" action="{:url('daka/teacher_daka_tongji')}">
+        开始日期:
+        <input class="form-control js-bootstrap-date" type="text" name="start_time"
+                value="{:date('Y-m-d', isset($map['start_time']) ? (int)$map['start_time'] : time())}">
+        截止日期:
+        <input class="form-control js-bootstrap-date" type="text" name="end_time"
+               value="{:date('Y-m-d',isset($map['end_time']) ? (int)$map['end_time'] : time())}">
+        <input type="submit" class="btn btn-primary" value="搜索">
+        <a class="btn btn-danger" href="{:url('daka/teacher_daka_tongji')}">清空</a>
+    </form>
+    <form class="js-ajax-form" action="{:url('daka/listOrder')}" method="post">
+        <table class="table table-hover table-bordered table-list">
+            <thead>
+            <tr>
+                <th>月份</th>
+                <th>用户作业数量</th>
+                <th>完成评图数量</th>
+            </tr>
+            </thead>
+            <tbody>
+            <foreach name="list" item="vo" key="key">
+                <tr>
+                    <td>{$key}</td>
+                    <td>{:isset($vo['total_num'])?$vo['total_num']:0}</td>
+                    <td>{:isset($vo['already_num'])?$vo['already_num']:0}</td>
+                </tr>
+            </foreach>
+            </tbody>
+        </table>
+        <ul class="pagination">{$page|default=''}</ul>
+    </form>
+</div>
+<script src="__STATIC__/js/admin.js"></script>
+</body>
+</html>

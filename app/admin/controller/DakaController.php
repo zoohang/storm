@@ -627,7 +627,42 @@ class DakaController extends AdminBaseController
 
     //批改作业数量统计
     public function teacher_daka_tongji() {
+        $teacher_id = cmf_get_current_admin_id();
+        $start_time = $this->request->param('start_time','');
+        $end_time = $this->request->param('end_time','');
+        if ($start_time) $start_time = strtotime($start_time);
+        if ($end_time) $end_time = strtotime($end_time)+86400;
+        if ($start_time>=$end_time) $this->error('开始时间不能大于结束时间');
+        $this->assign('map', [
+            'start_time' => $start_time ?: strtotime('-1 year'),
+            'end_time' => $end_time ?: NOW_TIME,
+        ]);
+        $where = '';
+        if ($start_time && $end_time) {
+            $where = "and ( create_time BETWEEN {$start_time} and {$end_time})";
+        } elseif($start_time) {
+            $where = "and ( create_time >= {$start_time}";
+        } else {
+            $where = "and ( create_time <= {$end_time})";
+        }
+        //统计每个月接到的总的作业数量
+        $total_sql = "SELECT from_unixtime(create_time, '%Y-%m') yue, count(*) as total_num FROM st_daka_homework WHERE dtype = 1 AND teacher_id = {$teacher_id} AND `status` = 1 {$where} GROUP BY from_unixtime(create_time, '%Y-%m')";
+        $total_list = Db::query($total_sql);
+        //统计每个月完成评图的数量
+        $already_update_sql = "SELECT from_unixtime(create_time, '%Y-%m') yue, count(*) as already_num FROM st_daka_homework WHERE dtype = 2 AND teacher_id = {$teacher_id} AND `status` = 1 {$where} GROUP BY from_unixtime(create_time, '%Y-%m')";
+        $already_list = Db::query($already_update_sql);
 
+        $new_total_list=$new_already_list=[];
+        foreach ($total_list as $key=>$item) {
+            $new_total_list[$item['yue']] = ['total_num'=>$item['total_num']];
+        }
+        foreach ($already_list as $key=>$item) {
+            $new_already_list[$item['yue']] = ['already_num'=>$item['already_num']];
+        }
+
+        $list = array_merge_recursive($new_total_list, $new_already_list);
+        $this->assign('list', $list);
+        return $this->fetch();
     }
 
 }
