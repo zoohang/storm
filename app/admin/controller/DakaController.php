@@ -632,17 +632,17 @@ class DakaController extends AdminBaseController
         $end_time = $this->request->param('end_time','');
         if ($start_time) $start_time = strtotime($start_time);
         if ($end_time) $end_time = strtotime($end_time)+86400;
-        if ($start_time>=$end_time) $this->error('开始时间不能大于结束时间');
+        if ($start_time>$end_time) $this->error('开始时间不能大于结束时间');
         $this->assign('map', [
-            'start_time' => $start_time ?: strtotime('-1 year'),
-            'end_time' => $end_time ?: NOW_TIME,
+            'start_time' => $start_time ?: '',
+            'end_time' => $end_time ?: '',
         ]);
         $where = '';
         if ($start_time && $end_time) {
             $where = "and ( create_time BETWEEN {$start_time} and {$end_time})";
         } elseif($start_time) {
             $where = "and ( create_time >= {$start_time}";
-        } else {
+        } elseif($end_time) {
             $where = "and ( create_time <= {$end_time})";
         }
         //统计每个月接到的总的作业数量
