@@ -39,6 +39,7 @@ class ExamController extends AdminBaseController
         /**搜索条件**/
         $keyword = $this->request->param('keyword');
         $property = $this->request->param('property', '', 'intval');
+        $where = ['status'=> ['EGT', 0]];
         if ($keyword) {
             $where[] = ['title', 'like', "%{$keyword}%"];
         }
