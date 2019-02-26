@@ -240,11 +240,11 @@ class ExamController extends AdminBaseController
         $section_id = $this->request->param('section_id', 0, 'intval');
         if (!$section_id) $this->error('请选择一个章节');
         $ExamItemModel = new ExamItemModel();
-        $count = $ExamItemModel->where()->count();
+        $count = $ExamItemModel->where(['section_id'=>$section_id, 'status'=>1])->count();
         if ($count) {
             $this->error('该分类下有题目, 请先清空题目在进行删除');
         }
-        $res = DB::name('exam_section')->where(['id'=>$section_id])->update(['status'=>0, 'update_time'=>NOW_TIME]);
+        $res = DB::name('exam_section')->where(['section_id'=>$section_id])->update(['status'=>0, 'update_time'=>NOW_TIME]);
         if ($res !== false) {
             $this->success('删除成功!');
         } else {
@@ -275,7 +275,7 @@ class ExamController extends AdminBaseController
             ->join('__SCHOOL__ b','a.school_id=b.id')
             ->where(['a.exam_id'=>$id])->select()->toArray();
         //章节信息
-        $section = DB::name('exam_section')->where(['exam_id'=>$id])->select()->toArray();
+        $section = DB::name('exam_section')->where(['exam_id'=>$id,'status'=>1])->select()->toArray();
 
         $this->assign('section', $section ?: []);
         $this->assign('school', $school ?: []);

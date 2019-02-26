@@ -44,5 +44,10 @@ class ExamItemModel extends Model
     {
         return get_image_url($value);
     }
+
+    public function getDaImageAttr($value)
+    {
+        return get_image_url($value);
+    }
 }
 
