@@ -47,7 +47,9 @@ class Local
      */
     public function getImageUrl($file, $style = '')
     {
-        return $this->_getWebRoot() . '/upload/' . $file;
+        $style = $style ? "?x-oss-process=style/$style" : '';
+        return config('aliyun_oss.Preview_Pre') . $file.$style;
+        //return $this->_getWebRoot() . '/upload/' . $file;
     }
 
     /**

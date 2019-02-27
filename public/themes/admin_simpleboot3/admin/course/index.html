@@ -75,7 +75,7 @@
                     </td>
                     <td><input name="list_orders[{$vo.cid}]" type="text" size="3" value="{$vo.list_order}" class="input-order valid" aria-invalid="false"></td>
                     <td>{$vo.cid}</td>
-                    <td><img src="{:cmf_get_image_preview_url($vo.image)}" id="thumb-preview"
+                    <td><img src="{:cmf_get_image_preview_url($vo.image,100)}" id="thumb-preview"
                              height="50" style="cursor: hand" onclick="javascript:imagePreviewDialog('{:cmf_get_image_preview_url($vo.image)}');"/></td>
                     <td>{$vo.pname}</td>
                     <td>{$vo.ctitle}</td>

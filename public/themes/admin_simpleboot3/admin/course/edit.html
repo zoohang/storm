@@ -53,7 +53,7 @@
                                         <img src="__TMPL__/public/assets/images/default-thumbnail.png"
                                              id="content_img-preview" width="135" style="cursor: hand"/>
                                         <else/>
-                                        <img src="{:cmf_get_image_preview_url($content_img)}" id="content_img-preview"
+                                        <img src="{:cmf_get_image_preview_url($content_img,200)}" id="content_img-preview"
                                              width="135" style="cursor: hand"/>
                                     </if>
                                 </a>
@@ -89,7 +89,7 @@
                                         <img src="__TMPL__/public/assets/images/default-thumbnail.png"
                                              id="thumb-preview" width="135" style="cursor: hand"/>
                                         <else/>
-                                        <img src="{:cmf_get_image_preview_url($image)}" id="thumb-preview"
+                                        <img src="{:cmf_get_image_preview_url($image,200)}" id="thumb-preview"
                                              width="135" style="cursor: hand"/>
                                     </if>
                                 </a>

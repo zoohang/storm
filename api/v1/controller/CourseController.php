@@ -82,6 +82,7 @@ class CourseController extends RestUserBaseController
             ->field('a.*,b.price,b.stock,b.cost_price')
             ->where(['a.cid'=>$id])
             ->find();
+        if(!$info) $this->error('该课程不存在');
         $field = ['item_id','item_title','parent_id', 'video_long'];
         $items = Db::name('course_item')->field($field)->where(['cid'=>$id])->select()->toArray();
         $child = [];
@@ -118,6 +119,11 @@ class CourseController extends RestUserBaseController
         if ($info['type'] == 1) {
             $vod = Db::name('video_vod')->where(['video_id'=>$info['video_id']])->find();
             $info = array_merge($info,$vod);
+        } elseif($info['type'] == 2) {
+            //图文
+            if ($info['description']) {
+                $info['description'] = cmf_replace_content_file_url(htmlspecialchars_decode($info['description']));
+            }
         }
         $this->success('ok', ['info'=>$info]);
     }
