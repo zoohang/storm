@@ -130,10 +130,11 @@ class DakaModel extends Model
             ->join('__DAKA__ c', 'a.daka_parent_id=c.id')
             ->field($field)
             ->where($where)
+            ->order(['a.id'=>'desc'])
             ->paginate();
     }
 
-    public function getDakaList($where) {
+    public function getDakaList($where=[]) {
         return Db::name('daka_homework a')
             ->join('__DAKA__ b', 'a.daka_parent_id=b.id')
             ->field(['b.id', 'b.post_title', 'b.category_name'])

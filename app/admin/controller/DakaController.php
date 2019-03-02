@@ -565,6 +565,23 @@ class DakaController extends AdminBaseController
     // todo
     protected function admin_role() {
 
+        $params = $this->request->param();
+        $model = new DakaModel();
+        // 评图 有/没有
+        $where = ['a.dtype'=>1];
+        if (isset($params['status']) && $params['status']) $where['a.status'] = $params['status'];
+        if (isset($params['daka_id']) && $params['daka_id']) $where['a.daka_id'] = $params['daka_id'];
+        if (isset($params['daka_parent_id']) && $params['daka_parent_id']) $where['a.daka_parent_id'] = $params['daka_parent_id'];
+        $data = $model->getTeacherHomeWrokList($where);
+        // 分页注入搜索条件
+        $data->appends($params);
+        // 获取分页显示
+        $page = $data->render();
+        $this->assign("page", $page);
+        $this->assign("list", $data);
+        $daka_list = $model->getDakaList();
+        $this->assign("daka_list", $daka_list);
+
         return $this->fetch('admin_role');
     }
 
