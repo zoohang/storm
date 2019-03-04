@@ -478,7 +478,7 @@ class DakaController extends AdminBaseController
         $data = $this->request->param();
         $id = $this->request->param('daka_id', 0, 'intval');
         if (!$id) $this->error('请选择一套打卡课程');
-        if (!$data['admin_id']) $this->error('请选择老师');
+        if (!isset($data['admin_id']) || !$data['admin_id']) $this->error('请选择老师');
         Db::startTrans();
         try {
             Db::name('daka_teacher_relation')->where(['daka_id'=>$id])->delete();

@@ -112,9 +112,23 @@ class DakaController extends RestUserBaseController
         Db::startTrans();
         try{
             $info = Db::name('Daka')->where(['id'=>$data['daka_id']])->find();
+            $kc_info = Db::name('Daka')->where(['id'=>$info['parent_id']])->find();
             $data['daka_parent_id'] = $info['parent_id'];
+            //teacher_id
+            $teacher_id = Db::name('daka_teacher_relation')
+                ->where(['daka_id'=>$kc_info['id']])
+                ->limit($kc_info['teacher_index'], 1)
+                ->value('admin_id');
+            $data['teacher_id'] = $teacher_id;
             $res = DakaHomeworkModel::instance()->allowField(true)->isUpdate(false)->save($data);
             DakaModel::instance()->where(['id'=>$info['parent_id']])->setInc('daka_num');
+            //更新 teacher_index
+            if ($kc_info['teacher_num'] >= $kc_info['teacher_index']+1) {
+                $kc_info['teacher_index'] = 0;
+            } else {
+                $kc_info['teacher_index'] += 1;
+            }
+            Db::name('Daka')->where(['id'=>$kc_info['id']])->setField('teacher_index', $kc_info['teacher_index']);
             Db::commit();
         } catch (\Exception $e) {
             Db::rollback();
