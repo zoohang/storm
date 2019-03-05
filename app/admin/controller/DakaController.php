@@ -596,8 +596,9 @@ class DakaController extends AdminBaseController
         $this->assign('daka_info', $daka_info);
         $this->assign('homework_info', $homework_info);
         //老师回答内容获取
-        $teacher = $model->getHomeWorkInfo(['teacher_id'=>cmf_get_current_admin_id(), 'user_id'=>$homework_info['user_id'], 'dtype'=>2]);
+        $teacher = $model->getHomeWorkInfo(['parent_id'=>$homework_id, 'dtype'=>2]);
         $this->assign('teacher', $teacher ?: []);
+        $this->assign('role_id', $this->getAdminRole());
         return $this->fetch();
     }
 

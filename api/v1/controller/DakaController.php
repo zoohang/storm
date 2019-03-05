@@ -115,15 +115,20 @@ class DakaController extends RestUserBaseController
             $kc_info = Db::name('Daka')->where(['id'=>$info['parent_id']])->find();
             $data['daka_parent_id'] = $info['parent_id'];
             //teacher_id
+            $limit = "{$kc_info['teacher_index']}, 1";
             $teacher_id = Db::name('daka_teacher_relation')
                 ->where(['daka_id'=>$kc_info['id']])
-                ->limit($kc_info['teacher_index'], 1)
-                ->value('admin_id');
+                ->limit($limit)
+                ->select();
+            if (!$teacher_id){
+                $this->error('该课程还没有老师进行评图,暂时无法提交作业!');
+            }
+            $teacher_id = $teacher_id->toArray()[0]['admin_id'];
             $data['teacher_id'] = $teacher_id;
             $res = DakaHomeworkModel::instance()->allowField(true)->isUpdate(false)->save($data);
             DakaModel::instance()->where(['id'=>$info['parent_id']])->setInc('daka_num');
             //更新 teacher_index
-            if ($kc_info['teacher_num'] >= $kc_info['teacher_index']+1) {
+            if ($kc_info['teacher_num'] <= $kc_info['teacher_index']+1) {
                 $kc_info['teacher_index'] = 0;
             } else {
                 $kc_info['teacher_index'] += 1;
