@@ -19,6 +19,7 @@ use app\admin\model\GoodsModel;
 use cmf\controller\RestUserBaseController;
 use think\Db;
 use think\Exception;
+use think\Log;
 use think\Validate;
 
 class DakaController extends RestUserBaseController
@@ -120,7 +121,7 @@ class DakaController extends RestUserBaseController
                 ->where(['daka_id'=>$kc_info['id']])
                 ->limit($limit)
                 ->select();
-            if (!$teacher_id){
+            if (!$teacher_id->toArray()){
                 $this->error('该课程还没有老师进行评图,暂时无法提交作业!');
             }
             $teacher_id = $teacher_id->toArray()[0]['admin_id'];

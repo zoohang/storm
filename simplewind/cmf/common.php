@@ -1981,3 +1981,8 @@ function cmf_check_mobile($mobile)
         return false;
     }
 }
+
+function cmf_date_format($format='Y-m-d H:i:s', $timestamp='') {
+    if (!isset($timestamp) || !$timestamp) return '';
+    return date($format, $timestamp);
+}

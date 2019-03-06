@@ -31,8 +31,7 @@
         "ezyang/htmlpurifier": "^4.9",
         "topthink/think-queue": "^1.1.4",
         "electrolinux/phpquery": "^0.9.6",
-        "aliyuncs/oss-sdk-php": "^2.3",
-        "weiwei/api-doc": "^1.6"
+        "aliyuncs/oss-sdk-php": "^2.3"
     },
     "extra": {
         "think-path":"simplewind/thinkphp"

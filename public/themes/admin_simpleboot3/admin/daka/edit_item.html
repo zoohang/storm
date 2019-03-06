@@ -29,11 +29,9 @@
 <body>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
-        <li><a href="{:url('Daka/index')}">文章管理</a></li>
-        <li>
-            <a href="{:url('Daka/add')}">添加文章</a>
-        </li>
-        <li class="active"><a href="#">编辑文章</a></li>
+        <li><a href="{:url('Daka/index')}">打卡列表</a></li>
+        <li><a href="{:url('Daka/detail',['id'=>$params['parent_id']])}">章节列表</a></li>
+        <li class="active"><a href="javascript:;">编辑</a></li>
     </ul>
     <form action="{:url('Daka/saveItem',['parent_id'=>$parent_info['id'],'id'=>isset($post['id'])?$post['id']:''])}" method="post" class="form-horizontal js-ajax-form margin-top-20">
         <div class="row">
@@ -123,7 +121,7 @@
                     <tr>
                         <td>
                             <input class="form-control js-bootstrap-datetime" type="text" name="post[published_time]"
-                                   value="{:date('Y-m-d H:i',$post['published_time'])}">
+                                   value="{:cmf_date_format('Y-m-d H:i', isset($post['published_time'])?$post['published_time']:'')}">
                         </td>
                     </tr>
                     <tr>
@@ -132,7 +130,7 @@
                     <tr>
                         <td>
                             <input class="form-control js-bootstrap-datetime" type="text" name="post[end_time]"
-                                   value="{date('Y-m-d H:i',$post['end_time'])}">
+                                   value="{:cmf_date_format('Y-m-d H:i', isset($post['end_time'])?$post['end_time']:'')}">
                         </td>
                     </tr>
                     <tr>

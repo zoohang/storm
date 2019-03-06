@@ -3,7 +3,8 @@
 <body>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
-        <li class="active"><a href="{:url('daka/index')}">打卡列表</a></li>
+        <li><a href="{:url('Daka/index')}">打卡列表</a></li>
+        <li class="active"><a href="javascript:;">章节列表</a></li>
         <li><a href="{:url('daka/editItem',['parent_id'=>$info['id']])}">添加</a></li>
     </ul>
 
@@ -42,8 +43,8 @@
                 <th width="80">{:lang('SORT')}</th>
                 <th width="50">ID</th>
                 <th>标题</th>
-                <th>更新时间	</th>
-                <th>发布时间</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
                 <th width="70">状态</th>
                 <th width="200">操作</th>
             </tr>
@@ -59,15 +60,17 @@
                     <td>{$vo.id}</td>
                     <td>{$vo.post_title}</td>
                     <td>
-                        <notempty name="vo.update_time">
-                            {:date('Y-m-d H:i:s',$vo['update_time'])}
-                        </notempty>
-                    </td>
-                    <td>
                         <empty name="vo.published_time">
-                            未发布
+                            -
                             <else/>
                             {:date('Y-m-d H:i:s',$vo['published_time'])}
+                        </empty>
+                    </td>
+                    <td>
+                        <empty name="vo.end_time">
+                            -
+                            <else/>
+                            {:date('Y-m-d H:i:s',$vo['end_time'])}
                         </empty>
                     </td>
                     <td>

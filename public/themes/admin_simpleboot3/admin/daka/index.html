@@ -58,7 +58,7 @@
                 <th>图片</th>
                 <th>所属分类</th>
                 <th>标题</th>
-                <th>发布时间</th>
+                <th>开始时间</th>
                 <th>结束时间</th>
                 <th width="70">状态</th>
                 <th width="200">操作</th>
@@ -79,15 +79,17 @@
                     <td>{$vo.post_title}</td>
                     <td>
                         <empty name="vo.published_time">
-                            未发布
+                            -
                             <else/>
                             {:date('Y-m-d H:i:s',$vo['published_time'])}
                         </empty>
                     </td>
                     <td>
-                        <notempty name="vo.update_time">
+                        <empty name="vo.end_time">
+                            -
+                            <else/>
                             {:date('Y-m-d H:i:s',$vo['end_time'])}
-                        </notempty>
+                        </empty>
                     </td>
                     <td>
                         <switch name="vo.post_status">
