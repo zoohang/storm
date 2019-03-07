@@ -37,7 +37,7 @@ class DakaController extends AdminBaseController
 
     public function index()
     {
-        $where = ['parent_id'=>0];
+        $where = ['parent_id'=>0, 'delete_time'=>0];
         /**搜索条件**/
         $keyword = $this->request->param('keyword');
         $category = $this->request->param('category', '', 'intval');
@@ -223,7 +223,7 @@ class DakaController extends AdminBaseController
 
         $id = $this->request->param('id', 0, 'intval');
         if (!$id) $this->error('请选择一套打卡内容');
-        $where = ['parent_id'=>$id, 'post_status'=>1];
+        $where = ['parent_id'=>$id, 'delete_time'=>0];
         $list = DakaModel::instance()
             ->where($where)
             ->order("list_order ASC,id ASC")
@@ -394,17 +394,17 @@ class DakaController extends AdminBaseController
     public function toggle()
     {
         $data                = $this->request->param();
-        $examItemModel = new ExamItemModel();
+        $dakaModel = new DakaModel();
 
         if (isset($data['ids']) && !empty($data["display"])) {
             $ids = $this->request->param('ids/a');
-            $examItemModel->where(['id' => ['in', $ids]])->update(['post_status' => 1]);
+            $dakaModel->where(['id' => ['in', $ids]])->update(['post_status' => 1]);
             $this->success("更新成功！");
         }
 
         if (isset($data['ids']) && !empty($data["hide"])) {
             $ids = $this->request->param('ids/a');
-            $examItemModel->where(['id' => ['in', $ids]])->update(['post_status' => 0]);
+            $dakaModel->where(['id' => ['in', $ids]])->update(['post_status' => 0]);
             $this->success("更新成功！");
         }
 
@@ -413,30 +413,20 @@ class DakaController extends AdminBaseController
     public function delete()
     {
         $param           = $this->request->param();
-        $ExamModel = new ExamModel();
+        $delete_time = time().'';
         if (isset($param['id'])) {
-            if (Db::name('exam')->where(['id'=> $param['id']])->update(['status' => -1, 'delete_time'=>time()]) !== false) {
+            if (Db::name('daka')->where(['id'=> $param['id']])->update(['delete_time'=>$delete_time]) !== false) {
                 $this->success("删除成功！");
             } else {
                 $this->error("删除失败！");
             }
         }
         if (isset($param['ids'])) {
-            if (Db::name('exam')->where(['id'=> ['in', $param['ids']]])->update(['status' => -1, 'delete_time'=>time()]) !== false) {
+            if (Db::name('daka')->where(['id'=> ['in', $param['ids']]])->update(['delete_time'=>$delete_time]) !== false) {
                 $this->success("删除成功！");
             } else {
                 $this->error("删除失败！");
             }
-        }
-    }
-
-    public function delete_item()
-    {
-        $id = $this->request->param('id', 0, 'intval');
-        if (Db::name('exam_item')->where(['id'=> $id])->update(['status' => -1]) !== false) {
-            $this->success("删除成功！");
-        } else {
-            $this->error("删除失败！");
         }
     }
 
