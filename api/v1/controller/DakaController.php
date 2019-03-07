@@ -80,7 +80,7 @@ class DakaController extends RestUserBaseController
             ->join('__GOODS__ b','a.goods_id=b.goods_id')
             ->field('a.*,b.price,b.stock,b.cost_price')
             ->where(['id'=>$id])->find()->toArray();
-        $field = ['id','post_title'];
+        $field = ['id','post_title','end_time'];
         $child = Db::name('daka')->field($field)->where(['parent_id'=>$id])->select();
         //判断是否收藏成功
         $info['is_collect'] = UserModel::instance()->checkCollect($id, $this->ctype);
@@ -98,6 +98,24 @@ class DakaController extends RestUserBaseController
         if (!$info) $this->error('该课程已经下架或不存在');
         $user_data = DakaHomeworkModel::instance()->where(['user_id'=>$this->userId, 'daka_id'=>$id])->select()->toArray();
         $is_upload = $user_data ? 1: 0;
+        //user_data 结果更新
+        $new_format = $temp = [];
+        if ($user_data) {
+            $count = count($user_data);
+            foreach($user_data as $key=>$item) {
+                $row = ['message'=>$item['message'], 'images'=>$item['images']];
+                if ($item['dtype'] == 1) {
+                    $temp['myworklist'] = $row;
+                } elseif($item['dtype'] == 2) {
+                    $temp['teacherlist'] = $row;
+                }
+                if (($key+1)%2 == 0 || $count==$key+1) {
+                    $new_format[] = $temp;
+                    $temp = [];
+                }
+            }
+            $user_data = $new_format;
+        }
         $this->success('ok', ['info'=>$info->toArray(), 'user_data'=>$user_data, 'is_upload'=>$is_upload]);
     }
 
@@ -118,6 +136,7 @@ class DakaController extends RestUserBaseController
             //teacher_id
             $limit = "{$kc_info['teacher_index']}, 1";
             $teacher_id = Db::name('daka_teacher_relation')
+                ->order(['relation_id'=>'asc'])
                 ->where(['daka_id'=>$kc_info['id']])
                 ->limit($limit)
                 ->select();
@@ -160,7 +179,7 @@ class DakaController extends RestUserBaseController
             ->toArray();
         $daka_ids = array_column($list['data'], 'id');
         $item_nums = Db::name('daka')->where(['parent_id'=>['in', $daka_ids]])->field('parent_id,count(*) count')->group('parent_id')->select();
-        $homework_nums = Db::name('daka_homework')->where(['user_id'=>$this->userId,'daka_parent_id'=>['in', $daka_ids]])->field('daka_parent_id,count(*) count')->group('daka_parent_id')->select();
+        $homework_nums = Db::name('daka_homework')->where(['user_id'=>$this->userId,'dtype'=>1,'daka_parent_id'=>['in', $daka_ids]])->field('daka_parent_id,count(*) count')->group('daka_parent_id')->select();
         foreach ($list['data'] as &$item) {
             $item['thumbnail'] = get_image_url($item['thumbnail']);
             $item['item_num'] = 0;
@@ -190,13 +209,14 @@ class DakaController extends RestUserBaseController
         $info = DakaModel::instance()->where(['id'=>$daka_id])->find();
         $list = Db::name('daka a')
             ->join('__DAKA_HOMEWORK__ b', "a.id=b.daka_id and b.dtype=1 and b.user_id={$this->userId}", 'left')
-            ->field('a.id, a.post_title,b.id hk_id,b.status')
+            ->field('a.id, a.post_title,a.published_time,a.end_time,b.id hk_id,b.status')
             ->where(['a.parent_id'=>$daka_id, 'a.post_status'=>1])
+            ->group('a.id')
             ->order('a.list_order asc, a.id asc')
             ->select()->toArray();
         foreach ($list as &$item) {
-            $item['start_time'] = $info['published_time'];
-            $item['end_time'] = $info['end_time'];
+            $item['start_time'] = $item['published_time']?:$info['published_time'];
+            $item['end_time'] = $item['end_time']?:$info['end_time'];
             if ($item['hk_id'] && $item['status']==1) {
                 $item['status_str'] = 1;
             } elseif($item['hk_id'] && $item['status']==2){
