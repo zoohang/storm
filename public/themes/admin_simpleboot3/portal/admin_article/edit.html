@@ -61,14 +61,15 @@
                         <td>
                             <input class="form-control" type="text" name="post[post_keywords]"
                                    value="{$post['post_keywords']}" placeholder="请输入关键字">
-                            <p class="help-block">多关键词之间用英文逗号隔开</p>
+                            <p class="help-block"><code>选填, 多关键词之间用英文逗号隔开</code></p>
                         </td>
                     </tr>
                     <tr>
-                        <th>文章来源</th>
+                        <th>链接跳转</th>
                         <td>
                             <input class="form-control" type="text" name="post[post_source]"
-                                   value="{$post['post_source']}" placeholder="请输入文章来源">
+                                   value="{$post['post_source']}" placeholder="请输入链接跳转">
+                            <p class="help-block"><code>选填, 链接必填, 如果是链接, 直接填入地址即可, 反之留空, 需要完整的https://www.baidu.com/</code></p>
                         </td>
                     </tr>
                     <tr>
