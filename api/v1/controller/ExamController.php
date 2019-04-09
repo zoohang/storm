@@ -70,7 +70,7 @@ class ExamController extends RestUserBaseController
         $limit = 10;
         $where = ['b.status'=>1, 'a.school_id'=>$school_id];
         if ($category_id) $where['a.category_id'] = $category_id;
-        $order = ['is_top'=>'desc', 'id'=>'desc'];
+        $order = ['list_order'=>'asc', 'id'=>'desc'];
         $list = DB::name('exam_school_relation a')->join('__EXAM__ b', 'a.exam_id=b.id')
             ->field('b.*')
             ->where($where)

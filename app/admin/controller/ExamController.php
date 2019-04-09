@@ -39,6 +39,7 @@ class ExamController extends AdminBaseController
         /**搜索条件**/
         $keyword = $this->request->param('keyword');
         $property = $this->request->param('property', '', 'intval');
+        $category_id = $this->request->param('category_id', 0, 'intval');
         $where = ['status'=> ['EGT', 0]];
         if ($keyword) {
             $where[] = ['title', 'like', "%{$keyword}%"];
@@ -46,18 +47,29 @@ class ExamController extends AdminBaseController
         if ($property) {
             $where['property'] = $property;
         }
+        if ($category_id) {
+            $where['cid'] = $category_id;
+        }
+        //获取所有的专业分类
+        $category = DB::name('Exam a')
+            ->distinct('a.cid')
+            ->join('__CATEGORY__ b', 'a.cid=b.id')
+            ->field(['b.id','b.name'])
+            ->where(['b.type'=>$this->type, 'a.status'=> ['EGT', 0]])
+            ->select();
 
         $exams = DB::name('Exam')
             ->where($where)
-            ->order("id DESC")
+            ->order("list_order ASC,id DESC")
             ->paginate();
         // 分页注入搜索条件
         $exams->appends(['keyword' => $keyword, 'property' => $property]);
         // 获取分页显示
         $page = $exams->render();
-        $this->assign(['keyword' => $keyword, 'property' => $property]);
+        $this->assign(['keyword' => $keyword, 'property' => $property, 'category_id'=>$category_id]);
         $this->assign("page", $page);
         $this->assign("list", $exams);
+        $this->assign("category", $category);
         return $this->fetch();
     }
 
@@ -421,6 +433,12 @@ class ExamController extends AdminBaseController
             $this->success("取消推荐成功！", '');
 
         }
+    }
+
+    public function listOrderExam()
+    {
+        parent::listOrders(Db::name('exam'));
+        $this->success("排序更新成功！", '');
     }
 
     public function listOrder()
