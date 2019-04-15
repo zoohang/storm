@@ -13,6 +13,14 @@
             <option value="1" <if condition="$property eq 1">selected</if>>真题</option>
             <option value="2" <if condition="$property eq 2">selected</if>>模拟</option>
         </select>
+        专业:
+        <select name="category_id" class="form-control" style="width: 200px;">
+            <option value="">请选择试卷类型</option>
+            <foreach name="category" item="cate">
+                <php>$sexselected=isset($params['category_id'])&&$cate['id']==$params['category_id']?"selected":"";</php>
+                <option value="{$cate.id}" {$sexselected}>{$cate.name}</option>
+            </foreach>
+        </select>
         试卷名称:
         <input type="text" class="form-control" name="keyword" style="width: 200px;"
                value="{$keyword|default=''}" placeholder="请输入试卷名称">
@@ -21,6 +29,9 @@
     </form>
     <form method="post" class="js-ajax-form" action="">
         <div class="table-actions">
+            <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
+                    data-action="{:url('exam/listOrderExam')}">排序
+            </button>
             <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
                     data-action="{:url('exam/publish',array('yes'=>1))}" data-subcheck="true">发布
             </button>
@@ -52,6 +63,7 @@
                         <input type="checkbox" class="js-check-all" data-direction="x" data-checklist="js-check-x">
                     </label>
                 </th>
+                <th width="80">{:lang('SORT')}</th>
                 <th width="50">ID</th>
                 <th>试卷名称</th>
                 <th>小标题</th>
@@ -68,6 +80,7 @@
                         <input type="checkbox" class="js-check" data-yid="js-check-y" data-xid="js-check-x" name="ids[]"
                                value="{$vo.id}" title="ID:{$vo.id}">
                     </td>
+                    <td><input name="list_orders[{$vo.id}]" type="text" size="3" value="{$vo.list_order}" class="input-order valid" aria-invalid="false"></td>
                     <td>{$vo.id}</td>
                     <td>{$vo.title}</td>
                     <td>{$vo.subtitle}</td>
