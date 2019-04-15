@@ -20,7 +20,7 @@ class SchoolController extends AdminBaseController
     public function index()
     {
         $schoolModel = new SchoolModel();
-        $schools         = $schoolModel->where(['status' => 1])->select();
+        $schools         = $schoolModel->where(['status' => 1])->order(['list_order'=>'asc','id'=>'asc'])->select();
         $this->assign('schools', $schools);
         return $this->fetch();
     }
@@ -88,5 +88,11 @@ class SchoolController extends AdminBaseController
             Db::name('recycleBin')->insert($data);
         }
         $this->success("删除成功！", url("school/index"));
+    }
+
+    public function listOrder()
+    {
+        parent::listOrders(new SchoolModel());
+        $this->success("排序更新成功！", '');
     }
 }
