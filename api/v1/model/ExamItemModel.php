@@ -30,10 +30,9 @@ class ExamItemModel extends Model
     {
         if ($value) {
             $value = json_decode($value, true);
-            sort($value);
             $value = array_map(function($item){
                 return ['answer'=>$item, 'is_active'=>0];
-            }, $value);
+            }, array_values($value));
         } else {
             $value = [];
         }

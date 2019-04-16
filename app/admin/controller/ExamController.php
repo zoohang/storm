@@ -42,7 +42,7 @@ class ExamController extends AdminBaseController
         $category_id = $this->request->param('category_id', 0, 'intval');
         $where = ['status'=> ['EGT', 0]];
         if ($keyword) {
-            $where[] = ['title', 'like', "%{$keyword}%"];
+            $where['title'] = ['like', "%{$keyword}%"];
         }
         if ($property) {
             $where['property'] = $property;
@@ -63,7 +63,7 @@ class ExamController extends AdminBaseController
             ->order("list_order ASC,id DESC")
             ->paginate();
         // 分页注入搜索条件
-        $exams->appends(['keyword' => $keyword, 'property' => $property]);
+        $exams->appends(['keyword' => $keyword, 'property' => $property, 'category_id'=>$category_id]);
         // 获取分页显示
         $page = $exams->render();
         $this->assign(['keyword' => $keyword, 'property' => $property, 'category_id'=>$category_id]);

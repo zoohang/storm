@@ -54,9 +54,9 @@
                                              data-checklist="js-check-x"></label></th>
                 <th width="50">排序</th>
                 <th width="50">ID</th>
-                <th width="150">章节</th>
+                <th width="200">章节</th>
                 <th width="70">类型</th>
-                <th>题目</th>
+                <th width="200">题目</th>
                 <th>答案</th>
                 <th width="200">操作</th>
             </tr>
@@ -73,7 +73,7 @@
                     <td>{$vo.idx}&nbsp;&nbsp;&nbsp;&nbsp;{$vo.title}</td>
                     <td>{$item_type[$vo['type']]}</td>
                     <td>{$vo.item_title}</td>
-                    <td>{$vo.answer}</td>
+                    <td>{$vo.answer|strip_tags|mb_substr=0,50,'utf8'}</td>
                     <td>
                         <a href="{:url('Exam/editItem',['item_id'=>$vo.id, 'exam_id'=>$vo.exam_id, 'item_type'=>$vo.type])}" class="" data-id="{$vo.id}" data-type="{$vo.type}">编辑</a>
                         <a class="js-ajax-delete" href="{:url('Exam/delete_item',['id'=>$vo.id])}">删除</a>
