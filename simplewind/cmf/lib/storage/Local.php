@@ -45,7 +45,7 @@ class Local
      * @param string $style
      * @return mixed
      */
-    public function getImageUrl($file, $style = '')
+    public function getImageUrl($file, $style = '750')
     {
         $style = $style ? "?x-oss-process=style/$style" : '';
         return config('aliyun_oss.Preview_Pre') . $file.$style;

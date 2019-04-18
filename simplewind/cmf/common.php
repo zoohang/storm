@@ -706,8 +706,8 @@ function cmf_get_image_url($file, $style = '750')
     }
 
     if (strpos($file, "http") === 0) {
-        if (strpos($file, \config('aliyun_oss.Preview_Pre')) === 0 && $style) $style = "?x-oss-process=style/$style";
-        return $file.$style;
+        if (strpos($file, \config('aliyun_oss.Preview_Pre')) === 0 && $style && strpos($file, 'x-oss-process=style') === false) $file .= "?x-oss-process=style/$style";
+        return $file;
     } else if (strpos($file, "/") === 0) {
         return cmf_get_domain() . $file;
     } else {
@@ -737,8 +737,8 @@ function cmf_get_image_preview_url($file, $style = '750')
     }
 
     if (strpos($file, "http") === 0) {
-        if (strpos($file, \config('aliyun_oss.Preview_Pre')) === 0 && $style) $style = "?x-oss-process=style/$style";
-        return $file.$style;
+        if (strpos($file, \config('aliyun_oss.Preview_Pre')) === 0 && $style && strpos($file, 'x-oss-process=style') === false) $file .= "?x-oss-process=style/$style";
+        return $file;
     } else if (strpos($file, "/") === 0) {
         return $file;
     } else {
