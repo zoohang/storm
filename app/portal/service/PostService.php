@@ -10,6 +10,7 @@
 // +----------------------------------------------------------------------
 namespace app\portal\service;
 
+use app\portal\model\PortalCategoryModel;
 use app\portal\model\PortalPostModel;
 
 class PostService
@@ -38,14 +39,21 @@ class PostService
         ];
 
         $field = 'a.*,u.user_login,u.user_nickname,u.user_email';
-
+        $sort = [];
         $category = empty($filter['category']) ? 0 : intval($filter['category']);
         if (!empty($category)) {
-            $where['b.category_id'] = ['eq', $category];
+
+            // 修改为包含关系 2019-4-18
+            $portalCategoryModel = new PortalCategoryModel();
+            $category_id       = $portalCategoryModel->adminCategorySampleArray($category);
+            $category_id = $portalCategoryModel->getArrayId($category_id);
+            $category_id [] = $category;
+            $where['b.category_id'] = ['in', $category_id];
             array_push($join, [
                 '__PORTAL_CATEGORY_POST__ b', 'a.id = b.post_id'
             ]);
             $field = 'a.*,b.id AS post_category_id,b.list_order,b.category_id,u.user_login,u.user_nickname,u.user_email';
+            $sort = ['b.list_order'=>'ASC'];
         }
 
         $startTime = empty($filter['start_time']) ? 0 : strtotime($filter['start_time']);
@@ -76,7 +84,7 @@ class PostService
         $articles        = $portalPostModel->alias('a')->field($field)
             ->join($join)
             ->where($where)
-            ->order('update_time', 'DESC')
+            ->order(array_merge($sort, ['update_time'=>'DESC']))
             ->paginate(10);
 
         return $articles;
