@@ -80,7 +80,7 @@ class ExamController extends RestUserBaseController
         //价格
         $goods_ids = array_column($list['data'], 'goods_id');
         $where = ['goods_id'=>['in', $goods_ids]];
-        $goods = GoodsModel::instance()->where($where)->field('goods_id,price')->select();
+        $goods = GoodsModel::instance()->where($where)->field('goods_id,price,cost_price,stock')->select();
 
         //是否已经购买
         $order = OrderModel::instance()->where($where)->where(['user_id'=>$this->userId, 'pay_status'=>2])->field('goods_id,order_id')->select();
@@ -88,6 +88,8 @@ class ExamController extends RestUserBaseController
             foreach ($goods as $g) {
                if ($item['goods_id'] == $g['goods_id']) {
                    $item['price'] = $g['price'];
+                   $item['cost_price'] = $g['cost_price'];
+                   $item['stock'] = $g['stock'];
                    continue;
                }
             }
