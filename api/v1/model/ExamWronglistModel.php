@@ -31,6 +31,14 @@ class ExamWronglistModel extends Model
 
     public function getOptionAttr($value)
     {
-        return $value ? json_decode($value, true) : $value;
+        if ($value) {
+            $value = json_decode($value, true);
+            $value = array_map(function($item){
+                return ['answer'=>$item, 'is_active'=>0];
+            }, array_values($value));
+        } else {
+            $value = [];
+        }
+        return $value;
     }
 }

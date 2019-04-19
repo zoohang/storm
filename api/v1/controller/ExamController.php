@@ -54,6 +54,7 @@ class ExamController extends RestUserBaseController
         if ($category_id) $where['a.category_id'] = $category_id;
         $list = DB::name('exam_school_relation a')
             ->join('__SCHOOL__ b', 'a.school_id=b.id')
+            ->join('__EXAM__ c', 'a.exam_id=c.id and c.`status`=1')
             ->distinct('b.id')
             ->field('b.*')
             ->where($where)
