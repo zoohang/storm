@@ -133,7 +133,7 @@ class RestBaseController
             if ($user['expire_time'] < NOW_TIME) {
                 $this->error(['code'=>10000, 'msg'=>'token验证失败, 请重新拉取授权']);
             }
-            if ($user['more']) $user['more'] = json_decode($user['more'], true);
+            //if ($user['more']) $user['more'] = json_decode($user['more'], true);
             $this->user     = $user;
             $this->userId   = $user['id'];
             $this->userType = $user['user_type'];
