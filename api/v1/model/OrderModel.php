@@ -65,6 +65,7 @@ class OrderModel extends Model
             switch ($goods_info['goods_type']) {
                 case 1:
                     ExamModel::instance()->where(['goods_id'=>$goods_id])->setInc('use_num');
+                    $this->recordExamLog($this->userId, $goods_id);
                     break;
                 case 2:
                     DakaModel::instance()->where(['goods_id'=>$goods_id])->setInc('join_num');
@@ -80,6 +81,34 @@ class OrderModel extends Model
             return ['status'=>false, 'message'=>$e->getMessage()];
         }
         return true;
+    }
+
+    /**
+     * 刷题购买成功之后自动写入刷题记录 exam_userlog 用与我的-历史刷题读取
+     * @param $user_id
+     * @param $goods_id
+     * @throws \think\Exception
+     * @throws \think\exception\DbException
+     */
+    protected function recordExamLog($user_id, $goods_id) {
+        $exam_info = ExamModel::instance()->get(['goods_id'=>$goods_id])->toArray();
+        //记录到我的刷题记录
+        $exists = ExamUserlogModel::instance()->get(['user_id'=>$user_id,'exam_id'=>$exam_info['id']]);
+        if ($exists) {
+            $exists->update_time    = NOW_TIME;
+            $exists->save();
+        } else {
+            $add = [
+                'user_id' => $user_id,
+                'exam_id' => $exam_info['id'],
+                'title' => $exam_info['title'],
+                'subtitle' => $exam_info['subtitle'],
+                'property' => $exam_info['property'],
+                'create_time' => NOW_TIME,
+                'update_time' => NOW_TIME
+            ];
+            ExamUserlogModel::instance()->allowField(true)->isUpdate(false)->save($add);
+        }
     }
 }
 

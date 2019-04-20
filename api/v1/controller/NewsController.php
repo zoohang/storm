@@ -28,7 +28,7 @@ class NewsController extends RestBaseController
     public function index() {
         //新闻首页
         //banner
-        $slide = SlideItemModel::instance()->getOne(2);
+        $slide = SlideItemModel::instance()->getOne(3);
         //新闻分类
         $categoryId = $this->request->param('category', 1, 'abs,intval');
         $portalCategoryModel = new PortalCategoryModel();

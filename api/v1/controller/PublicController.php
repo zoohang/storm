@@ -154,7 +154,7 @@ class PublicController extends RestBaseController
     public function sendSms() {
         $phone = $this->request->param('phone');
         $rules = [
-            'phone'  => 'require|regex:1[34578]{1}[0-9]{9}',
+            'phone'  => 'require|regex:1[3456789]{1}[0-9]{9}',
         ];
         $message = [
             'phone.require' => '手机号不能为空',

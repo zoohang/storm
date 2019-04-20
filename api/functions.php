@@ -21,16 +21,19 @@ function diy_test() {
     return '12321312';
 }
 
-function get_image_url($file, $style = 'watermark') {
+function get_image_url($file, $style = '750') {
     if (empty($file)) {
         return '';
     }
     if (strpos($file, "http") === 0) {
+        if (strpos($file, \config('aliyun_oss.Preview_Pre')) === 0 && $style && strpos($file, 'x-oss-process=style') === false) $file .= "?x-oss-process=style/$style";
         return $file;
     } else if (strpos($file, "/") === 0) {
         return cmf_get_domain() . $file;
     } else {
-        return config('aliyun_oss.Preview_Pre') . $file;
+        //return config('aliyun_oss.Preview_Pre') . $file;
+        $storage = Storage::instance();
+        return $storage->getImageUrl($file, $style);
     }
 }
 
