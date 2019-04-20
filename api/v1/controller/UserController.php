@@ -114,7 +114,7 @@ class UserController extends RestUserBaseController
         $rules = [
             'true_name' => 'require|length:2,20',//用户名称
             'speciality' => 'require',//专业
-            'mobile'  => 'require|regex:1[34578]{1}[0-9]{9}',
+            'mobile'  => 'require|regex:1[3456789]{1}[0-9]{9}',
             'code' => 'require'
         ];
         $message = [
