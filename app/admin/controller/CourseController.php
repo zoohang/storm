@@ -446,8 +446,8 @@ class CourseController extends AdminBaseController
         $item_id = $this->request->param('item_id', 0, 'intval');
         $cid = $this->request->param('cid', 0, 'intval');
         if (!$item_id || !$cid) $this->error('缺少参数');
-        if (Db::name('exam_item')->where(['item_id'=> $item_id])->update(['status' => -1]) !== false) {
-            Db::name('exam')->where(['cid'=> $cid])->setDec('num');
+        if (Db::name('course_item')->where(['item_id'=> $item_id])->update(['status' => -1]) !== false) {
+            Db::name('course')->where(['cid'=> $cid])->setDec('num');
             $this->success("删除成功！");
         } else {
             $this->error("删除失败！");
