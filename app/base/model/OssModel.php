@@ -17,10 +17,11 @@ class OssModel {
     }
 
     public function __construct() {
-        $accessKeyId = "LTAITi0IhXXUImZu";
-        $accessKeySecret = "ZAmO8sF2sYiSR9CXYSyrG8fjjZnl69";
-        $endpoint = "http://oss-cn-shanghai.aliyuncs.com";
-        $this->bucket = "fengbaojy-static-resource";
+        $ossconf = config('aliyun_oss');
+        $accessKeyId = $ossconf['AccessKeyID'];
+        $accessKeySecret = $ossconf['AccessKeySecret'];
+        $endpoint = $ossconf['Endpoint'];
+        $this->bucket = $ossconf['BucketName'];
         try {
             $this->ossClient = new OssClient($accessKeyId, $accessKeySecret, $endpoint);
             //如果没有在阿里云后台手动创建bucket 需要运行下面的代码进行创建
