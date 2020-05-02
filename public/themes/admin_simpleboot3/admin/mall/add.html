@@ -1,0 +1,149 @@
+<include file="public@header"/>
+<style type="text/css">
+    .pic-list li {
+        margin-bottom: 5px;
+    }
+</style>
+<script type="text/html" id="photos-item-tpl">
+    <li id="saved-image{id}">
+        <input id="photo-{id}" type="hidden" name="photo_urls[]" value="{filepath}">
+        <input class="form-control" id="photo-{id}-name" type="text" name="photo_names[]" value="{name}"
+               style="width: 200px;" title="图片名称">
+        <img id="photo-{id}-preview" src="{url}" style="height:36px;width: 36px;"
+             onclick="imagePreviewDialog(this.src);">
+        <a href="javascript:uploadOneImage('图片上传','#photo-{id}');">替换</a>
+        <a href="javascript:(function(){$('#saved-image{id}').remove();})();">移除</a>
+    </li>
+</script>
+<script type="text/html" id="files-item-tpl">
+    <li id="saved-file{id}">
+        <input id="file-{id}" type="hidden" name="file_urls[]" value="{filepath}">
+        <input class="form-control" id="file-{id}-name" type="text" name="file_names[]" value="{name}"
+               style="width: 200px;" title="文件名称">
+        <a id="file-{id}-preview" href="{preview_url}" target="_blank">下载</a>
+        <a href="javascript:uploadOne('文件上传','#file-{id}','file');">替换</a>
+        <a href="javascript:(function(){$('#saved-file{id}').remove();})();">移除</a>
+    </li>
+</script>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('mall/index')}">列表</a></li>
+        <li class="active"><a href="{:url('mall/add')}">添加</a></li>
+    </ul>
+    <form action="{:url('mall/addPost')}" method="post" class="form-horizontal js-ajax-form margin-top-20">
+        <div class="row">
+            <div class="col-md-9">
+                <table class="table table-bordered">
+                    <tr>
+                        <th width="150">分类</th>
+                        <td>
+                            <select name="post[cid]" id="category_select"  class="form-control">
+                                <option value="">请选择分类</option>
+                                {$category_tree}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>标题<span class="form-required">*</span></th>
+                        <td>
+                            <input class="form-control" type="text" name="post[post_title]"
+                                   id="title" required value="" placeholder="请输入标题"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>小标题<span class="form-required"></span></th>
+                        <td>
+                            <input class="form-control" type="text" name="post[post_subtitle]"
+                                   id="post_subtitle" required value="" placeholder="请输入标题"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>链接和提取码<span class="form-required">*</span></th>
+                        <td>
+                            <textarea class="form-control" name="post[download_addr]" id="" cols="30" rows="2" placeholder="链接：https://pan.baidu.com/s/1QVJvuEn8MxY8JVzqjP7myA
+提取码：3i44"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>内容描述<span class="form-required">*</span><br>推荐使用图片</th>
+                        <td>
+                            <script type="text/plain" id="content" name="post[post_content]"></script>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th width="150">商品类型<span class="form-required">*</span></th>
+                        <td>
+                            <select name="post[type]" id="type"  class="form-control">
+                                <option value="">请选择类型</option>
+                                <foreach name="types" item="item">
+                                    <option value="{$item.id}" {$item.select}>{$item.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉{$item.desc}</option>
+                                </foreach>
+                            </select>
+                        </td>
+                    </tr>
+                    <input type="hidden" name="post[status]" value="0">
+                    <include file="goods/setup_price" />
+                </table>
+                <hook name="portal_admin_article_edit_view_main"/>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary js-ajax-submit">{:lang('ADD')}</button>
+                        <a class="btn btn-default" href="{:url('mall/index')}">{:lang('BACK')}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <table class="table table-bordered">
+                    <tr>
+                        <th><b>缩略图[750*396]</b><span class="form-required">*</span></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="text-align: center;">
+                                <input type="hidden" name="post[thumbnail]" id="thumbnail" value="">
+                                <a href="javascript:uploadOneImage('图片上传','#thumbnail');">
+                                    <img src="__TMPL__/public/assets/images/default-thumbnail.png"
+                                         id="thumbnail-preview"
+                                         width="135" style="cursor: pointer"/>
+                                </a>
+                                <input type="button" class="btn btn-sm btn-cancel-thumbnail" value="取消图片">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><b>发布时间</b></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input class="form-control js-bootstrap-datetime" type="text" name="post[published_time]"
+                                   value="{:date('Y-m-d H:i:s',time())}">
+                        </td>
+                    </tr>
+                </table>
+
+                <hook name="portal_admin_article_edit_view_right_sidebar"/>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        editorcontent = new baidu.editor.ui.Editor();
+        editorcontent.render('content');
+        try {
+            editorcontent.sync();
+        } catch (err) {
+        }
+        $('.btn-cancel-thumbnail').click(function () {
+            $('#thumbnail-preview').attr('src', '__TMPL__/public/assets/images/default-thumbnail.png');
+            $('#thumbnail').val('');
+        });
+    });
+</script>
+</body>
+</html>

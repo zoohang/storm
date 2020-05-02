@@ -1,0 +1,303 @@
+<include file="public@header"/>
+<style type="text/css">
+    .pic-list li {
+        margin-bottom: 5px;
+    }
+</style>
+<script type="text/html" id="photos-item-tpl">
+    <li id="saved-image{id}">
+        <input id="photo-{id}" type="hidden" name="photo_urls[]" value="{filepath}">
+        <input class="form-control" id="photo-{id}-name" type="text" name="photo_names[]" value="{name}"
+               style="width: 200px;" title="图片名称">
+        <img id="photo-{id}-preview" src="{url}" style="height:36px;width: 36px;"
+             onclick="imagePreviewDialog(this.src);">
+        <a href="javascript:uploadOneImage('图片上传','#photo-{id}');">替换</a>
+        <a href="javascript:(function(){$('#saved-image{id}').remove();})();">移除</a>
+    </li>
+</script>
+<script type="text/html" id="files-item-tpl">
+    <li id="saved-file{id}">
+        <input id="file-{id}" type="hidden" name="file_urls[]" value="{filepath}">
+        <input class="form-control" id="file-{id}-name" type="text" name="file_names[]" value="{name}"
+               style="width: 200px;" title="文件名称">
+        <a id="file-{id}-preview" href="{preview_url}" target="_blank">下载</a>
+        <a href="javascript:uploadOne('文件上传','#file-{id}','file');">替换</a>
+        <a href="javascript:(function(){$('#saved-file{id}').remove();})();">移除</a>
+    </li>
+</script>
+</head>
+<body>
+<div class="wrap js-check-wrap">
+    <ul class="nav nav-tabs">
+        <li><a href="{:url('Mall/index')}">打卡列表</a></li>
+        <li>
+            <a href="{:url('Mall/add')}">添加</a>
+        </li>
+        <li class="active"><a>编辑</a></li>
+    </ul>
+    <form action="{:url('Mall/editPost')}" method="post" class="form-horizontal js-ajax-form margin-top-20">
+        <div class="row">
+            <div class="col-md-9">
+                <table class="table table-bordered">
+                    <tr>
+                        <th width="100">分类<span class="form-required">*</span></th>
+                        <td>
+                            <select name="post[cid]" class="form-control">
+                                <option value="">请选择文章分类</option>
+                                {$category_tree}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>标题<span class="form-required">*</span></th>
+                        <td>
+                            <input id="post-id" type="hidden" name="post[id]" value="{$post.id}">
+                            <input class="form-control" type="text" name="post[post_title]"
+                                   required value="{$post.post_title}" placeholder="请输入标题"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>小标题<span class="form-required"></span></th>
+                        <td>
+                            <input class="form-control" type="text" name="post[post_subtitle]"
+                                   id="post_subtitle" required value="{$post.post_subtitle}" placeholder="请输入标题"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>链接和提取码<span class="form-required">*</span></th>
+                        <td>
+                            <textarea class="form-control" name="post[download_addr]" id="" cols="30" rows="2" placeholder="链接：https://pan.baidu.com/s/1QVJvuEn8MxY8JVzqjP7myA
+提取码：3i44">{$post.download_addr}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>内容描述<span class="form-required">*</span><br>推荐使用图片</th>
+                        <td>
+                            <script type="text/plain" id="content" name="post[post_content]">{$post.post_content}</script>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th width="150">商品类型<span class="form-required">*</span></th>
+                        <td>
+                            <select name="post[type]" id="type"  class="form-control">
+                                <option value="">请选择类型</option>
+                                <foreach name="types" item="item">
+                                    <option value="{$item.id}" {$item.select}>{$item.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;👉{$item.desc}</option>
+                                </foreach>
+                            </select>
+                        </td>
+                    </tr>
+                    <include file="goods/setup_price" />
+                </table>
+
+                <hook name="portal_admin_article_edit_view_main"/>
+            </div>
+            <div class="col-md-3">
+                <table class="table table-bordered">
+                    <tr>
+                        <th>缩略图[750*396]</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="text-align: center;">
+                                <input type="hidden" name="post[thumbnail]" id="thumbnail"
+                                       value="{$post.thumbnail|default=''}">
+                                <a href="javascript:uploadOneImage('图片上传','#thumbnail');">
+                                    <if condition="empty($post.thumbnail)">
+                                        <img src="__TMPL__/public/assets/images/default-thumbnail.png"
+                                             id="thumbnail-preview"
+                                             width="135" style="cursor: pointer"/>
+                                        <else/>
+                                        <img src="{:cmf_get_image_preview_url($post.thumbnail)}"
+                                             id="thumbnail-preview"
+                                             width="135" style="cursor: pointer"/>
+                                    </if>
+                                </a>
+                                <input type="button" class="btn btn-sm btn-cancel-thumbnail" value="取消图片">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>发布时间</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input class="form-control js-bootstrap-datetime" type="text" name="post[published_time]"
+                                   value="{:date('Y-m-d H:i',$post['published_time'])}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>状态</th>
+                        <php>
+                            $status_yes=$post['status']==1?"checked":"";
+                            $is_top_yes=$post['is_top']==1?"checked":"";
+                            $recommended_yes=$post['recommended']==1?"checked":"";
+                        </php>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="post-status-checkbox" name="post[status]" value="1"
+                                           {$status_yes}>发布
+                                    <span id="post-status-error" style="color: red;display: none"></span>
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="checkbox">
+                                <label><input type="checkbox" id="is-top-checkbox" name="post[is_top]" value="1"
+                                              {$is_top_yes}>置顶</label>
+                                <span id="is-top-error" style="color: red;display: none"></span>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="recommended-checkbox" name="post[recommended]" value="1"
+                                           {$recommended_yes}>推荐
+                                    <span id="recommended-error" style="color: red;display: none"></span>
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+
+                <hook name="portal_admin_article_edit_view_right_sidebar"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-primary js-ajax-submit">{:lang('SAVE')}</button>
+                <a class="btn btn-default" href="{:url('Mall/index')}">{:lang('BACK')}</a>
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="__STATIC__/js/admin.js"></script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="__STATIC__/js/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        editorcontent = new baidu.editor.ui.Editor();
+        editorcontent.render('content');
+        try {
+            editorcontent.sync();
+        } catch (err) {
+        }
+        $('.btn-cancel-thumbnail').click(function () {
+            $('#thumbnail-preview').attr('src', '__TMPL__/public/assets/images/default-thumbnail.png');
+            $('#thumbnail').val('');
+        });
+
+        $('#more-template-select').val("{$post.more.template|default=''}");
+    });
+</script>
+
+<script>
+
+    var publishYesUrl   = "{:url('Mall/publish',array('yes'=>1))}";
+    var publishNoUrl    = "{:url('Mall/publish',array('no'=>1))}";
+    var topYesUrl       = "{:url('Mall/top',array('yes'=>1))}";
+    var topNoUrl        = "{:url('Mall/top',array('no'=>1))}";
+    var recommendYesUrl = "{:url('Mall/recommend',array('yes'=>1))}";
+    var recommendNoUrl  = "{:url('Mall/recommend',array('no'=>1))}";
+
+    var postId = $('#post-id').val();
+
+    //发布操作
+    $("#post-status-checkbox").change(function () {
+        if ($('#post-status-checkbox').is(':checked')) {
+            //发布
+            $.ajax({
+                url: publishYesUrl, type: "post", dataType: "json", data: {ids: postId}, success: function (data) {
+                    if (data.code != 1) {
+                        $('#post-status-checkbox').removeAttr("checked");
+                        $('#post-status-error').html(data.msg).show();
+
+                    } else {
+                        $('#post-status-error').hide();
+                    }
+                }
+            });
+        } else {
+            //取消发布
+            $.ajax({
+                url: publishNoUrl, type: "post", dataType: "json", data: {ids: postId}, success: function (data) {
+                    if (data.code != 1) {
+                        $('#post-status-checkbox').prop("checked", 'true');
+                        $('#post-status-error').html(data.msg).show();
+                    } else {
+                        $('#post-status-error').hide();
+                    }
+                }
+            });
+        }
+    });
+
+    //置顶操作
+    $("#is-top-checkbox").change(function () {
+        if ($('#is-top-checkbox').is(':checked')) {
+            //置顶
+            $.ajax({
+                url: topYesUrl, type: "post", dataType: "json", data: {ids: postId}, success: function (data) {
+                    if (data.code != 1) {
+                        $('#is-top-checkbox').removeAttr("checked");
+                        $('#is-top-error').html(data.msg).show();
+
+                    } else {
+                        $('#is-top-error').hide();
+                    }
+                }
+            });
+        } else {
+            //取消置顶
+            $.ajax({
+                url: topNoUrl, type: "post", dataType: "json", data: {ids: postId}, success: function (data) {
+                    if (data.code != 1) {
+                        $('#is-top-checkbox').prop("checked", 'true');
+                        $('#is-top-error').html(data.msg).show();
+                    } else {
+                        $('#is-top-error').hide();
+                    }
+                }
+            });
+        }
+    });
+    //推荐操作
+    $("#recommended-checkbox").change(function () {
+        if ($('#recommended-checkbox').is(':checked')) {
+            //推荐
+            $.ajax({
+                url: recommendYesUrl, type: "post", dataType: "json", data: {ids: postId}, success: function (data) {
+                    if (data.code != 1) {
+                        $('#recommended-checkbox').removeAttr("checked");
+                        $('#recommended-error').html(data.msg).show();
+
+                    } else {
+                        $('#recommended-error').hide();
+                    }
+                }
+            });
+        } else {
+            //取消推荐
+            $.ajax({
+                url: recommendNoUrl, type: "post", dataType: "json", data: {ids: postId}, success: function (data) {
+                    if (data.code != 1) {
+                        $('#recommended-checkbox').prop("checked", 'true');
+                        $('#recommended-error').html(data.msg).show();
+                    } else {
+                        $('#recommended-error').hide();
+                    }
+                }
+            });
+        }
+    });
+
+</script>
+</body>
+</html>

@@ -125,7 +125,7 @@ class CategoryController extends AdminBaseController
             $this->error('添加失败!');
         }
 
-        $this->success('添加成功!', url('Category/index'));
+        $this->success('添加成功!', url('Category/index', ['type'=>$data['type']]));
 
     }
 
@@ -189,9 +189,26 @@ class CategoryController extends AdminBaseController
         $categoryModel = new CategoryModel();
 
         $result = $categoryModel->editCategory($data);
-        Db::name('daka')->where(['category_id'=>$data['id']])->update(['category_name'=>$data['name']]);
-        Db::name('course')->where(['pid'=>$data['id']])->update(['pname'=>$data['name']]);
-        Db::name('exam')->where(['cid'=>$data['id']])->update(['cname'=>$data['name']]);
+        switch ($data['type']) {
+            case 1:
+                Db::name('exam')->where(['cid'=>$data['id']])->update(['cname'=>$data['name']]);
+                break;
+            case 2:
+                Db::name('daka')->where(['category_id'=>$data['id']])->update(['category_name'=>$data['name']]);
+                break;
+            case 3:
+                Db::name('course')->where(['pid'=>$data['id']])->update(['pname'=>$data['name']]);
+                break;
+            case 4:
+                break;
+            case 5:
+                Db::name('mall')->where(['cid'=>$data['id']])->update(['cname'=>$data['name']]);
+                break;
+        }
+
+
+
+
         if ($result === false) {
             $this->error('保存失败!');
         }

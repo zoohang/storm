@@ -70,9 +70,10 @@
                 </div>
                 <div class="form-group">
                     <input type="hidden" name="id" value="{$id}">
+                    <input type="hidden" name="type" value="{$type}">
                     <button type="submit" class="btn btn-primary js-ajax-submit" data-refresh="0">{:lang('SAVE')}
                     </button>
-                    <a class="btn btn-default" href="{:url('Category/index')}">{:lang('BACK')}</a>
+                    <a class="btn btn-default" href="{:url('Category/index',['type'=>$type])}">{:lang('BACK')}</a>
                 </div>
             </form>
         </div>
