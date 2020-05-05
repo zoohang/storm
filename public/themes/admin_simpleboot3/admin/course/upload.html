@@ -164,8 +164,11 @@
 <link rel="stylesheet" href="__STATIC__/aliyun/player/aliplayer-min.css"/>
 <script charset="utf-8" type="text/javascript" src="__STATIC__/aliyun/player/aliplayer-h5-min.js"></script>
 <script>
+    var playerUrl = "{$vod.player_url|default=''}";
     $(function () {
-        if ($("input[name=video_id]").val()) {
+        if(playerUrl) {
+            createAliplayer(playerUrl);
+        } else if ($("input[name=video_id]").val()) {
             $("#videoGro").show();
             playerInit($('input[name=video_id]').val());   //请求数据并初始化阿里播放器
         } else {
@@ -311,19 +314,7 @@
                         $('#J_prismPlayer').empty(); //id为html里指定的播放器的容器id
                     }
 
-                    player = new Aliplayer({
-                        id: 'J_prismPlayer',
-                        width: '320px',
-                        height: '180px',
-                        autoplay: true,
-                        //播放方式二：点播用户推荐
-                        source: result.Mezzanine.FileURL,
-//                        vid: videoId,
-//                        playauth: result.PlayAuth,
-//                        format: 'm3u8'
-                    }, function (player) {
-                        console.log('播放器创建好了。')
-                    });
+                    player = createAliplayer(result.Mezzanine.FileURL);
                     $('input[name=source_url]').val(result.Mezzanine.FileURL);
                     $('input[name=videosize]').val(Math.ceil(result.Mezzanine.Size / 1024));
                 } else {
@@ -334,6 +325,21 @@
                     })
                 }
             }
+        });
+    }
+    var createAliplayer = function($url) {
+        return new Aliplayer({
+            id: 'J_prismPlayer',
+            width: '320px',
+            height: '180px',
+            autoplay: true,
+            //播放方式二：点播用户推荐
+            source: $url,
+            //vid: videoId,
+            //playauth: result.PlayAuth,
+            //format: 'm3u8'
+        }, function (player) {
+            console.log('播放器创建好了。')
         });
     }
 </script>

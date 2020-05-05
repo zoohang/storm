@@ -3,20 +3,28 @@
 <body>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
-        <li class="active"><a href="{:url('course/index')}">课程列表</a></li>
-        <li><a href="{:url('course/edit')}">添加</a></li>
+        <li class="active"><a href="{:url('course/index', ['type'=>$_GET['type']])}">课程列表</a></li>
+        <li><a href="{:url('course/edit',['type'=>$_GET['type']])}">添加</a></li>
         <li><a href="{:url('category/index',['type'=>3])}">分类管理</a></li>
     </ul>
-    <form class="well form-inline margin-top-20" method="post" action="{:url('course/index')}">
+    <form class="well form-inline margin-top-20" method="post" action="{:url('course/index', ['type'=>$_GET['type']])}">
         类型:
         <select name="category" id="" class="form-control" style="width: 200px;">
             <option value="">请选课程分类</option>
             {$course_category}
         </select>
+        难度:
+        <select name="level" class="form-control" style="width: 200px;">
+            <option value="">请选择难度</option>
+            <foreach name="levels" item="name" key="key">
+                <php>$sexselected=isset($params['level'])&&(string)$key==$params['level']?"selected":"";</php>
+                <option value="{$key}" {$sexselected}>{$name}</option>
+            </foreach>
+        </select>
         试卷名称:
         <input type="text" class="form-control" name="keyword" style="width: 200px;" value="{$params.keyword|default=''}" placeholder="请输入试卷名称">
         <input type="submit" class="btn btn-primary" value="搜索">
-        <a class="btn btn-danger" href="{:url('course/index')}">清空</a>
+        <a class="btn btn-danger" href="{:url('course/index', ['type'=>$_GET['type']])}">清空</a>
     </form>
     <form class="js-ajax-form" action="{:url('course/listOrder')}" method="post">
         <div class="table-actions">

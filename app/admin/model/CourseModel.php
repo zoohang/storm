@@ -17,4 +17,9 @@ class CourseModel extends Model
 
     protected $autoWriteTimestamp = true;
 
+    public function getTypeNameAttr($value,$data)
+    {
+        $type = [0=>'全部',1=>'视频',2=>'图文'];
+        return $type[$data['type']];
+    }
 }

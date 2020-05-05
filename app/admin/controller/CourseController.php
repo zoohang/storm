@@ -23,12 +23,14 @@ class CourseController extends AdminBaseController
 {
     public $type=3; //category 表中type=1的分类
     public $status = [-1=>'删除', 0=>'未发布', 1=>'已发布'];
+    public $levels = ['无等级','初级','中级','高级'];
 
     public function _initialize()
     {
         parent::_initialize();
         $this->assign('type', $this->type);
         $this->assign('status' ,$this->status);
+        $this->assign('levels' ,$this->levels);
     }
 
     public function index()
@@ -37,13 +39,24 @@ class CourseController extends AdminBaseController
         /**搜索条件**/
         $keyword = $this->request->param('keyword');
         $category = $this->request->param('category', '', 'intval');
+        $level = $this->request->param('level');
+        $type = $this->request->param('type');#类型 1-视频 2-图文
+        if ($type)  $where['type'] = $type;
+        $_GET['type'] = intval($type);
         if ($keyword) {
             $where['ctitle'] = ['like', "%{$keyword}%"];
         }
         if ($category) {
-            $where['pid'] = $category;
+            //兼容下级栏目
+            $data = \api\v1\model\CategoryModel::instance($this->type)->getCategoryTreeArray($category);
+            $ids = \api\v1\model\CategoryModel::instance($this->type)->getCategoryIds($data);
+            array_unshift($ids, $category);
+            $where['pid'] = ['IN', $ids];
             $selectId = $category;
         } else $selectId=0;
+        if (isset($level) && $level !== '') {
+            $where['level'] = $level;
+        }
         //在线课程/所属分类
         $categoryModel = new CategoryModel();
         $course_category = $categoryModel->categoryTree($selectId, '', $this->type);
@@ -75,13 +88,18 @@ class CourseController extends AdminBaseController
                 return $item;
             });
         }
-        $list->appends(['keyword' => $keyword, 'category' => $category]);
+        $list->appends(['keyword' => $keyword, 'category' => $category, 'level'=>$level, 'type'=>$type]);
         // 获取分页显示
         $page = $list->render();
-        $this->assign(['keyword' => $keyword, 'category' => $category]);
+        $this->assign(['keyword' => $keyword, 'category' => $category, 'level'=>$level, 'type'=>$type]);
         $this->assign("page", $page);
         $this->assign("list", $list);
-        return $this->fetch();
+        return $this->fetch('index');
+    }
+
+    public function videoindex() {
+        request()->get(['type'=>1]);
+        return $this->index();
     }
 
     /**
@@ -93,19 +111,19 @@ class CourseController extends AdminBaseController
         $id    = $this->request->param('cid', 0, 'intval');
         $info = $tids = [];
         if ($id) {
-            $info = DB::name('course')->where(["cid" => $id])->find();
+            $info = CourseModel::get($id);
             $tids = DB::name('course_teacher_relation')->where(['cid'=>$id, 'status'=>1])->column('tid');
-            $goods = GoodsModel::instance()->getGoods($info['goods_id']);
+            $goods = GoodsModel::instance()->getGoods($info->goods_id);
             $this->assign('goods', $goods);
         }
         $CategoryModel = new CategoryModel();
-        $categoryTree = $CategoryModel->categoryTree(isset($info['pid']) ? $info['pid']: 0, '', $this->type);
+        $categoryTree = $CategoryModel->categoryTree(isset($info->pid) ? $info->pid : 0, '', $this->type);
         $this->assign('category_tree', $categoryTree);
 
         //讲师
         $teachers = DB::name('course_teacher')->where(['status'=>1])->select();
         $this->assign('teachers', $teachers);
-        $this->assign($info);
+        $this->assign('info', $info);
         $this->assign('select_tids', $tids ? json_encode($tids): '');
         $this->assign('tids_str', implode(',', $tids));
         return $this->fetch();
@@ -153,7 +171,7 @@ class CourseController extends AdminBaseController
                 Db::rollback();
                 $this->error($e->getMessage());
             }
-            $this->success('编辑成功!', url('course/index'));
+            $this->success('编辑成功!', url('course/index', ['type'=>$data['type']]));
         } else {
             //add
             Db::startTrans();
@@ -165,7 +183,7 @@ class CourseController extends AdminBaseController
                     return [
                         'cid'=>$cid,
                         'tid'=>$item,
-                        'status'=>0
+                        'status'=>1
                     ];
                 }, $tid);
                 Db::table('st_course_teacher_relation')->insertAll($relation_list);
@@ -176,7 +194,7 @@ class CourseController extends AdminBaseController
                 Db::rollback();
                 $this->error($e->getMessage());
             }
-            $this->success('添加成功!', url('course/index'));
+            $this->success('添加成功!', url('course/index', ['type'=>$data['type']]));
         }
     }
 
@@ -236,11 +254,13 @@ class CourseController extends AdminBaseController
             //更新
             $data['item_id'] = $item_id;
             $data['update_time'] = $this->request->time();
-            $res = DB::name('course_item')->update($data);
+            //$res = DB::name('course_item')->update($data);
+            $res = CourseItemModel::update($data);
         } else {
             //新增
             $data['create_time'] = $this->request->time();
-            $res = DB::name('course_item')->insertGetId($data);
+            //$res = DB::name('course_item')->insertGetId($data);
+            $res = CourseItemModel::create($data);
         }
         if ($res !== false) {
             $this->success('成功!', url('course/detail', ['cid'=>$cid]));
@@ -271,10 +291,13 @@ class CourseController extends AdminBaseController
         $CourseItemModel = new CourseItemModel();
         if ($item_id) {
             $info = $CourseItemModel->get($item_id);
-            if ($info['type'] == 1) {
+            $info_type = $info->getData('type');
+            if ($info_type == 1) {
                 //视频模型
-
-            } elseif($info['type'] == 2) {
+                $vod = Db::name('video_vod')->where(['video_id'=>$info->video_id])->find();
+                $vod['player_url'] = $vod['video_url'] ?: $vod['source_url'];
+                $this->assign('vod', $vod);
+            } elseif($info_type == 2) {
                 //图文模型
 
             }
@@ -299,8 +322,11 @@ class CourseController extends AdminBaseController
         //dump($data);die;
         $CourseItemModel = new CourseItemModel();
         $isUpdate = false;
+        $data['create_time'] = NOW_TIME;
         if ($id) {
             $isUpdate = true;
+            $data['update_time'] = NOW_TIME;
+            unset($data['create_time']);
         }
         if ($data['type'] == 1) {
             //视频模块

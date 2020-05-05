@@ -3,7 +3,7 @@
 <body>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
-        <li><a href="{:url('course/index')}">课程列表</a></li>
+        <li><a href="{:url('course/index',['type'=>$info['type']])}">课程列表</a></li>
         <li class="active"><a>题目列表</a></li>
         <li>
             <div class="dropdown">
@@ -22,7 +22,7 @@
 
         <strong class="lead">{$info.pname}</strong>
         <blockquote>
-            <footer>{$info.description}</footer>
+            <footer>{$info.description|nl2br}</footer>
         </blockquote>
     </form>
 
