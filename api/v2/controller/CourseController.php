@@ -167,9 +167,10 @@ class CourseController extends \api\v1\controller\CourseController
             ->page($p)
             ->cache(true, 60)
             ->select()->toArray();
-        foreach ($list as &$item) {
+        foreach ($list as $key => &$item) {
             $item['thumbnail_200'] = get_image_url($item['thumbnail'],200);
             $item['thumbnail_480'] = get_image_url($item['thumbnail'],480);
+            unset($list[$key]['thumbnail']);
         }
         unset($item);
         if ($this->request->action() != strtolower(__FUNCTION__)) {

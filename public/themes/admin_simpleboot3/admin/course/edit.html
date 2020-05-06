@@ -102,6 +102,17 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="input-name"><span class="form-required">*</span>难度</label>
+                            <div>
+                                <foreach name="levels" item="name" key="key">
+                                    <php>$checked=isset($info['level'])&&$key==$info['level']?"checked":"";</php>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="level" value="{$key}" {$checked}> {$name}
+                                    </label>
+                                </foreach>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="input-name"><span class="form-required">*</span>发布</label>
                             <div>
                                 <php>$status=isset($info['status'])?$info['status']:0</php>

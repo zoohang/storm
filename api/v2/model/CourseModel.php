@@ -32,9 +32,9 @@ class CourseModel extends \api\v1\model\CourseModel
         'image'=>'thumbnail',
     ];
 
-    public function getThumbnailAttr($value,$data)
+    /*public function getThumbnailAttr($value,$data)
     {
-        return get_image_url($data['thumbnail'],200);
-    }
+        return get_image_url($data['thumbnail']);
+    }*/
 }
 
