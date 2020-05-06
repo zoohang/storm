@@ -31,11 +31,26 @@ class MallModel extends Model
 
     public static $list_field = [
         'id',
-        'cid',
-        'cname',
-        'post_title'=>'title',
-        'post_subtitle' => 'subtitle',
+        #'cid',
+        #'cname',
+        #'post_title'=>'title',
+        #'post_subtitle' => 'subtitle',
         'thumbnail',
+    ];
+
+    public static $detail_field = [
+        'a.id',
+        'a.cid',
+        'a.cname',
+        'a.post_title'=>'title',
+        'a.post_subtitle' => 'subtitle',
+        'a.join_num',
+        'a.post_image' => 'image',
+        'a.thumbnail',
+        'a.post_content',
+        'a.goods_id',
+        'a.download_addr',
+        'a.status'
     ];
 
     /**
@@ -45,7 +60,7 @@ class MallModel extends Model
      */
     public function getThumbnailAttr($value)
     {
-        return get_image_url($value);
+        return get_image_url($value, 200);
     }
 
     public function getThumbnail200Attr($value,$data)
@@ -56,6 +71,11 @@ class MallModel extends Model
     public function getThumbnail480Attr($value,$data)
     {
         return get_image_url($data['thumbnail'],480);
+    }
+
+    public function getImageAttr($value, $data)
+    {
+        return get_image_url($data['image']);
     }
 
     /*public function getTypeAttr($value)

@@ -18,7 +18,8 @@ class MallValidate extends Validate
         'post_title|标题' => 'require|max:30',
         'post_content|内容' => 'require',
         'type|类型' => 'require|number|in:1,2',
-        'thumbnail|图片' => 'require',
+        'thumbnail|缩略图' => 'require',
+        'post_image|图片' => 'require',
     ];
 
 }

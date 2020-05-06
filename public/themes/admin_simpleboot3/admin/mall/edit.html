@@ -95,7 +95,7 @@
             <div class="col-md-3">
                 <table class="table table-bordered">
                     <tr>
-                        <th>缩略图[750*396]</th>
+                        <th>缩略图[1:1]</th>
                     </tr>
                     <tr>
                         <td>
@@ -115,6 +115,29 @@
                                 </a>
                                 <input type="button" class="btn btn-sm btn-cancel-thumbnail" value="取消图片">
                             </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><b>内页大图[16:9]</b><span class="form-required">*</span></th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="text-align: center;">
+                            <input type="hidden" name="post[post_image]" id="post_image"
+                                   value="{$post.post_image|default=''}">
+                            <a href="javascript:uploadOneImage('图片上传','#post_image');">
+                                <if condition="empty($post.post_image)">
+                                    <img src="__TMPL__/public/assets/images/default-thumbnail.png"
+                                         id="post_image-preview"
+                                         width="135" style="cursor: pointer"/>
+                                    <else/>
+                                    <img src="{:cmf_get_image_preview_url($post.post_image)}"
+                                         id="post_image-preview"
+                                         width="135" style="cursor: pointer"/>
+                                </if>
+                            </a>
+                            <input type="button" class="btn btn-sm btn-cancel-post_image" value="取消图片">
+                        </div>
                         </td>
                     </tr>
                     <tr>

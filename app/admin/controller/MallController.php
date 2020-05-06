@@ -98,7 +98,6 @@ class MallController extends AdminBaseController
         $category_info = Db::name('Category')->where(['id'=>$data['cid']])->find();
         $data['cname'] = $category_info['name'];
         $data['post_uid'] = session('ADMIN_ID');
-        //$data['create_name'] = session('name');
 
         Db::startTrans();
         try{

@@ -51,11 +51,6 @@ class MallController extends RestUserBaseController
             ->page($p)
             ->cache(true, 60)
             ->select();
-        foreach ($list as &$item) {
-            $item['thumbnail_200'] = get_image_url($item['thumbnail'],200);
-            $item['thumbnail_480'] = get_image_url($item['thumbnail'],480);
-        }
-        unset($item);
         if ($this->request->action() != strtolower(__FUNCTION__)) {
             return $list;
         } else {
@@ -69,8 +64,8 @@ class MallController extends RestUserBaseController
         if (!$id) $this->error('id必填');
         //todo 字段需要rewrite
         $info = MallModel::instance()->alias('a')
+            ->field(array_merge(MallModel::$detail_field, ['b.price', 'b.stock', 'b.cost_price']))
             ->join('__GOODS__ b','a.goods_id=b.goods_id')
-            ->field('a.*,b.price,b.stock,b.cost_price')
             ->where(['a.id'=>$id])
             ->find();
         if(!$info) $this->error('该资源不存在');
@@ -79,7 +74,7 @@ class MallController extends RestUserBaseController
         $info['is_collect'] = UserModel::instance()->checkCollect($id, MallModel::$ctype);
         //判断是否购买
         $info['is_buy'] = UserModel::instance()->checkBuy($info['goods_id']);
-        $this->success('ok', $info);
+        $this->success('ok', ['info' => $info, 'relation' => []]);
     }
 
 }
