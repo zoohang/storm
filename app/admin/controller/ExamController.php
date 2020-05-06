@@ -24,7 +24,6 @@ class ExamController extends AdminBaseController
     public $type=1; //category 表中type=1的分类
     public $status = [-1=>'删除', 0=>'未发布', 1=>'已发布'];
     public $item_type = [1=>'选择题', 2=>'填空题', 3=>'论述题'];
-    public $levels = ['无等级','初级','中级','高级'];
 
     public function _initialize()
     {
@@ -32,7 +31,6 @@ class ExamController extends AdminBaseController
         $this->assign('type', $this->type);
         $this->assign('status' ,$this->status);
         $this->assign('item_type' ,$this->item_type);
-        $this->assign('levels' ,$this->levels);
     }
 
     public function index()
@@ -42,7 +40,6 @@ class ExamController extends AdminBaseController
         $keyword = $this->request->param('keyword');
         $property = $this->request->param('property', '', 'intval');
         $category_id = $this->request->param('category_id', 0, 'intval');
-        $level = $this->request->param('level', '');
         $where = ['status'=> ['EGT', 0]];
         if ($keyword) {
             $where['title'] = ['like', "%{$keyword}%"];
@@ -52,9 +49,6 @@ class ExamController extends AdminBaseController
         }
         if ($category_id) {
             $where['cid'] = $category_id;
-        }
-        if ($level !== '') {
-            $where['level'] = $level;
         }
         //获取所有的专业分类
         $category = DB::name('Exam a')
@@ -69,10 +63,10 @@ class ExamController extends AdminBaseController
             ->order("list_order ASC,id DESC")
             ->paginate();
         // 分页注入搜索条件
-        $exams->appends(['keyword' => $keyword, 'property' => $property, 'category_id'=>$category_id, 'level'=>$level]);
+        $exams->appends(['keyword' => $keyword, 'property' => $property, 'category_id'=>$category_id]);
         // 获取分页显示
         $page = $exams->render();
-        $this->assign(['keyword' => $keyword, 'property' => $property, 'category_id'=>$category_id, 'level'=>$level]);
+        $this->assign(['keyword' => $keyword, 'property' => $property, 'category_id'=>$category_id]);
         $this->assign("page", $page);
         $this->assign("list", $exams);
         $this->assign("category", $category);
