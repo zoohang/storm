@@ -32,6 +32,17 @@ class CourseModel extends \api\v1\model\CourseModel
         'image'=>'thumbnail',
     ];
 
+    public static $item_field = [
+        'item_id',
+        'item_title',
+        'parent_id',
+        'summary',
+        'description',
+        'video_long',
+        'type',
+        'video_id'
+    ];
+
     /*public function getThumbnailAttr($value,$data)
     {
         return get_image_url($data['thumbnail']);

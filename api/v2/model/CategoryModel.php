@@ -25,7 +25,7 @@ class CategoryModel extends \api\v1\model\CategoryModel
 
     public function getSimpleCategoryTreeArray($parent_id=0) {
         $where['type'] = $this->ctype;
-        $categoryList = Db::name('Category')->field(['id','parent_id','name'])->where($where)->select()->toArray();
+        $categoryList = Db::name('Category')->field(['id','parent_id','name'])->where($where)->cache(true, 600)->select()->toArray();
         $tree = new \tree\Tree();
         $tree->init($categoryList);
         $data = $tree->getTreeArray($parent_id);

@@ -110,10 +110,10 @@ class CourseController extends \api\v1\controller\CourseController
     public function item() {
         $item_id = $this->request->param('item_id', 0, 'intval,abs');
         if (!$item_id) $this->error('id必填');
-        $info = Db::name('course_item')->where(['item_id'=>$item_id])->find();
+        $info = Db::name('course_item')->field(CourseModel::$item_field)->where(['item_id'=>$item_id])->find();
         if (!$info) $this->error('该课程已经下架或不存在');
         if ($info['type'] == 1) {
-            $vod = Db::name('video_vod')->where(['video_id'=>$info['video_id']])->find();
+            $vod = Db::name('video_vod')->field('video_url')->where(['video_id'=>$info['video_id']])->find();
             $info = array_merge($info,$vod);
         } elseif($info['type'] == 2) {
             //图文

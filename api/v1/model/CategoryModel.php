@@ -46,7 +46,7 @@ class CategoryModel extends Model
 
     public function getCategoryTreeArray($parent_id=0) {
         $where['type'] = $this->ctype;
-        $categoryList = Db::name('Category')->where($where)->select()->toArray();
+        $categoryList = Db::name('Category')->where($where)->cache(true,60)->select()->toArray();
         $tree = new \tree\Tree();
         $tree->init($categoryList);
         $data = $tree->getTreeArray($parent_id);
