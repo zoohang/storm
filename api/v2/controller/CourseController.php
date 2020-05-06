@@ -8,16 +8,12 @@
 // +----------------------------------------------------------------------
 namespace api\v2\controller;
 
-use api\v1\model\CourseModel;
-use api\v1\model\DakaHomeworkModel;
-use api\v1\model\DakaModel;
-use api\v1\model\ExamUserlogModel;
-use api\v1\model\ExamWronglistModel;
-use api\v1\model\CategoryModel;
+use api\v2\model\CourseModel;
+use api\v2\model\CategoryModel;
 use api\v1\model\OrderModel;
+use api\v1\model\SlideItemModel;
 use api\v1\model\UserModel;
 use app\admin\model\GoodsModel;
-use cmf\controller\RestUserBaseController;
 use think\Db;
 use think\Exception;
 use think\Validate;
@@ -138,5 +134,58 @@ class CourseController extends \api\v1\controller\CourseController
     public function collectionCourse() {
         $list = CourseModel::instance()->getCollectionCourse();
         $this->success('ok', ['list'=>$list]);
+    }
+
+    //视频主页
+    public function videoMain() {
+        //轮播图
+        $slide = SlideItemModel::instance()->getOne(1);//id=5
+        //初始化内容 获取分类
+        $category = CategoryModel::instance($this->ctype)->getSimpleCategoryTreeArray();
+        //获取全部的内容 列表
+        $list = $this->videoList();
+        $this->success('ok', ['slide'=>$slide,'category'=>$category, 'level' => CourseModel::$levels, 'list'=>$list]);
+    }
+
+    //视频列表
+    public function videoList($cid=0, $level='', $p=1) {
+        $cid = $cid ?: $this->request->param('cid', 0, 'intval,abs');
+        $level = $level ?: $this->request->param('level');
+        $list = [];
+        $where = ['type'=>1];
+        if ($cid) {
+            $data = CategoryModel::instance($this->ctype)->getCategoryTreeArray($cid);
+            $ids = CategoryModel::instance($this->ctype)->getCategoryIds($data);
+            $ids[] = $cid;
+            if ($ids) $where['pid'] = ['in', $ids];
+        }
+        if (!in_array($level, [null, ''])) $where['level'] = $level;
+        $list = CourseModel::instance()
+            ->field(CourseModel::$list_field)
+            ->where($where)
+            ->order(['list_order'=>'asc','cid'=>'desc'])
+            ->page($p)
+            ->cache(true, 60)
+            ->select()->toArray();
+        foreach ($list as &$item) {
+            $item['thumbnail_200'] = get_image_url($item['thumbnail'],200);
+            $item['thumbnail_480'] = get_image_url($item['thumbnail'],480);
+        }
+        unset($item);
+        if ($this->request->action() != strtolower(__FUNCTION__)) {
+            return $list;
+        } else {
+            $this->success('ok', $list);
+        }
+    }
+
+    //视频详情页
+    public function videoDetail() {
+
+    }
+
+    //获取相关内容
+    protected function getRelationList() {
+
     }
 }

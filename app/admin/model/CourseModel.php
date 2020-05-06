@@ -22,4 +22,10 @@ class CourseModel extends Model
         $type = [0=>'全部',1=>'视频',2=>'图文'];
         return $type[$data['type']];
     }
+
+    public function setPnameAttr($value)
+    {
+        $search = [' ',' ','│', '├─', '└─','─'];
+        return str_replace($search, '', $value);
+    }
 }
