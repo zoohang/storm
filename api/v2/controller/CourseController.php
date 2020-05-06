@@ -115,6 +115,7 @@ class CourseController extends \api\v1\controller\CourseController
         if ($info['type'] == 1) {
             $vod = Db::name('video_vod')->field('video_url')->where(['video_id'=>$info['video_id']])->find();
             $info = array_merge($info,$vod);
+            $info['video_long'] = sec2time($info['video_long']);
         } elseif($info['type'] == 2) {
             //图文
             if ($info['description']) {
