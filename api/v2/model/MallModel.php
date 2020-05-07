@@ -78,23 +78,14 @@ class MallModel extends Model
         return get_image_url($data['image']);
     }
 
-    /*public function getTypeAttr($value)
+    public function getTypeNameAttr($value)
     {
-        switch ($value) {
-            case 1:
-                $name='视频';
-                break;
-            case 2:
-                $name='语音';
-                break;
-            case 3:
-                $name='图文';
-                break;
-            default:
-                $name='默认';
-        }
-        return $name;
-    }*/
+        $types = [
+            1 => '资料',
+            2 => '实体书籍',
+        ];
+        return $types[$value];
+    }
 
     public function getExamInfoByItemId($item_id) {
         return $info = Db::name('Exam')
@@ -119,6 +110,26 @@ class MallModel extends Model
             ->field($field)
             ->where($where)
             ->order(['a.update_time' => 'desc'])->limit($num)->select()->toArray();
+    }
+
+    /**
+     * @param int $cid 分类id
+     * @param int $exclude 排除资源id
+     * @param int $limit 查询条数 ps 增加视频内容的输出 type: text/video 资料和视频
+     * @return false|\PDOStatement|string|\think\Collection
+     * @throws \think\exception\DbException
+     */
+    public function getRelationList($cid, $exclude, $limit=6) {
+        $texts = $this->field(['id','post_title'=>'title', 'type'=>'type_name'])
+            ->where(['cid'=>$cid, 'id'=>['NEQ', $exclude]])
+            ->order(['published_time'=>'desc', 'id'=>'desc'])
+            ->limit($limit)
+            ->select();
+    }
+
+    public function getDownLoadInfo($goods_id) {
+        $download_addr = $this->where(['goods_id'=>$goods_id])->value('download_addr');
+        return baiduLinkFormat($download_addr);
     }
 }
 

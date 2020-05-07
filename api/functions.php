@@ -158,3 +158,9 @@ function sec2time($sec) {
     $format = $sec>=3600 ? 'H:i:s': 'i:s';
     return date($format, $sec);
 }
+
+function baiduLinkFormat($str) {
+    preg_match('/[a-zA-z]+:\/\/[^\s]*/', $str, $urls);
+    preg_match_all('/[0-9a-zA-Z]+/', $str, $codes);
+    return ['url' => array_shift($urls), 'code'=> array_pop($codes[0]), 'download_addr'=>$str];
+}
