@@ -33,7 +33,7 @@ class PortalPostModel extends Model
         'is_top', 'recommended', 'post_hits', 'post_like', 'post_favorites','comment_count',
         'create_time', 'update_time', 'published_time', 'post_title', 'post_keywords',
         'post_excerpt', 'post_source', 'post_content', 'more', 'user_nickname',
-        'user', 'category_id'
+        'user', 'category_id', 'thumbnail'
     ];
 
     /**
