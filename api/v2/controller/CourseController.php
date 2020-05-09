@@ -75,7 +75,7 @@ class CourseController extends \api\v1\controller\CourseController
         if (!$id) $this->error('id必填');
         $info = CourseModel::instance()->alias('a')
             ->join('__GOODS__ b','a.goods_id=b.goods_id')
-            ->field('a.*,b.price,b.stock,b.cost_price')
+            ->field(array_merge(CourseModel::$deteil_field, ['b.price','b.stock','b.cost_price']))
             ->where(['a.cid'=>$id])
             ->find();
         if(!$info) $this->error('该课程不存在');

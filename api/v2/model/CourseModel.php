@@ -32,6 +32,19 @@ class CourseModel extends \api\v1\model\CourseModel
         'image'=>'thumbnail',
     ];
 
+    public static $deteil_field = [
+        'cid' => 'id',
+        'ctitle' => 'title',
+        'pid' => 'cid',
+        'pname'=> 'cname',
+        'description',
+        'level',
+        'content_img'=>'image',
+        'join_num',
+        'a.goods_id',
+        'more' => 'photos',
+    ];
+
     public static $item_field = [
         'item_id',
         'item_title',
@@ -47,5 +60,27 @@ class CourseModel extends \api\v1\model\CourseModel
     {
         return get_image_url($data['thumbnail']);
     }*/
+
+    public function getMoreAttr($value)
+    {
+        return json_decode($value, true);
+    }
+
+    public function getPhotosAttr($value, $data)
+    {
+        $more = json_decode($data['photos'], true);
+        $photos = $more['photos'];
+        $photos = array_map(function($item){
+            $item['url'] = get_image_url($item['url'], 750);
+            return $item;
+        }, $photos);
+        return $photos;
+    }
+
+    public function getDescriptionAttr($value)
+    {
+        $search = ["\r\n","\r", "\n", "\t"];
+        return str_replace($search, ' ', $value);
+    }
 }
 
