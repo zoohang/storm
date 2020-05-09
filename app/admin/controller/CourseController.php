@@ -149,6 +149,12 @@ class CourseController extends AdminBaseController
             'image'=> $data['image'],
             'goods_status' => $data['status']
         ];
+        if (!empty($data['photo_names']) && !empty($data['photo_urls'])) {
+            $data['more']['photos'] = [];
+            foreach ($data['photo_urls'] as $key => $url) {
+                array_push($data['more']['photos'], ["url" => $url, "name" => $data['photo_names'][$key]]);
+            }
+        }
         if ($id) {
             //save
             Db::startTrans();

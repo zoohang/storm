@@ -109,7 +109,13 @@ class MallController extends AdminBaseController
                 'goods_status' => $data['status'],
             ];
             $data['goods_id'] = GoodsModel::instance()->editGoods($goods, $other, $this->type);
-            //商品售价
+            //多图上传
+            if (!empty($data['photo_names']) && !empty($data['photo_urls'])) {
+                $data['more']['photos'] = [];
+                foreach ($data['photo_urls'] as $key => $url) {
+                    array_push($data['more']['photos'], ["url" => $url, "name" => $data['photo_names'][$key]]);
+                }
+            }
             $MallModel->allowField(true)->isUpdate(false)->save($data);
             Db::commit();
         } catch (\Exception $e) {
@@ -163,6 +169,13 @@ class MallController extends AdminBaseController
                 'image'=> $data['thumbnail'],
                 'goods_status' => $data['status']
             ];
+
+            if (!empty($data['photo_names']) && !empty($data['photo_urls'])) {
+                $data['more']['photos'] = [];
+                foreach ($data['photo_urls'] as $key => $url) {
+                    array_push($data['more']['photos'], ["url" => $url, "name" => $data['photo_names'][$key]]);
+                }
+            }
             Db::startTrans();
             try{
                 $data['goods_id'] = GoodsModel::instance()->editGoods($goods, $other, $this->type);

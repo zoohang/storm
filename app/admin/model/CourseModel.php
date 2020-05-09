@@ -28,4 +28,14 @@ class CourseModel extends Model
         $search = [' ',' ','│', '├─', '└─','─'];
         return str_replace($search, '', $value);
     }
+
+    public function getMoreAttr($value)
+    {
+        return json_decode($value, true);
+    }
+
+    public function setMoreAttr($value)
+    {
+        return json_encode($value, JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE);
+    }
 }

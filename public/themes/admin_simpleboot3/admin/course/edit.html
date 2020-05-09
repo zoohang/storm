@@ -1,6 +1,17 @@
 <include file="public@header"/>
 <link href="__TMPL__/public/assets/themes/flatadmin/bootstrap-select.min.css" rel="stylesheet">
 <script src="__TMPL__/public/assets/js/bootstrap-select.min.js"></script>
+<script type="text/html" id="photos-item-tpl">
+    <li id="saved-image{id}">
+        <input id="photo-{id}" type="hidden" name="photo_urls[]" value="{filepath}">
+        <input class="form-control" id="photo-{id}-name" type="text" name="photo_names[]" value="{name}"
+               style="width: 200px;" title="图片名称" readonly>
+        <img id="photo-{id}-preview" src="{url}" style="height:36px;width: 36px;"
+             onclick="imagePreviewDialog(this.src);">
+        <a href="javascript:uploadOneImage('图片上传','#photo-{id}');">替换</a>
+        <a href="javascript:(function(){$('#saved-image{id}').remove();})();">移除</a>
+    </li>
+</script>
 </head>
 <body>
 <php>$course_type=isset($info['type'])?$info['type']:request()->param('type')</php>
@@ -41,7 +52,7 @@
                         <div class="form-group">
                             <label for="input-description"><span class="form-required">*</span>课程介绍</label>
                             <div>
-                                <textarea class="form-control" name="description" id="input-description">{$info.description|default=''}</textarea>
+                                <textarea class="form-control" name="description" id="input-description" rows="4">{$info.description|default=''}</textarea>
                             </div>
                         </div>
 
@@ -113,6 +124,34 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="input-name"><span class="form-required">*</span>内容描述 推荐使用图片</label>
+                            <div>
+                                <ul id="photos" class="pic-list list-unstyled form-inline">
+                                    <notempty name="info.more.photos">
+                                        <foreach name="info.more.photos" item="vo">
+                                            <php>$img_url=cmf_get_image_preview_url($vo['url']);</php>
+                                            <li id="saved-image{$key}">
+                                                <input id="photo-{$key}" type="hidden" name="photo_urls[]"
+                                                       value="{$vo.url}">
+                                                <input class="form-control" id="photo-{$key}-name" type="text"
+                                                       name="photo_names[]"
+                                                       value="{$vo.name|default=''}" style="width: 200px;" title="图片名称" readonly>
+                                                <img id="photo-{$key}-preview"
+                                                     src="{:cmf_get_image_preview_url($vo['url'])}"
+                                                     style="height:36px;width: 36px;"
+                                                     onclick="parent.imagePreviewDialog(this.src);">
+                                                <a href="javascript:uploadOneImage('图片上传','#photo-{$key}');">替换</a>
+                                                <a href="javascript:(function(){$('#saved-image{$key}').remove();})();">移除</a>
+                                            </li>
+                                        </foreach>
+                                    </notempty>
+                                </ul>
+                                <a href="javascript:uploadMultiImage('图片上传','#photos','photos-item-tpl');"
+                                   class="btn btn-sm btn-default">选择图片</a>
+                                <a href="javascript:;" id="test2" class="btn btn-sm btn-warning">预览所有图片</a>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="input-name"><span class="form-required">*</span>发布</label>
                             <div>
                                 <php>$status=isset($info['status'])?$info['status']:0</php>
@@ -157,6 +196,22 @@
         } else {
             $('#teacher_select').val('');
         }
+    });
+    //弹出一个页面层
+    $('#test2').on('click', function(){
+        var html = '';
+        $('#photos img').each(function (index, ele) {
+            html += '<div style="width: 100%;">';
+            html += '<img src="' + ele.src + '" style="width: 100%;" alt="'+index+'">';
+            html += '</div>';
+        });
+        layer.open({
+            type: 1,
+            title: '内容预览',
+            area: ['414px','778px'],
+            shadeClose: true, //点击遮罩关闭
+            content: html
+        });
     });
 </script>
 </body>
