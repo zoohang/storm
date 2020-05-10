@@ -69,43 +69,6 @@ class CourseController extends \api\v1\controller\CourseController
         }
     }
 
-    // 详情
-    public function detail() {
-        $id = $this->request->param('id', 0, 'intval,abs');
-        if (!$id) $this->error('id必填');
-        $info = CourseModel::instance()->alias('a')
-            ->join('__GOODS__ b','a.goods_id=b.goods_id')
-            ->field(array_merge(CourseModel::$deteil_field, ['b.price','b.stock','b.cost_price']))
-            ->where(['a.cid'=>$id])
-            ->find();
-        if(!$info) $this->error('该课程不存在');
-        $field = ['item_id','item_title','parent_id', 'video_long'];
-        $items = Db::name('course_item')->field($field)->where(['cid'=>$id])->select()->toArray();
-        $child = [];
-        foreach ($items as $item) {
-            if ($item['parent_id'] == 0) {
-                $child[] = $item;
-            }
-        }
-        foreach ($child as &$tp) {
-            foreach ($items as $item) {
-                if ($item['parent_id'] == $tp['item_id']) {
-                    $item['video_long'] = $info['type']==1 ? sec2time($item['video_long']) : '';
-                    $item['jump_type'] = $info['type']==1 ? 'link' : 'rich';
-                    $tp['children'][] = $item;
-                }
-            }
-        }
-        unset($tp);
-        //老师信息
-        $info['teachers'] = CourseModel::instance()->getRelationTeachers($id);
-        //判断是否收藏成功
-        $info['is_collect'] = UserModel::instance()->checkCollect($id, $this->ctype);
-        //判断是否购买
-        $info['is_buy'] = UserModel::instance()->checkBuy($info['goods_id']);
-        $this->success('ok', ['info'=>$info, 'child'=>$child]);
-    }
-
     // 详情-小节
     public function item() {
         $item_id = $this->request->param('item_id', 0, 'intval,abs');
@@ -183,11 +146,53 @@ class CourseController extends \api\v1\controller\CourseController
 
     //视频详情页
     public function videoDetail() {
-
+        $id = $this->request->param('id', 0, 'intval,abs');
+        if (!$id) $this->error('id必填');
+        $info = CourseModel::instance()->alias('a')
+            ->join('__GOODS__ b','a.goods_id=b.goods_id')
+            ->field(array_merge(CourseModel::$deteil_field, ['b.price','b.stock','b.cost_price']))
+            ->where(['a.cid'=>$id])
+            ->find();
+        if(!$info) $this->error('该课程不存在');
+        //章节信息
+        $items = $this->getCourseItems($id);
+        //老师信息
+        $info['teachers'] = CourseModel::instance()->getRelationTeachers($id);
+        //判断是否收藏成功
+        $info['is_collect'] = UserModel::instance()->checkCollect($id, $this->ctype);
+        //判断是否购买
+        $info['is_buy'] = UserModel::instance()->checkBuy($info['goods_id']);
+        //相关信息
+        $relation = CourseModel::instance()->getRelationList($info['cid'], $id, 6);
+        $this->success('ok', ['info'=>$info, 'child'=>$items, 'relation'=>$relation]);
     }
 
-    //获取相关内容
-    protected function getRelationList() {
+    public function videoItem($item_id) {
+        $item_id = $this->request->param('item_id', 0, 'intval,abs');
+        if (!$item_id) $this->error('id必填');
+        $info = Db::name('course_item')->alias('a')
+            ->join('__COURSE__ b', 'a.cid=b.cid')
+            ->field(array_merge(CourseModel::$item_field, ['b.ctitle'=>'title']))
+            ->where(['item_id'=>$item_id, 'a.status'=>1])
+            ->find();
+        if (!$info) $this->error('该课程已经下架或不存在');
 
+        $vod = Db::name('video_vod')->field('video_url, source_url')->where(['video_id'=>$info['video_id']])->find();
+        $vod['video_url'] = $vod['video_url'] ?: $vod['source_url'];
+        unset($vod['source_url']);
+        $info = array_merge($info,$vod);
+        $info['video_long'] = sec2time($info['video_long']);
+        //章节信息
+        $items = $this->getCourseItems($info['id']);
+        $this->success('ok', compact('info', 'items'));
+    }
+
+    protected function getCourseItems($id) {
+        $field = ['item_id','item_title'];
+        return Db::name('course_item')
+            ->field($field)
+            ->where(['cid'=>$id, 'status'=>1, 'type'=>['GT', 0]])
+            ->order(['list_order'=>'desc','item_id'=>'asc'])
+            ->select()->toArray();
     }
 }

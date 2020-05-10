@@ -43,17 +43,19 @@ class CourseModel extends \api\v1\model\CourseModel
         'join_num',
         'a.goods_id',
         'more' => 'photos',
+        'type',
     ];
 
     public static $item_field = [
         'item_id',
         'item_title',
-        'parent_id',
-        'summary',
-        'description',
+        #'parent_id',
+        #'summary',
+        #'description',
         'video_long',
-        'type',
-        'video_id'
+        'video_id',
+        'a.cid' => 'id',
+        'download_addr',
     ];
 
     /*public function getThumbnailAttr($value,$data)
@@ -68,6 +70,7 @@ class CourseModel extends \api\v1\model\CourseModel
 
     public function getPhotosAttr($value, $data)
     {
+        if (empty($data['photos'])) return [];
         $more = json_decode($data['photos'], true);
         $photos = $more['photos'];
         $photos = array_map(function($item){
@@ -81,6 +84,30 @@ class CourseModel extends \api\v1\model\CourseModel
     {
         $search = ["\r\n","\r", "\n", "\t"];
         return str_replace($search, ' ', $value);
+    }
+
+    /**
+     * @param int $cid 分类id
+     * @param int $exclude 排除资源id
+     * @param int $limit 查询条数 ps 增加视频内容的输出 type: text/video 资料和视频
+     * @return false|\PDOStatement|string|\think\Collection
+     * @throws \think\exception\DbException
+     */
+    public function getRelationList($cid, $exclude, $limit=6) {
+        return $this->field(['cid'=>'id','ctitle'=>'title', 'type', 'type'=>'type_name'])
+            ->where(['pid'=>$cid, 'cid'=>['NEQ', $exclude], 'type'=>1])
+            ->order(['published_time'=>'desc', 'id'=>'desc'])
+            ->limit($limit)
+            ->select();
+    }
+
+    public function getTypeNameAttr($value, $data)
+    {
+        $types = [
+            1 => '视频',
+            2 => '图文',
+        ];
+        return $types[$data['type']];
     }
 }
 

@@ -47,7 +47,7 @@ class MallModel extends Model
         'a.join_num',
         'a.post_image' => 'image',
         'a.thumbnail',
-        'a.post_content',
+        #'a.post_content',
         'a.goods_id',
         'a.download_addr',
         'a.status',
@@ -140,6 +140,7 @@ class MallModel extends Model
 
     public function getPhotosAttr($value, $data)
     {
+        if (empty($data['photos'])) return [];
         $more = json_decode($data['photos'], true);
         $photos = $more['photos'];
         $photos = array_map(function($item){
