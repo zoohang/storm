@@ -50,6 +50,14 @@ class MallController extends AdminBaseController
         if ($cid) {
             $where['cid'] = $cid;
         }
+        if ($cid) {
+            //兼容下级栏目
+            $data = \api\v1\model\CategoryModel::instance($this->type)->getCategoryTreeArray($cid);
+            $ids = \api\v1\model\CategoryModel::instance($this->type)->getCategoryIds($data);
+            array_unshift($ids, $cid);
+            $where['cid'] = ['IN', $ids];
+        }
+
         if ($level !== '') {
             $where['level'] = $level;
         }
