@@ -46,23 +46,12 @@ class MallModel extends Model
         'a.post_subtitle' => 'subtitle',
         'a.join_num',
         'a.post_image' => 'image',
-        'a.thumbnail',
         #'a.post_content',
         'a.goods_id',
         'a.download_addr',
         'a.status',
         'a.more photos',
     ];
-
-    /**
-     * image 自动转化
-     * @param $value
-     * @return array
-     */
-    public function getThumbnailAttr($value)
-    {
-        return get_image_url($value, 200);
-    }
 
     public function getThumbnail200Attr($value,$data)
     {

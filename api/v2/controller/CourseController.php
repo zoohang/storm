@@ -103,16 +103,16 @@ class CourseController extends \api\v1\controller\CourseController
     //视频主页
     public function videoMain() {
         //轮播图
-        $slide = SlideItemModel::instance()->getOne(1);//id=5
+        $slide = SlideItemModel::instance()->getOne(5);//id=5
         //初始化内容 获取分类
         $category = CategoryModel::instance($this->ctype)->getSimpleCategoryTreeArray();
         //获取全部的内容 列表
-        $list = $this->videoList();
+        $list = $this->videoList(0,0,15);
         $this->success('ok', ['slide'=>$slide,'category'=>$category, 'level' => CourseModel::$levels, 'list'=>$list]);
     }
 
     //视频列表
-    public function videoList($cid=0, $level='', $p=1) {
+    public function videoList($cid=0, $level='',$limit=10) {
         $cid = $cid ?: $this->request->param('cid', 0, 'intval,abs');
         $level = $level ?: $this->request->param('level');
         $list = [];
@@ -123,22 +123,21 @@ class CourseController extends \api\v1\controller\CourseController
             $ids[] = $cid;
             if ($ids) $where['pid'] = ['in', $ids];
         }
-        if (!in_array($level, [null, ''])) $where['level'] = $level;
+        if (!in_array($level, [null, '', 0])) $where['level'] = $level;
         $list = CourseModel::instance()
             ->field(CourseModel::$list_field)
             ->where($where)
             ->order(['list_order'=>'asc','cid'=>'desc'])
-            ->page($p)
             ->cache(true, 60)
-            ->select()->toArray();
-        foreach ($list as $key => &$item) {
-            $item['thumbnail_200'] = get_image_url($item['thumbnail'],200);
-            $item['thumbnail_480'] = get_image_url($item['thumbnail'],480);
-            unset($list[$key]['thumbnail']);
+            ->paginate($limit)->toArray();
+        foreach ($list['data'] as &$item) {
+            $item['thumbnail_200'] = get_image_url($item['thumbnail'], 200);
+            $item['thumbnail_480'] = get_image_url($item['thumbnail'], 480);
+            unset($item['thumbnail']);
         }
         unset($item);
         if ($this->request->action() != strtolower(__FUNCTION__)) {
-            return $list;
+            return $list['data'];
         } else {
             $this->success('ok', $list);
         }
@@ -183,8 +182,8 @@ class CourseController extends \api\v1\controller\CourseController
         $info = array_merge($info,$vod);
         $info['video_long'] = sec2time($info['video_long']);
         //章节信息
-        $items = $this->getCourseItems($info['id']);
-        $this->success('ok', compact('info', 'items'));
+        $child = $this->getCourseItems($info['id']);
+        $this->success('ok', compact('info', 'child'));
     }
 
     protected function getCourseItems($id) {

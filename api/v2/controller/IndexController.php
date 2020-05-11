@@ -32,12 +32,15 @@ class IndexController extends \api\v1\controller\IndexController
         $malls = $this->getRecommendMalls(5);
         //4.刷题 5个
         $exams= $this->getRecommendExam(5);
+        //5.全局公共的底部slide
+        $common_images = SlideItemModel::instance()->getOne(6);
         $data = [
             'slide'=>$slide,
             'curriculum'=>$curriculum,
             'videos'=>$videos,
             'malls'=>$malls,
             'exams' => $exams,
+            'common_images' => $common_images,
         ];
         $this->success('ok', $data);
     }
@@ -57,10 +60,11 @@ class IndexController extends \api\v1\controller\IndexController
             ->cache(true, $this->expire)
             ->select()
             ->toArray();
-        $list = array_map(function($item){
-            $item['thumbnail'] = $item['thumbnail'] . "?x-oss-process=style/200";
-            return $item;
-        }, $list);
+        foreach ($list as &$item) {
+            $item['thumbnail200'] = $item['thumbnail'] . "?x-oss-process=style/200";
+            unset($item['thumbnail']);
+        }
+        unset($item);
         return $list;
     }
 

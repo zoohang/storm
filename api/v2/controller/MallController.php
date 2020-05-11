@@ -13,6 +13,7 @@ use api\v2\model\MallModel;
 use cmf\controller\RestUserBaseController;
 use api\v1\model\SlideItemModel;
 use api\v2\model\CategoryModel;
+use mindplay\annotations\standard\VarAnnotation;
 
 class MallController extends RestUserBaseController
 {
@@ -20,7 +21,7 @@ class MallController extends RestUserBaseController
     public function index()
     {
         //轮播图
-        $slide = SlideItemModel::instance()->getOne(1);//id=4
+        $slide = SlideItemModel::instance()->getOne(4);//id=4
         //分类列表
         $field = ['id', 'parent_id', 'name'];
         $categorys = CategoryModel::instance(MallModel::$ctype)->getSimpleCategoryTreeArray();
@@ -41,16 +42,21 @@ class MallController extends RestUserBaseController
         if ($cid > 0) {
             $data = CategoryModel::instance(MallModel::$ctype)->getCategoryTreeArray($cid);
             $ids = CategoryModel::instance(MallModel::$ctype)->getCategoryIds($data);
-            array_unshift($ids, $cid);
-            $where['cid'] = ['IN', $ids];
+            array_unshift($ids, (int)$cid);
+            $where['cid'] = ['IN', (array)$ids];
         }
         $list = $model
             ->field(MallModel::$list_field)
             ->where($where)
             ->order(['list_order'=>'asc', 'published_time'=>'desc'])
-            ->paginate($limit);
+            ->paginate($limit)->toArray();
+        foreach ($list['data'] as &$item) {
+            $item['thumbnail_200'] = get_image_url($item['thumbnail'], 200);
+            $item['thumbnail_480'] = get_image_url($item['thumbnail'], 480);
+            unset($item['thumbnail']);
+        }
         if ($this->request->action() != strtolower(__FUNCTION__)) {
-            return $list->items();
+            return $list['data'];
         } else {
             $this->success('ok', $list);
         }

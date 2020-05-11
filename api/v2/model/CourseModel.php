@@ -17,7 +17,7 @@ class CourseModel extends \api\v1\model\CourseModel
     }
 
     public static $levels = [
-        ['id'=>0, 'name'=>'无等级'],
+        ['id'=>0, 'name'=>'全部'],
         ['id'=>1, 'name'=>'初级'],
         ['id'=>2, 'name'=>'中级'],
         ['id'=>3, 'name'=>'高级'],
@@ -108,6 +108,11 @@ class CourseModel extends \api\v1\model\CourseModel
             2 => '图文',
         ];
         return $types[$data['type']];
+    }
+
+    public function getThumbnailAttr($value)
+    {
+        return get_image_url($value, 200);
     }
 }
 
