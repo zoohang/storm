@@ -10,6 +10,7 @@ namespace api\v2\controller;
 
 use api\v1\model\UserModel;
 use api\v2\model\MallModel;
+use api\v2\model\OrderModel;
 use cmf\controller\RestUserBaseController;
 use api\v1\model\SlideItemModel;
 use api\v2\model\CategoryModel;
@@ -86,6 +87,17 @@ class MallController extends RestUserBaseController
             $info->download = [];
         }
         $this->success('ok', ['info' => $info, 'relation' => $relation]);
+    }
+
+    //获取用户已经购买的商品
+    public function mallBuyLog($limit=10) {
+        $data = OrderModel::instance()->alias('a')
+            ->field(['b.id','b.post_title'=>'title','b.post_subtitle'=>'subtitle','a.pay_time'=>'pay_time_format'])
+            ->join('__MALL__ b', 'a.goods_id=b.goods_id')
+            ->where(['a.order_status'=>1, 'a.pay_status'=>2, 'a.user_id'=>$this->userId])
+            ->order('a.pay_time', 'desc')
+            ->paginate($limit);
+        $this->success('ok', $data);
     }
 
 }

@@ -90,13 +90,13 @@ class CourseController extends \api\v1\controller\CourseController
 
     //已经购买的课程
     public function getBuyCourse() {
-        $list = CourseModel::instance()->getBugCourse();
+        $list = CourseModel::instance()->getBugVideoCourse($this->userId);
         $this->success('ok', ['list'=>$list]);
     }
 
     //我收藏的课程
     public function collectionCourse() {
-        $list = CourseModel::instance()->getCollectionCourse();
+        $list = CourseModel::instance()->getCollectionVideoCourse($this->userId);
         $this->success('ok', ['list'=>$list]);
     }
 

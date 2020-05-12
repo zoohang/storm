@@ -114,5 +114,31 @@ class CourseModel extends \api\v1\model\CourseModel
     {
         return get_image_url($value, 200);
     }
+
+    public function getThumbnail_480Attr($value)
+    {
+        return get_image_url($value, 480);
+    }
+
+    //仅仅获取视频 购买
+    public function getBugVideoCourse($uid) {
+        $where = ['b.user_id'=>$uid, 'b.pay_status'=>2, 'b.order_status'=>1, 'a.type'=>1];
+        return $this->alias('a')
+            ->field(['a.cid'=>'id','a.image'=>'thumbnail_480'])
+            ->join('__ORDER__ b','a.goods_id=b.goods_id')
+            ->where($where)
+            ->order('b.pay_time','desc')
+            ->paginate();
+    }
+    //仅仅获取视频 收藏
+    public function getCollectionVideoCourse($uid) {
+        $where = ['b.user_id'=>$uid, 'b.type'=>3, 'a.type'=>1];
+        return $this->alias('a')
+            ->field(['a.cid'=>'id','a.image'=>'thumbnail_480'])
+            ->join('__USER_FAVORITE__ b', 'a.cid=b.object_id')
+            ->where($where)
+            ->order(['b.id'=>'desc'])
+            ->paginate();
+    }
 }
 

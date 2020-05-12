@@ -97,7 +97,7 @@ class UserController extends RestUserBaseController
     public function feedback()
     {
         $userId   = $this->getUserId();
-        $data     = $this->request->post();
+        $data     = $this->request->get();
         $data = array_merge(['user_id'=>$userId], $data);
 
         if (FeedbackModel::instance()->isUpdate(false)->save($data) !== false) {

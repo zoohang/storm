@@ -112,5 +112,9 @@ class OrderModel extends \api\v1\model\OrderModel
         }
         return $subtitle;
     }
+
+    public function getPayTimeFormatAttr($value) {
+        return date('Y-m-d', $value);
+    }
 }
 
