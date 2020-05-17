@@ -57,7 +57,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="content_img"><span class="form-required">*</span>课程介绍描述图片[750*400]</label>
+                            <label for="content_img"><span class="form-required">*</span>课程介绍描述图片[16:9 750*415]</label>
                             <div>
                                 <input type="hidden" name="content_img" id="content_img" value="{$info.content_img|default=''}">
                                 <if condition="empty($info['content_img'])">
@@ -94,7 +94,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="thumb"><span class="form-required">*</span>封面图[750*396]</label>
+                            <label for="thumb"><span class="form-required">*</span>封面图[1:1 750*750]</label>
                             <div>
                                 <input type="hidden" name="image" id="thumb" value="{$info.image|default=''}">
                                 <if condition="empty($info['image'])">
