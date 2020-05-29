@@ -147,7 +147,7 @@ class CourseController extends AdminBaseController
             'category_id'=> $data['pid'],
             'goods_name'=> $data['ctitle'],
             'image'=> $data['image'],
-            'goods_status' => $data['status']
+            //'goods_status' => $data['status']
         ];
         if (!empty($data['photo_names']) && !empty($data['photo_urls'])) {
             $data['more']['photos'] = [];
