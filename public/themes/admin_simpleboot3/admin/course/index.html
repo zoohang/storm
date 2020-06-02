@@ -8,13 +8,20 @@
         <li><a href="{:url('category/index',['type'=>3])}">分类管理</a></li>
     </ul>
     <form class="well form-inline margin-top-20" method="post" action="{:url('course/index', ['type'=>$_GET['type']])}">
-        类型:
-        <select name="category" id="" class="form-control" style="width: 200px;">
-            <option value="">请选课程分类</option>
+        专业:
+        <select name="category" id="" class="form-control" style="width: 200px;margin-right: 20px;">
+            <option value="">请选专业</option>
             {$course_category}
         </select>
+        类型:
+        <select name="course_type" class="form-control" style="width: 200px;margin-right: 20px;">
+            <foreach name="course_type_list" item="name" key="key">
+                <php>$course_type=isset($params['course_type'])?$params['course_type']:'';</php>
+                <option value="{$key}" <if condition="$key eq $course_type">selected</if>>{$name}</option>
+            </foreach>
+        </select>
         难度:
-        <select name="level" class="form-control" style="width: 200px;">
+        <select name="level" class="form-control" style="width: 200px;margin-right: 20px;">
             <option value="">请选择难度</option>
             <foreach name="levels" item="name" key="key">
                 <php>$sexselected=isset($params['level'])&&(string)$key==$params['level']?"selected":"";</php>
@@ -65,7 +72,8 @@
                 <th width="80">{:lang('SORT')}</th>
                 <th width="50">ID</th>
                 <th width="120">图片</th>
-                <th width="100">所属分类</th>
+                <th width="100">专业</th>
+                <th width="100">类型</th>
                 <th width="300">课程标题</th>
                 <th width="80">讲师</th>
                 <th width="120">更新时间	</th>
@@ -86,6 +94,7 @@
                     <td><img src="{:cmf_get_image_preview_url($vo.image,100)}" id="thumb-preview"
                              height="50" style="cursor: hand" onclick="javascript:imagePreviewDialog('{:cmf_get_image_preview_url($vo.image)}');"/></td>
                     <td>{$vo.pname}</td>
+                    <td>{$vo['course_type'] ? $course_type_list[$vo['course_type']] : ''}</td>
                     <td>{$vo.ctitle}</td>
                     <td>{$vo.tnames}</td>
                     <td>

@@ -140,5 +140,18 @@ class CourseModel extends \api\v1\model\CourseModel
             ->order(['b.id'=>'desc'])
             ->paginate();
     }
+
+    public function getCourseTypeList() {
+        $list = \app\admin\model\CourseModel::instance()->courseTypeList;
+        array_walk($list, function(&$item, $key){
+            if (!$key){
+                $item = ['id'=>$key, 'name'=>'全部', 'selected'=>1];
+            } else {
+                $item = ['id'=>$key, 'name'=>$item, 'selected'=>0];
+            }
+        });
+        unset($item);
+        return $list;
+    }
 }
 

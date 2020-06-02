@@ -8,13 +8,20 @@
         <li><a href="{:url('category/index',['type'=>$type])}">分类管理</a></li>
     </ul>
     <form class="well form-inline margin-top-20" method="post" action="{:url('mall/index')}">
-        类型:
-        <select name="cid" id="" class="form-control" style="width: 200px;">
-            <option value="">请选分类</option>
+        专业:
+        <select name="cid" id="" class="form-control" style="width: 200px;margin-right: 20px;">
+            <option value="">请选专业</option>
             {$category_list}
         </select>
+        类型:
+        <select name="mall_type" class="form-control" style="width: 200px;margin-right: 20px;">
+            <foreach name="mall_type_list" item="item" key="key">
+                <php>$mall_type=isset($params['mall_type'])?$params['mall_type']:'';</php>
+                <option value="{$key}" <if condition="$key eq $mall_type">selected</if>>{$item}</option>
+            </foreach>
+        </select>
         标题:
-        <input type="text" class="form-control" name="keyword" style="width: 200px;" value="{$params.keyword|default=''}" placeholder="请输入标题">
+        <input type="text" class="form-control" name="keyword" style="width: 200px;margin-right: 20px;" value="{$params.keyword|default=''}" placeholder="请输入标题">
         <input type="submit" class="btn btn-primary" value="搜索">
         <a class="btn btn-danger" href="{:url('mall/index')}">清空</a>
     </form>
@@ -57,7 +64,8 @@
                 <th width="80">{:lang('SORT')}</th>
                 <th width="50">ID</th>
                 <th>图片</th>
-                <th>所属分类</th>
+                <th>专业</th>
+                <th>类型</th>
                 <th>标题</th>
                 <th>发布时间</th>
                 <th width="70">状态</th>
@@ -76,6 +84,7 @@
                     <td><img src="{:cmf_get_image_preview_url($vo.thumbnail)}" id="thumb-preview"
                              height="50" style="cursor: hand" onclick="javascript:imagePreviewDialog('{:cmf_get_image_preview_url($vo.thumbnail)}');"/></td>
                     <td>{$vo.cname}</td>
+                    <td>{$vo['mall_type'] ? $mall_type_list[$vo['mall_type']]: ''}</td>
                     <td>{$vo.post_title}</td>
                     <td>
                         <empty name="vo.published_time">

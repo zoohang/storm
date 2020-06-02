@@ -105,23 +105,28 @@ class CourseController extends \api\v1\controller\CourseController
         //轮播图
         $slide = SlideItemModel::instance()->getOne(5);//id=5
         //初始化内容 获取分类
-        $category = CategoryModel::instance($this->ctype)->getSimpleCategoryTreeArray();
+        $category = CategoryModel::instance($this->ctype)->getFirstLevelCategory();
         //获取全部的内容 列表
-        $list = $this->videoList(0,0,15);
-        $this->success('ok', ['slide'=>$slide,'category'=>$category, 'level' => CourseModel::$levels, 'list'=>$list]);
+        $course_types = CourseModel::instance()->getCourseTypeList();
+        $level = CourseModel::$levels;
+        $list = $this->videoList(0,0,0,15);
+        $this->success('ok', compact('slide', 'category', 'course_types', 'level', 'list'));
     }
 
     //视频列表
-    public function videoList($cid=0, $level='',$limit=10) {
-        $cid = $cid ?: $this->request->param('cid', 0, 'intval,abs');
+    public function videoList($cid=0, $course_type=0, $level='',$limit=10) {
+        $cid = $cid ?: $this->request->param('cid', 0, 'intval,abs,trim');
+        $course_type = $course_type ?: $this->request->param('course_type', 0, 'intval,abs,trim');
+        $cid = trim($cid,',');
+        $course_type = trim($course_type,',');
         $level = $level ?: $this->request->param('level');
         $list = [];
         $where = ['type'=>1];
         if ($cid) {
-            $data = CategoryModel::instance($this->ctype)->getCategoryTreeArray($cid);
-            $ids = CategoryModel::instance($this->ctype)->getCategoryIds($data);
-            $ids[] = $cid;
-            if ($ids) $where['pid'] = ['in', $ids];
+            $where['pid'] = ['in', explode(',', $cid)];
+        }
+        if ($course_type) {
+            $where['course_type'] = ['in', explode(',', $course_type)];
         }
         if (!in_array($level, [null, '', 0])) $where['level'] = $level;
         $list = CourseModel::instance()

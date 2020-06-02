@@ -32,14 +32,26 @@
                     <div class="tab-pane active" id="A">
                         <input type="hidden" name="cid" value="{$info.cid|default=''}">
                         <div class="form-group">
-                            <label for="select-parent"><span class="form-required">*</span>上级</label>
+                            <label for="select-parent"><span class="form-required">*</span>专业</label>
                             <div>
                                 <select class="form-control" name="pid" id="select-parent">
-                                    <option value="">请选择上级分类</option>
+                                    <option value="">请选择专业</option>
                                     {$category_tree}
                                 </select>
                             </div>
                             <input type="hidden" name="pname" value="{$info.pname|default=''}">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="select-parent"><span class="form-required">*</span>类型</label>
+                            <div>
+                                <select class="form-control" name="course_type" id="course_type">
+                                    <foreach name="course_type_list" item="name" key="key">
+                                        <php>$course_type=isset($info['course_type'])?$info['course_type']:'';</php>
+                                        <option value="{$key}" <if condition="$key eq $course_type">selected</if>>{$name}</option>
+                                    </foreach>
+                                </select>
+                            </div>
                         </div>
 
                         <div class="form-group">

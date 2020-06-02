@@ -25,31 +25,37 @@ class MallController extends RestUserBaseController
         $slide = SlideItemModel::instance()->getOne(4);//id=4
         //分类列表
         $field = ['id', 'parent_id', 'name'];
-        $categorys = CategoryModel::instance(MallModel::$ctype)->getSimpleCategoryTreeArray();
+        $categorys = CategoryModel::instance(MallModel::$ctype)->getFirstLevelCategory();
         //初始化的商品列表
-        $list = $this->getList(0,1,15);
+        $list = $this->getList(0,0,15);
         $data = [
             'slide'=>$slide,
             'categorys'=>$categorys,
+            'mall_types'=> MallModel::instance()->getMallTypeList(),
             'list'=>$list,
         ];
         $this->success('ok', $data);
     }
 
     // 筛选商品列表
-    public function getList($cid=0, $p=1, $limit=10) {
+    public function getList($cid=0, $mall_type=0, $limit=10) {
+        $cid = $cid ?: $this->request->param('cid', 0, 'intval,abs,trim');
+        $mall_type = $mall_type ?: $this->request->param('mall_type', 0, 'intval,abs,trim');
+        $cid = trim($cid,',');
+        $mall_type = trim($mall_type,',');
         $model = new MallModel;
         $where = [];
-        if ($cid > 0) {
-            $data = CategoryModel::instance(MallModel::$ctype)->getCategoryTreeArray($cid);
-            $ids = CategoryModel::instance(MallModel::$ctype)->getCategoryIds($data);
-            array_unshift($ids, (int)$cid);
-            $where['cid'] = ['IN', (array)$ids];
+        if ($cid != 0) {
+            $where['cid'] = ['IN', explode(',', trim($cid, ','))];
+        }
+        if ($mall_type != 0) {
+            $where['mall_type'] = ['IN', explode(',', trim($mall_type, ','))];
         }
         $list = $model
             ->field(MallModel::$list_field)
             ->where($where)
             ->order(['list_order'=>'asc', 'published_time'=>'desc'])
+            ->cache(true, 60)
             ->paginate($limit)->toArray();
         foreach ($list['data'] as &$item) {
             $item['thumbnail_200'] = get_image_url($item['thumbnail'], 200);

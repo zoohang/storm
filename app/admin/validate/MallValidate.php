@@ -16,7 +16,9 @@ class MallValidate extends Validate
 {
     protected $rule = [
         'post_title|标题' => 'require|max:30',
-        'type|类型' => 'require|number|in:1,2',
+        'type|商品类型' => 'require|number|gt:0',
+        'cid|专业' => 'require|number|gt:0',
+        'mall_type|专业类型' => 'require|number|gt:0',
         'thumbnail|缩略图' => 'require',
         'post_image|图片' => 'require',
     ];

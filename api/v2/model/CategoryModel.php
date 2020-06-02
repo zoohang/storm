@@ -15,6 +15,14 @@ use think\Model;
 class CategoryModel extends \api\v1\model\CategoryModel
 {
     private static $instance = null;
+    protected function base($query)
+    {
+        $query->where('type', $this->ctype)
+            ->where('status', 1)
+            ->where('delete_time', 0)
+        ;
+    }
+
     public static function instance($ctype)
     {
         if (is_null(self::$instance)) {
@@ -41,6 +49,23 @@ class CategoryModel extends \api\v1\model\CategoryModel
             }
         }
         unset($item);
+        return $data;
+    }
+
+    public function getFirstLevelCategory() {
+        $where = [
+            'type'=> $this->ctype,
+            'status'=> 1,
+            'delete_time'=> 0,
+            'parent_id'=> 0,
+        ];
+        $data = Db::name('Category')
+            ->field('id,name,0 as selected')
+            ->where($where)
+            ->cache(true, 600)
+            ->order('list_order','desc')
+            ->select();
+        $data->unshift(['id'=>0,'name'=>'全部', 'selected'=>1]);
         return $data;
     }
 }

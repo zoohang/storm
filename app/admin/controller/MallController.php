@@ -34,6 +34,7 @@ class MallController extends AdminBaseController
         $this->assign('status' ,$this->status);
         $this->assign('types' ,$this->types);
         $this->assign('levels' ,$this->levels);
+        $this->assign("mall_type_list", MallModel::instance()->mallTypeList);
     }
 
     public function index()
@@ -43,6 +44,7 @@ class MallController extends AdminBaseController
         $keyword = $this->request->param('keyword');
         $cid = $this->request->param('cid', 0, 'intval');
         $level = $this->request->param('level', '');
+        $mall_type = $this->request->param('mall_type');
         $where = ['status'=> ['EGT', 0]];
         if ($keyword) {
             $where['post_title'] = ['like', "%{$keyword}%"];
@@ -50,6 +52,7 @@ class MallController extends AdminBaseController
         if ($cid) {
             $where['cid'] = $cid;
         }
+        if ($mall_type) $where['mall_type'] = $mall_type;
         if ($cid) {
             //兼容下级栏目
             $data = \api\v1\model\CategoryModel::instance($this->type)->getCategoryTreeArray($cid);
@@ -175,7 +178,7 @@ class MallController extends AdminBaseController
                 'category_id'=> $data['cid'],
                 'goods_name'=> $data['post_title'],
                 'image'=> $data['thumbnail'],
-                'goods_status' => $data['status']
+                //'goods_status' => $data['status']
             ];
 
             if (!empty($data['photo_names']) && !empty($data['photo_urls'])) {

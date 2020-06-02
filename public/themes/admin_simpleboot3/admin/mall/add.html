@@ -37,11 +37,21 @@
             <div class="col-md-9">
                 <table class="table table-bordered">
                     <tr>
-                        <th width="150">分类</th>
+                        <th width="150">专业</th>
                         <td>
                             <select name="post[cid]" id="category_select"  class="form-control">
-                                <option value="">请选择分类</option>
+                                <option value="">请选择专业</option>
                                 {$category_tree}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th width="150">类型</th>
+                        <td>
+                            <select name="post[mall_type]"  class="form-control">
+                                <foreach name="mall_type_list" item="item" key="key">
+                                    <option value="{$key}">{$item}</option>
+                                </foreach>
                             </select>
                         </td>
                     </tr>

@@ -31,6 +31,7 @@ class CourseController extends AdminBaseController
         $this->assign('type', $this->type);
         $this->assign('status' ,$this->status);
         $this->assign('levels' ,$this->levels);
+        $this->assign("course_type_list", CourseModel::instance()->courseTypeList);
     }
 
     public function index()
@@ -41,7 +42,9 @@ class CourseController extends AdminBaseController
         $category = $this->request->param('category', '', 'intval');
         $level = $this->request->param('level');
         $type = $this->request->param('type');#类型 1-视频 2-图文
+        $course_type = $this->request->param('course_type');
         if ($type)  $where['type'] = $type;
+        if ($course_type)  $where['course_type'] = $course_type;
         $_GET['type'] = intval($type);
         if ($keyword) {
             $where['ctitle'] = ['like', "%{$keyword}%"];

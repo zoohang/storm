@@ -138,5 +138,18 @@ class MallModel extends Model
         }, $photos);
         return $photos;
     }
+
+    public function getMallTypeList() {
+        $list = \app\admin\model\MallModel::instance()->mallTypeList;
+        array_walk($list, function(&$item, $key){
+            if (!$key){
+                $item = ['id'=>$key, 'name'=>'全部', 'selected'=>1];
+            } else {
+                $item = ['id'=>$key, 'name'=>$item, 'selected'=>0];
+            }
+        });
+        unset($item);
+        return $list;
+    }
 }
 

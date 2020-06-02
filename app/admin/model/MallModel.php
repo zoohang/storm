@@ -19,13 +19,26 @@ class MallModel extends Model
     protected $autoWriteTimestamp = true;
     protected $insert = ['category_name'];
     private static $instance = null;
-
+    public $mallTypeList = [
+        '请选择类型',
+        '考研素材',
+        '手绘素材',
+        '竞赛图纸',
+        '电子书',
+        '设计素材',
+        '作品集',
+        '软件素材',
+    ];
     public static function instance()
     {
         if (is_null(self::$instance)) {
             self::$instance = new static();
         }
         return self::$instance;
+    }
+
+    protected function getMallTypeNameAttr($value, $data) {
+        return $this->mallTypeList[$data['mall_type']];
     }
 
     /**

@@ -22,6 +22,7 @@ class CourseValidate extends Validate
         'description' => 'require',
         'type' => 'require',
         'image' => 'require',
+        'course_type|专业类型' => 'require|number|gt:0',
     ];
 
     protected $message = [
