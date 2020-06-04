@@ -20,7 +20,7 @@ class CourseValidate extends Validate
         'pid' => 'require',
         'pname' => 'require',
         'description' => 'require',
-        'type' => 'require',
+        'course_type' => 'require',
         'image' => 'require',
         'course_type|专业类型' => 'require|number|gt:0',
     ];
@@ -31,7 +31,7 @@ class CourseValidate extends Validate
         'pid.require' => '课程分类id不能为空',
         'pname.require' => '课程分类名称不能为空',
         'description.require'  => '描述不能为空',
-        'type.require' => '课程类型不能为空',
+        'course_type.require' => '课程类型不能为空',
         'image.require' => '图片不能为空',
     ];
 

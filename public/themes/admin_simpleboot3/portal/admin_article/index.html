@@ -29,7 +29,7 @@
         <div class="table-actions">
             <notempty name="category">
                 <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
-                        data-action="{:url('AdminArticle/listOrder')}">{:lang('SORT')}
+                        data-action="{:url('AdminArticle/listOrderPost')}">{:lang('SORT')}
                 </button>
             </notempty>
             <button class="btn btn-primary btn-sm js-ajax-submit" type="submit"
@@ -87,7 +87,7 @@
                     </td>
                     <notempty name="category">
                         <td>
-                            <input name="list_orders[{$vo.post_category_id}]" class="input-order" type="text"
+                            <input name="list_orders[{$vo.id}]" class="input-order" type="text"
                                    value="{$vo.list_order}">
                         </td>
                     </notempty>

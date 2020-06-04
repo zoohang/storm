@@ -8,6 +8,7 @@
 // +----------------------------------------------------------------------
 namespace api\v2\controller;
 
+use api\v1\model\FeedbackModel;
 use api\v2\model\CourseModel;
 use api\v1\model\DakaModel;
 use api\v1\model\ExamModel;
@@ -15,6 +16,7 @@ use api\v1\model\PortalPostModel;
 use api\v1\model\SlideItemModel;
 use api\v2\model\MallModel;
 use cmf\controller\RestUserBaseController;
+use think\Db;
 
 class IndexController extends \api\v1\controller\IndexController
 {
@@ -55,7 +57,7 @@ class IndexController extends \api\v1\controller\IndexController
             ->alias('a')
             ->join("portal_category_post b", 'a.id=b.post_id')
             ->where(['b.category_id'=>$cid])
-            ->order(['a.recommended' => 'desc', 'b.list_order' => 'asc'])
+            ->order(['a.recommended' => 'desc', 'a.list_order' => 'asc'])
             ->limit($num)
             ->cache(true, $this->expire)
             ->select()
@@ -118,5 +120,18 @@ class IndexController extends \api\v1\controller\IndexController
         }
         unset($item);
         return $list;
+    }
+
+    public function submitFeedback($type,$content) {
+
+        var_dump($type,$content);die();
+        unset($params['user']);
+        $params['create_time'] = $params['update_time'] = NOW_TIME;
+        $params['type'] = FeedbackModel::instance()->setTypeAttr($params['type']);
+        if (Db::name('feedback')->insert($params) !== false) {
+            $this->success('提交成功！');
+        } else {
+            $this->error('提交失败！');
+        }
     }
 }

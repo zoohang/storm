@@ -445,6 +445,12 @@ class AdminArticleController extends AdminBaseController
         $this->success("排序更新成功！", '');
     }
 
+    public function listOrderPost()
+    {
+        parent::listOrders(Db::name('portal_post'));
+        $this->success("排序更新成功！", '');
+    }
+
     public function move()
     {
 

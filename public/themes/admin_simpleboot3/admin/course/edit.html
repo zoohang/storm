@@ -14,7 +14,7 @@
 </script>
 </head>
 <body>
-<php>$course_type=isset($info['type'])?$info['type']:request()->param('type')</php>
+<php>$course_type=isset($info['type']) && $info['type']?$info['type']:request()->param('type')</php>
 <div class="wrap js-check-wrap">
     <ul class="nav nav-tabs">
         <li><a href="{:url('course/index', ['type'=>$course_type])}">试卷管理</a></li>
@@ -47,8 +47,8 @@
                             <div>
                                 <select class="form-control" name="course_type" id="course_type">
                                     <foreach name="course_type_list" item="name" key="key">
-                                        <php>$course_type=isset($info['course_type'])?$info['course_type']:'';</php>
-                                        <option value="{$key}" <if condition="$key eq $course_type">selected</if>>{$name}</option>
+                                        <php>$ct=isset($info['course_type'])?$info['course_type']:'';</php>
+                                        <option value="{$key}" <if condition="$key eq $ct">selected</if>>{$name}</option>
                                     </foreach>
                                 </select>
                             </div>
