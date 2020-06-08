@@ -26,6 +26,7 @@ class IndexController extends \api\v1\controller\IndexController
     {
         //0.轮播图
         $slide = SlideItemModel::instance()->getOne(1);
+        $slide_shuati = SlideItemModel::instance()->getOne(8);
         //1.课程单 8个
         $curriculum = $this->getRecommendCurriculum(8);
         //2.视频 5个
@@ -38,6 +39,7 @@ class IndexController extends \api\v1\controller\IndexController
         $common_images = SlideItemModel::instance()->getOne(6);
         $data = [
             'slide'=>$slide,
+            'slide_shuati'=>$slide_shuati,
             'curriculum'=>$curriculum,
             'videos'=>$videos,
             'malls'=>$malls,
