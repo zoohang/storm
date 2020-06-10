@@ -124,7 +124,7 @@ class DakaController extends AdminBaseController
                     'category_id'=> $post['category_id'],
                     'goods_name'=> $post['post_title'],
                     'image'=> $post['thumbnail'],
-                    'goods_status' => $goods_status
+                    //'goods_status' => $goods_status
                 ];
                 $data['post']['goods_id'] = GoodsModel::instance()->editGoods($goods, $other, $this->type);
                 //商品售价
@@ -201,7 +201,7 @@ class DakaController extends AdminBaseController
                     'category_id'=> $post['category_id'],
                     'goods_name'=> $post['post_title'],
                     'image'=> $post['thumbnail'],
-                    'goods_status' => $post['post_status']
+                    //'goods_status' => $post['post_status']
                 ];
                 $data['post']['goods_id'] = GoodsModel::instance()->editGoods($goods, $other, $this->type);
                 //商品售价

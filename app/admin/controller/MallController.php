@@ -117,7 +117,7 @@ class MallController extends AdminBaseController
                 'category_id'=> $data['cid'],
                 'goods_name'=> $data['post_title'],
                 'image'=> $data['thumbnail'],
-                'goods_status' => $data['status'],
+                //'goods_status' => $data['status'],
             ];
             $data['goods_id'] = GoodsModel::instance()->editGoods($goods, $other, $this->type);
             //多图上传

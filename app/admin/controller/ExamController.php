@@ -113,7 +113,7 @@ class ExamController extends AdminBaseController
                 'category_id'=> $data['cid'],
                 'goods_name'=> $data['title'],
                 'image'=> $data['image'],
-                'goods_status' => $data['status'],
+                //'goods_status' => $data['status'],
             ];
             $data['goods_id'] = GoodsModel::instance()->editGoods($goods, $other, $this->type);
             //商品售价
@@ -180,7 +180,7 @@ class ExamController extends AdminBaseController
                 'category_id'=> $data['cid'],
                 'goods_name'=> $data['title'],
                 'image'=> $data['image'],
-                'goods_status' => $data['status']
+                //'goods_status' => $data['status']
             ];
             Db::startTrans();
             try{
