@@ -362,7 +362,8 @@ class CourseController extends AdminBaseController
 
     public function listOrder()
     {
-        parent::listOrders(Db::name('course'));
+        $table_name = $this->request->param('table', 'course');
+        parent::listOrders(Db::name($table_name));
         $this->success("排序更新成功！", '');
     }
 
