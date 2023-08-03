@@ -14,3 +14,5 @@ composer.lock
 /data/lang
 update
 data
+.env
+.env.production

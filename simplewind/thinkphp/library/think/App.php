@@ -121,8 +121,8 @@ class App
 
             // 记录路由和请求信息
             if (self::$debug) {
-                Log::record('[ ROUTE ] ' . var_export($dispatch, true), 'info');
-                Log::record('[ HEADER ] ' . var_export($request->header(), true), 'info');
+                //Log::record('[ ROUTE ] ' . var_export($dispatch, true), 'info');
+                //Log::record('[ HEADER ] ' . var_export($request->header(), true), 'info');
                 Log::record('[ PARAM ] ' . var_export($request->param(), true), 'info');
             }
 
@@ -551,11 +551,9 @@ class App
 
         // 获取控制器名
         $controller = strip_tags($result[1] ?: $config['default_controller']);
-
         if (!preg_match('/^[A-Za-z](\w|\.)*$/', $controller)) {
             throw new HttpException(404, 'controller not exists:' . $controller);
         }
-
         $controller = $convert ? strtolower($controller) : $controller;
 
         // 获取操作名

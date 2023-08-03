@@ -24,6 +24,11 @@ use think\Db;
 class IndexController extends RestBaseController
 {
     protected $expire = 600;
+    protected $new_alias = [
+        CategoryModel::ALIAS_ENGLISH,
+        CategoryModel::ALIAS_POLITICS,
+        CategoryModel::ALIAS_HISTORY,
+    ];
     // 首页信息
     public function index()
     {
@@ -236,7 +241,7 @@ class IndexController extends RestBaseController
     }
 
     public function examGetCategoryExam() {
-        $where = ['a.status'=>1, 'a.type'=>1];
+        $where = ['a.status'=>1, 'a.type'=>1, 'a.delete_time' => 0, 'a.alias' => ['NOT IN', $this->new_alias]];
         $list = DB::name('category a')
             ->join('__EXAM_SCHOOL_RELATION__ b', 'a.id=b.category_id')
             ->field('a.*')
@@ -250,7 +255,11 @@ class IndexController extends RestBaseController
     public function examGetSchool() {
         $category_id = $this->request->param('category_id', 0, 'intval,abs');
         $where = ['b.status'=>1];
-        if ($category_id) $where['a.category_id'] = $category_id;
+        if ($category_id) {
+            $where['a.category_id'] = $category_id;
+        } else {
+            $where['a.category_id'] = ['NOT IN', [226, 227]]; // 2023年7月8日 不显示 英语和政治两个栏目
+        }
         $list = DB::name('exam_school_relation a')
             ->join('__SCHOOL__ b', 'a.school_id=b.id')
             ->join('__EXAM__ c', 'a.exam_id=c.id and c.`status`=1')
@@ -306,5 +315,25 @@ class IndexController extends RestBaseController
         }
         unset($item);
         $this->success('ok', $list);
+    }
+
+    public function examGetCategoryNew() {
+        $alias = $this->request->param('category_alias', '', 'trim,strtolower');
+        if (!in_array($alias, $this->new_alias)) $this->error('category_alias不符合规范');
+        $where = ['a.status'=>1, 'a.type'=>1, 'a.delete_time' => 0, 'a.alias' => $alias];
+        $category = DB::name('category a')
+            ->join('__EXAM_SCHOOL_RELATION__ b', 'a.id=b.category_id', 'left')
+            ->field('a.*, group_concat(b.school_id) as school_id')
+            ->where($where)
+            ->group('b.category_id')
+            ->find();
+        if ($category) {
+            if ($category['school_id']) {
+                $category['child'] = DB::name('school')->where(['id'=>['IN', $category['school_id']]])->group('id')->select()->toArray();
+            } else {
+                $category['child'] = [];
+            }
+        }
+        $this->success('ok', $category ?: new \stdClass());
     }
 }

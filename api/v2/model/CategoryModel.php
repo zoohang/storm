@@ -14,6 +14,9 @@ use think\Model;
 
 class CategoryModel extends \api\v1\model\CategoryModel
 {
+    const ALIAS_ENGLISH = 'english';
+    const ALIAS_POLITICS = 'politics';
+    const ALIAS_HISTORY = 'history';
     private static $instance = null;
     protected function base($query)
     {

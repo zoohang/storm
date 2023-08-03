@@ -508,7 +508,7 @@ class ExamController extends AdminBaseController
         $ids                 = $this->request->param('ids');
         $selectedIds         = explode(',', $ids);
 
-        $list = SchoolModel::instance()->field(['id','name'])->where(['status'=>1])->order(['list_order'=>'asc'])->select()->toArray();
+        $list = SchoolModel::instance()->field(['id','name', 'alias'])->where(['status'=>1])->order(['list_order'=>'asc'])->select()->toArray();
         foreach ($list as &$item) {
             $item['check'] = '';
             if (in_array($item['id'], $selectedIds)) {

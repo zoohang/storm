@@ -164,3 +164,15 @@ function baiduLinkFormat($str) {
     preg_match_all('/[0-9a-zA-Z]+/', $str, $codes);
     return ['url' => array_shift($urls), 'code'=> array_pop($codes[0]), 'download_addr'=>$str];
 }
+
+if (!function_exists('dd')) {
+    function dd()
+    {
+        $vars = func_get_args();
+        foreach ($vars as $v) {
+            var_dump($v);
+            echo PHP_EOL;
+        }
+        exit(1);
+    }
+}
